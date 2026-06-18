@@ -158,8 +158,6 @@ body {
 .orbit-ring.r2 { width: min(45vw, 380px); height: min(45vw, 380px); margin: calc(min(45vw, 380px) / -2) 0 0 calc(min(45vw, 380px) / -2); animation: spin 18s linear infinite; }
 .orbit-ring.r3 { width: min(58vw, 500px); height: min(58vw, 500px); margin: calc(min(58vw, 500px) / -2) 0 0 calc(min(58vw, 500px) / -2); animation: spin 24s linear infinite; }
 .orbit-ring.r4 { width: min(70vw, 620px); height: min(70vw, 620px); margin: calc(min(70vw, 620px) / -2) 0 0 calc(min(70vw, 620px) / -2); animation: spin 30s linear infinite; }
-.orbit-ring.r5 { width: min(37vw, 310px); height: min(37vw, 310px); margin: calc(min(37vw, 310px) / -2) 0 0 calc(min(37vw, 310px) / -2); animation: spin 14s linear infinite; }
-.orbit-ring.r6 { width: min(52vw, 440px); height: min(52vw, 440px); margin: calc(min(52vw, 440px) / -2) 0 0 calc(min(52vw, 440px) / -2); animation: spin 22s linear infinite; }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
@@ -245,15 +243,11 @@ body {
 .r2 .planet-anchor { animation: counter-spin-18 18s linear infinite; }
 .r3 .planet-anchor { animation: counter-spin-24 24s linear infinite; }
 .r4 .planet-anchor { animation: counter-spin-30 30s linear infinite; }
-.r5 .planet-anchor { animation: counter-spin-14 14s linear infinite; }
-.r6 .planet-anchor { animation: counter-spin-22 22s linear infinite; }
 
 @keyframes counter-spin-12 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @keyframes counter-spin-18 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @keyframes counter-spin-24 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @keyframes counter-spin-30 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes counter-spin-14 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes counter-spin-22 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 
 /* Hero Title */
 .hero-title-wrap {
@@ -414,13 +408,11 @@ body {
   padding: 2.2rem;
   position: relative;
   box-shadow: var(--shadow-lg);
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  transform: translateY(24px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 #card-modal-overlay.active #card-modal {
-  opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 #card-modal-close {
@@ -777,106 +769,33 @@ body {
 .ld-rose span:first-child   { background: var(--morandi-mauve); }
 .ld-amber span:first-child  { background: var(--morandi-sand); }
 
-/* ========== Floating QR Button & Popup ========== */
-#qr-float-btn {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
-  z-index: 1000;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-  cursor: pointer;
-  font-size: 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-  transition: all 0.25s ease;
+/* ========== QR Section ========== */
+.qr-section {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+  position: relative;
+  z-index: 1;
 }
-#qr-float-btn:hover {
-  border-color: var(--border-focus);
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-  color: var(--text-primary);
-}
-#qr-float-btn .tooltip {
-  position: absolute;
-  left: 56px;
-  background: var(--text-primary);
-  color: #fdfcf9;
-  font-size: 0.75rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 6px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-#qr-float-btn:hover .tooltip { opacity: 1; }
-
-#qr-popup {
-  position: fixed;
-  bottom: 6rem;
-  left: 2rem;
-  z-index: 1001;
+.qr-card {
+  display: inline-block;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem 1.5rem 1.2rem;
-  box-shadow: var(--shadow-lg);
-  text-align: center;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(12px) scale(0.95);
-  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
 }
-#qr-popup.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-}
-#qr-popup img {
+.qr-card img {
   display: block;
   width: 160px;
   height: 160px;
   border-radius: 8px;
-  margin: 0 auto;
 }
-#qr-popup p {
-  margin-top: 0.6rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-family: 'Inter', 'Noto Sans SC', sans-serif;
-}
-#qr-popup-close {
-  position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-#qr-popup-close:hover {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-}
-
-@media (max-width: 768px) {
-  #qr-float-btn { bottom: 1.2rem; left: 1.2rem; width: 42px; height: 42px; }
-  #qr-popup { bottom: 5rem; left: 1.2rem; }
+.qr-card .qr-label {
+  margin-top: 1rem;
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-secondary);
 }
 
 /* ========== Footer ========== */
@@ -924,160 +843,6 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   .orbit-ring, .planet-anchor { animation: none !important; }
   .scroll-hint { animation: none !important; }
-}
-
-/* ========== Extended Morandi Palette (4 new topics) ========== */
-:root {
-  --morandi-slate:      #a4b2c4;
-  --morandi-slate-light: #d4dde8;
-  --morandi-slate-bg:    #eef2f7;
-  --morandi-plum:       #b8a4b8;
-  --morandi-plum-light:  #e4d6e4;
-  --morandi-plum-bg:     #f3ecf3;
-  --morandi-clay:       #c4a89a;
-  --morandi-clay-light:  #edd9cf;
-  --morandi-clay-bg:     #f7efe9;
-  --morandi-moss:       #aeb89a;
-  --morandi-moss-light:  #dde4cf;
-  --morandi-moss-bg:     #eef4e4;
-}
-
-/* New planet types */
-.planet-node.p-zw { background: radial-gradient(circle at 35% 30%, #ccd6e4, #a4b2c4 60%, #7a8aa0 100%); box-shadow: 0 4px 18px rgba(164,178,196,0.35); }
-.planet-node.p-dz { background: radial-gradient(circle at 35% 30%, #d4c8d4, #b8a4b8 60%, #8e7a8e 100%); box-shadow: 0 4px 18px rgba(184,164,184,0.35); }
-.planet-node.p-qt { background: radial-gradient(circle at 35% 30%, #dcc8bc, #c4a89a 60%, #9a7e6e 100%); box-shadow: 0 4px 18px rgba(196,168,154,0.35); }
-.planet-node.p-bj { background: radial-gradient(circle at 35% 30%, #c8d4b8, #aeb89a 60%, #84906e 100%); box-shadow: 0 4px 18px rgba(174,184,154,0.35); }
-
-/* New section icons */
-.si-zw  { background: var(--morandi-slate-bg); }
-.si-dz  { background: var(--morandi-plum-bg); }
-.si-qt  { background: var(--morandi-clay-bg); }
-.si-bj  { background: var(--morandi-moss-bg); }
-
-/* New card accent bars */
-.card-slate::before { background: var(--morandi-slate); }
-.card-plum::before  { background: var(--morandi-plum); }
-.card-clay::before  { background: var(--morandi-clay); }
-.card-moss::before  { background: var(--morandi-moss); }
-
-/* New legend colors */
-.ld-slate span:first-child { background: var(--morandi-slate); }
-.ld-plum span:first-child  { background: var(--morandi-plum); }
-.ld-clay span:first-child  { background: var(--morandi-clay); }
-.ld-moss span:first-child  { background: var(--morandi-moss); }
-
-/* ========== View Toggle Button ========== */
-#view-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 1.3rem;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  font-size: 0.85rem;
-  font-family: 'Inter', 'Noto Sans SC', sans-serif;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-  box-shadow: var(--shadow-sm);
-}
-#view-toggle:hover {
-  border-color: var(--border-focus);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-md);
-}
-
-/* ========== Grammar Web (Threading View) ========== */
-#grammar-web {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-#grammar-web.active {
-  display: flex;
-}
-
-.web-title {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-  color: var(--text-primary);
-  text-align: center;
-  margin-bottom: 0.3rem;
-}
-.web-subtitle {
-  font-weight: 300;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.web-svg-container {
-  width: min(90vw, 900px);
-  height: min(85vw, 850px);
-  position: relative;
-}
-.web-svg-container svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* SVG node styles */
-.web-node {
-  cursor: pointer;
-  transition: transform 0.25s ease, opacity 0.25s ease;
-}
-.web-node:hover {
-  transform: scale(1.15);
-}
-.web-node.dimmed {
-  opacity: 0.25;
-}
-.web-node.highlighted {
-  opacity: 1;
-}
-.web-link {
-  transition: opacity 0.25s ease;
-}
-.web-link.dimmed {
-  opacity: 0.08;
-}
-.web-link.highlighted {
-  opacity: 1;
-}
-
-/* Web legend */
-.web-legend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 1rem;
-  font-size: 0.78rem;
-  color: var(--text-muted);
-}
-.web-legend span {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-.web-legend .leg-line {
-  width: 24px;
-  height: 0;
-}
-.web-legend .leg-solid { border-top: 2px solid var(--text-muted); }
-.web-legend .leg-dashed { border-top: 2px dashed var(--text-muted); }
-
-@media (max-width: 768px) {
-  .web-svg-container { width: 95vw; height: 95vw; }
 }
 </style>
 </head>
@@ -1139,44 +904,11 @@ footer {
         </a>
       </div>
     </div>
-
-    <!-- Ring 5 — 主谓一致, 倒装强调 -->
-    <div class="orbit-ring r5">
-      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(0deg);">
-        <a href="#subject-verb" class="planet-node p-zw" title="主谓一致 / Subject-Verb Agreement">
-          <span class="p-label"><span class="zh">主谓一致</span><span class="en">S-V Agree</span></span>
-        </a>
-      </div>
-    </div>
-    <div class="orbit-ring r5">
-      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(180deg);">
-        <a href="#inversion" class="planet-node p-dz" title="倒装与强调 / Inversion & Emphasis">
-          <span class="p-label"><span class="zh">倒装强调</span><span class="en">Inversion</span></span>
-        </a>
-      </div>
-    </div>
-
-    <!-- Ring 6 — 情态动词, 比较结构 -->
-    <div class="orbit-ring r6">
-      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(60deg);">
-        <a href="#modal-verbs" class="planet-node p-qt" title="情态动词 / Modal Verbs">
-          <span class="p-label"><span class="zh">情态动词</span><span class="en">Modals</span></span>
-        </a>
-      </div>
-    </div>
-    <div class="orbit-ring r6">
-      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(240deg);">
-        <a href="#comparison" class="planet-node p-bj" title="比较结构 / Comparison">
-          <span class="p-label"><span class="zh">比较结构</span><span class="en">Comparison</span></span>
-        </a>
-      </div>
-    </div>
   </div>
 
   <div class="hero-title-wrap">
     <h1 class="hero-title">英语语法星系</h1>
     <p class="hero-subtitle">English Grammar Galaxy · 探索语言的宇宙</p>
-    <button id="view-toggle" style="margin-top:1rem;">🔗 语法网络</button>
   </div>
 
   <!-- Planet Legend -->
@@ -1185,10 +917,6 @@ footer {
     <div class="legend-dot ld-purple"><span></span><span>语态</span></div>
     <div class="legend-dot ld-green"><span></span><span>句型</span></div>
     <div class="legend-dot ld-rose"><span></span><span>非谓语</span></div>
-    <div class="legend-dot ld-slate"><span></span><span>主谓一致</span></div>
-    <div class="legend-dot ld-plum"><span></span><span>倒装强调</span></div>
-    <div class="legend-dot ld-clay"><span></span><span>情态动词</span></div>
-    <div class="legend-dot ld-moss"><span></span><span>比较结构</span></div>
   </div>
 
   <div class="scroll-hint">
@@ -1229,9 +957,6 @@ footer {
           <span class="example">✍️ The wind <em>howled</em> through the empty streets.</span>
           <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
           <span class="quote">"I <em>came</em>, I <em>saw</em>, I <em>conquered</em>."<span class="quote-source">— Julius Caesar (attrib.)</span></span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 短语动词（phrasal verbs）是专四词汇题的常客：put off（推迟）/ call off（取消）/ turn down（拒绝）/ carry out（执行）/ break down（故障；分解）/ come across（偶遇）/ get along with（相处）——注意同一动词 + 不同小品词的含义差异（give up 放弃 vs. give in 屈服 vs. give away 赠送/泄露）<br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 文学翻译中对动词的精准选择——避免通篇使用基础动词（do/make/get/go），根据语境选用更精确的同义词（conduct / perform / obtain / proceed / transform）</span>
         </div>
       </div>
 
@@ -1279,9 +1004,6 @@ footer {
           <span class="example">✍️ <em>Beyond</em> the hills, <em>across</em> the river, lies a hidden valley.</span>
           <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
           <span class="quote">"<em>In</em> the beginning God created the heaven and the earth."<span class="quote-source">— Genesis 1:1, King James Bible</span></span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 固定搭配是专四语法与词汇的常考项目：介词 + 名词（at risk / in danger / on purpose / by accident / out of date）、动词 + 介词（depend on / result in / account for / apply for / belong to）、形容词 + 介词（be aware of / be familiar with / be responsible for / be absent from）——这些搭配需要逐个记忆<br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 完形填空中的介词选择、翻译题中英文介词到中文动词的转换（"He walked into the room <em>with</em> a smile on his face" = 他面带微笑走进房间）</span>
         </div>
       </div>
 
@@ -1294,8 +1016,6 @@ footer {
           <span class="example">💼 <em>Neither</em> the CEO <em>nor</em> the CFO was available for comment.</span>
           <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
           <span class="quote">"<em>And</em> in the end, the love you take is equal to the love you make."<span class="quote-source">— Paul McCartney, The Beatles</span></span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag ielts">雅思 IELTS</span> <strong>Coherence and Cohesion</strong> 评分标准直接考查连接手段的使用。高分作文需要使用多样化的连词和连接副词：<em>however / furthermore / moreover / consequently / nevertheless / in contrast / on the other hand / as a result</em>。避免过度使用简单连词（and / but / so），尤其在段首</span>
         </div>
       </div>
 
@@ -1613,9 +1333,6 @@ footer {
           <span class="example">📝 <em>Because</em> the sample size was limited, further research <em>that</em> involves more participants is needed.</span>
           <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
           <span class="quote">"<em>When</em> you want something, all the universe conspires in helping you to achieve it."<span class="quote-source">— Paulo Coelho, The Alchemist</span></span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag ielts">雅思 IELTS</span> <strong>Writing Task 2 Band 7+ 的关键要求</strong>——使用多种复杂句式（a mix of simple and complex sentence forms）。建议在每段中使用：1 个复合句（主句+从句）+ 1 个并列句（FANBOYS）+ 1 个简单句（强调观点），形成节奏变化。不要全篇简单句或全篇复合句——<strong>多样性</strong>才是高分关键<br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 写作中避免流水句（run-on sentences）——两个独立分句之间不能只用逗号连接，需要用连词或分号</span>
         </div>
       </div>
 
@@ -1652,9 +1369,6 @@ footer {
           <strong>▸ 同位语从句：</strong><span class="example">The fact <em>that he lied</em> shocked everyone in the room.</span>
           <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
           <span class="quote">"It is a truth universally acknowledged, <em>that a single man in possession of a good fortune, must be in want of a wife</em>."<span class="quote-source">— Jane Austen, Pride and Prejudice (that-同位语从句)</span></span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 同位语从句 vs 定语从句的区分是专八改错和语法题的经典陷阱：同位语从句中 that 不作成分（只起连接作用），定语从句中 that/which 作主语或宾语。比较：The news <em>that he told me</em>（定语从句，that 作 told 的宾语）vs. The news <em>that he won the prize</em>（同位语从句，that 不作成分）<br>
-          <span class="exam-tag ielts">雅思 IELTS</span> 学术写作中使用 that 引导的同位语从句表达事实和观点："The fact <em>that</em>…" / "There is evidence <em>that</em>…" / "The assumption <em>that</em>…" 能有效提升学术正式度</span>
         </div>
       </div>
 
@@ -1864,254 +1578,7 @@ footer {
     </div>
   </section>
 
-  <!-- ===== 9. Subject-Verb Agreement 主谓一致 ===== -->
-  <section class="section" id="subject-verb">
-    <div class="section-header">
-      <div class="section-icon si-zw">⚖️</div>
-      <h2 class="section-title">主谓一致 <span class="en">Subject-Verb Agreement</span></h2>
-      <a href="#hero" class="back-link">← 返回星系</a>
-    </div>
-    <div class="card-grid">
-      <div class="card card-slate">
-        <h3>语法一致原则 <span class="card-en">Grammatical Concord</span></h3>
-        <div class="card-detail">
-          主语和谓语在<strong>数</strong>上保持一致。单数主语用单数动词，复数主语用复数动词。
-          <span class="example">🗣️ The cat <em>sleeps</em> on the sofa. / The cats <em>sleep</em> on the sofa.</span>
-          <span class="example">📝 The result <em>indicates</em> a trend. / The results <em>indicate</em> a trend.</span>
-          <span class="example">✍️ Every man and every woman <em>has</em> the right to dream. (each + 单数)</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 不定代词作主语：everyone / someone / nobody / each / either / neither → <strong>单数动词</strong>；both / few / many / several → 复数动词</span>
-        </div>
-      </div>
-      <div class="card card-slate">
-        <h3>意义一致原则 <span class="card-en">Notional Concord</span></h3>
-        <div class="card-detail">
-          根据主语表达的<strong>实际意义</strong>而非形式来决定动词的数。
-          <span class="example">🗣️ The team <em>are</em> divided on this issue. (成员们意见不一 → 复数)</span>
-          <span class="example">🗣️ The team <em>is</em> the best in the league. (整体 → 单数)</span>
-          <span class="example">📝 The police <em>have</em> arrived. / The news <em>is</em> shocking.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 集合名词：family / committee / audience / government / crew → 强调整体用单数，强调个体用复数。形式复数意义单数：news / physics / politics / mathematics → <strong>单数动词</strong></span>
-        </div>
-      </div>
-      <div class="card card-slate">
-        <h3>就近原则 <span class="card-en">Proximity</span></h3>
-        <div class="card-detail">
-          动词的数与<strong>最近的主语</strong>保持一致。
-          <span class="tag">either…or</span><span class="tag">neither…nor</span><span class="tag">not only…but also</span><span class="tag">there be</span>
-          <span class="example">🗣️ Neither the students nor the teacher <em>was</em> present.</span>
-          <span class="example">🗣️ Either you or I <em>am</em> going to do it. (谓语与 I 一致)</span>
-          <span class="example">💼 There <em>is</em> a book and two pens on the desk. (靠近的是 a book)</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 改错题高频：not only…but also / or / nor 连接的主语，动词与最近的主语一致。Along with / together with / as well as / besides 连接的部分<strong>不影响</strong>主语的数</span>
-        </div>
-      </div>
-      <div class="card card-slate">
-        <h3>特殊结构中的主谓一致 <span class="card-en">Special Cases</span></h3>
-        <div class="card-detail">
-          <span class="tag">数量短语</span> a number of + 复数名词 → 复数动词；the number of → 单数<br>
-          <span class="tag">分数/百分比</span> 取决于 of 后的名词<br>
-          <span class="tag">定语从句</span> 关系代词作主语时，动词与先行词一致
-          <span class="example">📝 A number of students <em>have</em> applied. / The number of applicants <em>is</em> rising.</span>
-          <span class="example">📝 70% of the water <em>is</em> polluted. / 70% of the students <em>are</em> present.</span>
-          <span class="example">🗣️ He is one of the students who <em>have</em> passed. (先行词是 students)</span>
-          <div class="scenario-tags"><span class="s-tag">📝 学术</span><span class="s-tag">🗣️ 日常</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== 10. Inversion & Emphasis 倒装与强调 ===== -->
-  <section class="section" id="inversion">
-    <div class="section-header">
-      <div class="section-icon si-dz">🪞</div>
-      <h2 class="section-title">倒装与强调 <span class="en">Inversion & Emphasis</span></h2>
-      <a href="#hero" class="back-link">← 返回星系</a>
-    </div>
-    <div class="card-grid">
-      <div class="card card-plum">
-        <h3>完全倒装 <span class="card-en">Full Inversion</span></h3>
-        <div class="card-detail">
-          整个谓语置于主语之前。常用于地点状语开头、here/there 开头。
-          <span class="example">🗣️ Here <em>comes the bus</em>! / There <em>goes</em> my last dollar.</span>
-          <span class="example">✍️ On the hill <em>stood</em> an ancient castle. / In the distance <em>lay</em> a vast desert.</span>
-          <span class="example">📝 In the center of the room <em>was placed</em> a large table.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
-          <span class="quote">"Here <em>comes</em> the sun, and I say it's all right."<span class="quote-source">— George Harrison, The Beatles</span></span>
-        </div>
-      </div>
-      <div class="card card-plum">
-        <h3>部分倒装 <span class="card-en">Partial Inversion</span></h3>
-        <div class="card-detail">
-          将<strong>助动词/情态动词</strong>提到主语之前。否定词/only 等位于句首时触发。
-          <span class="tag">Never</span><span class="tag">Seldom</span><span class="tag">Not until</span><span class="tag">Only then</span><span class="tag">So…that</span>
-          <span class="example">🗣️ Never <em>have I seen</em> such a beautiful sunset!</span>
-          <span class="example">📝 Not until the 20th century <em>did</em> scientists <em>discover</em> the structure of DNA.</span>
-          <span class="example">💼 Only by working together <em>can we achieve</em> our goals.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 倒装句是专八改错和翻译的<strong>核心考点</strong>。否定副词位于句首必须倒装：Never / Seldom / Rarely / Hardly…when / No sooner…than / Not only…but also / Under no circumstances / In no way</span>
-        </div>
-      </div>
-      <div class="card card-plum">
-        <h3>强调句 <span class="card-en">Cleft Sentences</span></h3>
-        <div class="card-detail">
-          <strong>It is/was…that…</strong> 框架，强调除谓语外的任何成分。
-          <span class="example">🗣️ It <em>was Tom</em> that/who broke the window. (强调主语)</span>
-          <span class="example">🗣️ It <em>was yesterday</em> that I met her. (强调时间状语)</span>
-          <span class="example">📝 It <em>is through practice</em> that one masters a language.</span>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem8">专八 TEM-8</span> 强调句 vs 主语从句的区分：去掉 It is/was…that 后句子依然完整 → 强调句；不完整 → 主语从句。强调谓语用 do/does/did + 动词原形："I <em>do believe</em> you."</span>
-        </div>
-      </div>
-      <div class="card card-plum">
-        <h3>as / though 倒装 <span class="card-en">As/Though Inversion</span></h3>
-        <div class="card-detail">
-          表语或状语提前到 as/though 之前，表示让步。
-          <span class="example">✍️ <em>Tired as he was</em>, he continued working. = Although he was tired…</span>
-          <span class="example">✍️ <em>Try as he might</em>, he could not open the door. = No matter how hard he tried…</span>
-          <span class="example">🗣️ <em>Much as I like</em> the plan, I can't approve it now.</span>
-          <div class="scenario-tags"><span class="s-tag">✍️ 文学</span><span class="s-tag">🗣️ 日常</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem8">专八 TEM-8</span> as 倒装让步状语从句是专八翻译和改错的高频难点：名词/形容词/副词/动词原形 + as + 主语 + 谓语 = Although…</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== 11. Modal Verbs 情态动词 ===== -->
-  <section class="section" id="modal-verbs">
-    <div class="section-header">
-      <div class="section-icon si-qt">🔑</div>
-      <h2 class="section-title">情态动词 <span class="en">Modal Verbs</span></h2>
-      <a href="#hero" class="back-link">← 返回星系</a>
-    </div>
-    <div class="card-grid">
-      <div class="card card-clay">
-        <h3>能力与许可 <span class="card-en">Ability & Permission</span></h3>
-        <div class="card-detail">
-          <span class="tag">can/could</span><span class="tag">may/might</span><span class="tag">be able to</span>
-          <span class="example">🗣️ I <em>can</em> swim. (现在能力) / I <em>could</em> swim when I was five. (过去能力)</span>
-          <span class="example">🗣️ <em>May</em> I come in? — Yes, you <em>may</em>. (正式许可)</span>
-          <span class="example">💼 Visitors <em>may not</em> enter the lab without authorization.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
-        </div>
-      </div>
-      <div class="card card-clay">
-        <h3>义务与必要 <span class="card-en">Obligation & Necessity</span></h3>
-        <div class="card-detail">
-          <span class="tag">must</span><span class="tag">have to</span><span class="tag">should/ought to</span><span class="tag">need</span>
-          <span class="example">🗣️ You <em>must</em> wear a seatbelt. (主观强制) / I <em>have to</em> go now. (客观需要)</span>
-          <span class="example">🗣️ You <em>should</em> see a doctor. (建议) / You <em>needn't</em> rush. (不必)</span>
-          <span class="example">📝 Scholars <em>must</em> cite their sources. (学术义务)</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-        </div>
-      </div>
-      <div class="card card-clay">
-        <h3>推测与可能性 <span class="card-en">Speculation & Probability</span></h3>
-        <div class="card-detail">
-          情态动词表示不同程度的推测（从高到低）：
-          <span class="tag">must be</span> 几乎确定 (95%)
-          <span class="tag">should be</span> 很可能 (70%)
-          <span class="tag">may/might/could be</span> 可能 (30-50%)
-          <span class="tag">can't be</span> 不可能 (0%)
-          <span class="example">🗣️ He <em>must be</em> at home — the lights are on. (肯定在家)</span>
-          <span class="example">🗣️ She <em>may have missed</em> the bus. That's why she's late. (可能错过了)</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span></div>
-        </div>
-      </div>
-      <div class="card card-clay">
-        <h3>情态动词 + 完成时 <span class="card-en">Modal + Perfect</span></h3>
-        <div class="card-detail">
-          对过去情况的推测或评论：
-          <span class="tag">must have done</span> 一定做过<br>
-          <span class="tag">could have done</span> 本可以做（但没做）<br>
-          <span class="tag">should have done</span> 本应该做（但没做）<br>
-          <span class="tag">needn't have done</span> 本不必做（但做了）
-          <span class="example">🗣️ You <em>should have told</em> me earlier! Now it's too late.</span>
-          <span class="example">🗣️ He <em>must have forgotten</em> — he's never this late.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> 情态动词 + have done 是专四语法选择题的必考点。特别注意 need have done 只用于否定和疑问句。didn't need to do (不必做且没做) vs. needn't have done (不必做但做了)</span>
-        </div>
-      </div>
-      <div class="card card-clay">
-        <h3>半情态动词 <span class="card-en">Semi-Modals</span></h3>
-        <div class="card-detail">
-          <span class="tag">used to</span> 过去常常（现在不了）<br>
-          <span class="tag">be supposed to</span> 按理应该<br>
-          <span class="tag">had better</span> 最好（带警告意味）<br>
-          <span class="tag">would rather</span> 宁愿
-          <span class="example">🗣️ I <em>used to</em> smoke. (现在戒了) / You <em>had better</em> not be late!</span>
-          <span class="example">✍️ We <em>would rather</em> die than surrender.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== 12. Comparison Structures 比较结构 ===== -->
-  <section class="section" id="comparison">
-    <div class="section-header">
-      <div class="section-icon si-bj">📊</div>
-      <h2 class="section-title">比较结构 <span class="en">Comparison Structures</span></h2>
-      <a href="#hero" class="back-link">← 返回星系</a>
-    </div>
-    <div class="card-grid">
-      <div class="card card-moss">
-        <h3>原级比较 <span class="card-en">Positive Degree</span></h3>
-        <div class="card-detail">
-          <span class="tag">as + 原级 + as</span> 和…一样<br>
-          <span class="tag">not as/so + 原级 + as</span> 不如…
-          <span class="example">🗣️ She is <em>as tall as</em> her sister. / This isn't <em>as hard as</em> I thought.</span>
-          <span class="example">📝 The results were <em>not as significant as</em> hypothesized.</span>
-          <span class="example">💼 Our product is <em>as competitive as</em> any on the market.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
-        </div>
-      </div>
-      <div class="card card-moss">
-        <h3>比较级 <span class="card-en">Comparative Degree</span></h3>
-        <div class="card-detail">
-          <span class="tag">-er + than</span> / <span class="tag">more + 原级 + than</span><br>
-          <strong>越…越…：</strong><span class="tag">the + 比较级, the + 比较级</span>
-          <span class="example">🗣️ This book is <em>better than</em> that one. / It's getting <em>colder and colder</em>.</span>
-          <span class="example">📝 <em>The more</em> you practice, <em>the better</em> you become.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag ielts">雅思 IELTS</span> Writing Task 1 必备句型：the + 比较级, the + 比较级 用于描述趋势关系。"<em>The higher</em> the income, <em>the greater</em> the spending on leisure."</span>
-        </div>
-      </div>
-      <div class="card card-moss">
-        <h3>最高级 <span class="card-en">Superlative Degree</span></h3>
-        <div class="card-detail">
-          <span class="tag">the + -est</span> / <span class="tag">the most + 原级</span> + 比较范围
-          <span class="example">🗣️ She is <em>the smartest</em> student in the class.</span>
-          <span class="example">📝 This is <em>the most comprehensive study</em> ever conducted on the topic.</span>
-          <span class="example">✍️ It was <em>the best</em> of times, it was <em>the worst</em> of times.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-        </div>
-      </div>
-      <div class="card card-moss">
-        <h3>特殊比较结构 <span class="card-en">Special Patterns</span></h3>
-        <div class="card-detail">
-          <span class="tag">no more than</span> 仅仅，不过<br>
-          <span class="tag">no less than</span> 多达<br>
-          <span class="tag">more A than B</span> 与其说 B，不如说 A<br>
-          <span class="tag">not so much A as B</span> 与其说 A，不如说 B
-          <span class="example">🗣️ He is <em>more lucky than</em> clever. (与其说他聪明，不如说他运气好)</span>
-          <span class="example">📝 The success was <em>not so much</em> due to talent <em>as</em> to hard work.</span>
-          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
-          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
-          <span class="exam-tag tem4">专四 TEM-4</span> no more than / no less than / more…than… 的转义用法是词汇题的陷阱。注意比较对象要对等：His salary is higher <em>than mine</em> (≠ than me)</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== Timeline Summary (updated) ===== -->
+  <!-- ===== Timeline Summary ===== -->
   <section class="section" id="summary">
     <div class="section-header">
       <div class="section-icon" style="background: var(--bg-secondary);">🌟</div>
@@ -2127,46 +1594,24 @@ footer {
       <div class="cat-chip">⑥ 从句 → 丰富表达的「层次」</div>
       <div class="cat-chip">⑦ 语气 → 传递态度的「温度」</div>
       <div class="cat-chip">⑧ 非谓语 → 精简句式的「艺术」</div>
-      <div class="cat-chip">⑨ 主谓一致 → 确保句子的「正确」</div>
-      <div class="cat-chip">⑩ 倒装强调 → 打造句式的「亮点」</div>
-      <div class="cat-chip">⑪ 情态动词 → 表达语气的「钥匙」</div>
-      <div class="cat-chip">⑫ 比较结构 → 丈量世界的「尺度」</div>
     </div>
   </section>
 
 </div>
 
-<!-- ==================== Grammar Web / Threading View ==================== -->
-<section id="grammar-web">
-  <h2 class="web-title">语法网络 · 穿针引线</h2>
-  <p class="web-subtitle">每一个语法点都不是孤岛——点击节点探索 · Hover 查看关联</p>
-  <div class="web-svg-container">
-    <svg viewBox="0 0 1000 1000" id="web-svg"></svg>
+<!-- ==================== QR Code Section ==================== -->
+<section class="qr-section">
+  <div class="qr-card">
+    <img
+      src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=fdfcf9&color=3b3733&data=https://github.com/topics/english-grammar"
+      alt="English Grammar QR Code"
+      width="200" height="200"
+      loading="lazy"
+      onerror="this.onerror=null; this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23fdfcf9%22/><text x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23a09890%22 font-size=%2214%22 font-family=%22sans-serif%22>Scan for Grammar</text></svg>');"
+    >
+    <p class="qr-label">📱 扫描二维码 · 探索更多语法资源</p>
   </div>
-  <div class="web-legend">
-    <span><span class="leg-line leg-solid"></span> 构成/承载关系</span>
-    <span><span class="leg-line leg-dashed"></span> 转换/衍生关系</span>
-  </div>
-  <button id="web-back-btn" style="margin-top:1.5rem; display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.3rem;border:1px solid var(--border);border-radius:100px;background:var(--card-bg);color:var(--text-secondary);font-size:0.85rem;cursor:pointer;transition:all 0.25s ease;box-shadow:var(--shadow-sm);">🌌 返回星系</button>
 </section>
-
-<!-- ==================== Floating QR Button ==================== -->
-<button id="qr-float-btn" aria-label="扫码浏览">
-  📱
-  <span class="tooltip">扫码在手机上打开</span>
-</button>
-
-<div id="qr-popup">
-  <button id="qr-popup-close" aria-label="关闭">✕</button>
-  <img
-    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=fdfcf9&color=3b3733&data=https://unbeatablely.github.io/english-grammar-galaxy/"
-    alt="扫描二维码在手机上打开英语语法星系"
-    width="200" height="200"
-    loading="lazy"
-    onerror="this.onerror=null; this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23fdfcf9%22/><text x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23a09890%22 font-size=%2214%22 font-family=%22sans-serif%22>Scan Me</text></svg>');"
-  >
-  <p>📱 扫描二维码在手机上浏览</p>
-</div>
 
 <footer>
   <p>English Grammar Galaxy · 知识的宇宙，无限探索 · Morandi Edition ✨</p>
@@ -2262,48 +1707,24 @@ footer {
     });
   });
 
-  // ======= 6. Floating QR Popup =======
-  const qrFloatBtn = document.getElementById('qr-float-btn');
-  const qrPopup = document.getElementById('qr-popup');
-  const qrPopupClose = document.getElementById('qr-popup-close');
-
-  qrFloatBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    qrPopup.classList.toggle('visible');
-  });
-
-  qrPopupClose.addEventListener('click', function(e) {
-    e.stopPropagation();
-    qrPopup.classList.remove('visible');
-  });
-
-  // Click anywhere else → close QR popup
-  document.addEventListener('click', function(e) {
-    if (qrPopup.classList.contains('visible') && !qrPopup.contains(e.target) && e.target !== qrFloatBtn) {
-      qrPopup.classList.remove('visible');
-    }
-  });
-
-  // ======= 7. Card Expansion Modal =======
+  // ======= 6. Card Expansion Modal =======
   const modalOverlay = document.getElementById('card-modal-overlay');
   const modalContent = document.getElementById('card-modal-content');
   const modalClose = document.getElementById('card-modal-close');
   let scrollPosition = 0;
-  let modalOpen = false;
 
   function openModal(card) {
-    if (modalOpen) return;
-    modalOpen = true;
-
-    // Lock body scroll (overflow:hidden — smoother than position:fixed)
+    // Lock body scroll
     scrollPosition = window.scrollY;
-    document.body.style.overflow = 'hidden';
-    document.body.style.paddingRight = 'var(--scrollbar-width, 0px)';
+    document.body.style.position = 'fixed';
+    document.body.style.top = '-' + scrollPosition + 'px';
+    document.body.style.width = '100%';
 
     // Clone card content into modal
     const title = card.querySelector('h3')?.innerHTML || '';
     const cardEn = card.querySelector('.card-en')?.innerHTML || '';
     const detail = card.querySelector('.card-detail')?.innerHTML || '';
+    // Get accent color class from card
     let accentClass = '';
     const cardClasses = card.className.split(' ');
     for (const cls of cardClasses) {
@@ -2313,42 +1734,35 @@ footer {
     modalContent.innerHTML = ''
       + '<h3>' + title + '</h3>'
       + '<span class="modal-en">' + cardEn + '</span>'
-      + '<div class="modal-body ' + accentClass + '">' + detail + '</div>';
+      + '<div class="modal-body ' + accentClass + '" style="--accent: var(--morandi-blue)">' + detail + '</div>';
 
-    // Show modal (small delay ensures DOM update before transition)
-    requestAnimationFrame(() => {
-      modalOverlay.classList.add('active');
-    });
+    modalOverlay.classList.add('active');
   }
 
   function closeModal() {
-    if (!modalOpen) return;
     modalOverlay.classList.remove('active');
-    modalOpen = false;
-
     // Restore body scroll
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
     window.scrollTo(0, scrollPosition);
   }
 
-  // Click card → open modal (stopPropagation prevents any bubble issues)
+  // Click card → open modal
   document.querySelectorAll('.card').forEach(card => {
     card.style.cursor = 'pointer';
     card.addEventListener('click', function(e) {
+      // Don't open modal if user clicked a link or the card itself was interacted with
       if (e.target.closest('a')) return;
-      e.stopPropagation();
+      // Don't intercept clicks on tags (they may want to just read)
       openModal(this);
     });
   });
 
   // Close button
-  modalClose.addEventListener('click', function(e) {
-    e.stopPropagation();
-    closeModal();
-  });
+  modalClose.addEventListener('click', closeModal);
 
-  // Click overlay background → close (with guard)
+  // Click overlay background → close
   modalOverlay.addEventListener('click', function(e) {
     if (e.target === modalOverlay) closeModal();
   });
@@ -2359,341 +1773,6 @@ footer {
       closeModal();
     }
   });
-
-  // ======= 8. View Toggle: Galaxy ↔ Grammar Web =======
-  const viewToggle = document.getElementById('view-toggle');
-  const grammarWeb = document.getElementById('grammar-web');
-  const hero = document.getElementById('hero');
-  const contentWrapper = document.querySelector('.content-wrapper');
-  const webBackBtn = document.getElementById('web-back-btn');
-
-  function showGrammarWeb() {
-    hero.style.display = 'none';
-    contentWrapper.style.display = 'none';
-    grammarWeb.classList.add('active');
-    backBtn.classList.remove('visible');
-    window.scrollTo(0, 0);
-    renderGrammarWeb();
-  }
-
-  function showGalaxy() {
-    grammarWeb.classList.remove('active');
-    hero.style.display = '';
-    contentWrapper.style.display = '';
-    window.scrollTo(0, 0);
-  }
-
-  viewToggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    showGrammarWeb();
-  });
-
-  webBackBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    showGalaxy();
-  });
-
-  // ======= 9. Grammar Web SVG Rendering =======
-  let webRendered = false;
-
-  function renderGrammarWeb() {
-    if (webRendered) return;
-    webRendered = true;
-
-    const svg = document.getElementById('web-svg');
-    const NS = 'http://www.w3.org/2000/svg';
-
-    // Helper to create SVG elements
-    function el(tag, attrs) {
-      const e = document.createElementNS(NS, tag);
-      for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-      return e;
-    }
-
-    // Node data: { id, label, en, color, href }
-    const nodes = [
-      { id:'pos',     label:'词性',        en:'Parts of Speech',   color:'#a3b5c9', href:'#parts-of-speech' },
-      { id:'tense',   label:'时态',        en:'Tenses',            color:'#c9bd9f', href:'#tenses' },
-      { id:'voice',   label:'语态',        en:'Voice',             color:'#b8aec8', href:'#voice' },
-      { id:'mood',    label:'语气',        en:'Mood',              color:'#c8aa9f', href:'#mood' },
-      { id:'sent',    label:'句型',        en:'Sentence Types',    color:'#b0bfa4', href:'#sentence-types' },
-      { id:'clause',  label:'从句',        en:'Clauses',           color:'#a3b8b2', href:'#clauses' },
-      { id:'nonfin',  label:'非谓语',      en:'Non-finite Verbs',  color:'#c4aeb8', href:'#non-finite' },
-      { id:'elem',    label:'句子成分',    en:'S. Elements',       color:'#cfbfa8', href:'#sentence-elements' },
-      { id:'sv',      label:'主谓一致',    en:'S-V Agreement',     color:'#a4b2c4', href:'#subject-verb' },
-      { id:'inv',     label:'倒装强调',    en:'Inversion',         color:'#b8a4b8', href:'#inversion' },
-      { id:'modal',   label:'情态动词',    en:'Modal Verbs',       color:'#c4a89a', href:'#modal-verbs' },
-      { id:'comp',    label:'比较结构',    en:'Comparison',        color:'#aeb89a', href:'#comparison' }
-    ];
-
-    const cx = 500, cy = 500;
-    const outerR = 380, innerR = 200;
-    const nodeR = 38;
-
-    // Compute outer node positions (12 nodes, 30° apart, starting from top)
-    const positions = nodes.map((n, i) => {
-      const angle = (i * 30 - 90) * Math.PI / 180;
-      return {
-        ...n,
-        x: cx + outerR * Math.cos(angle),
-        y: cy + outerR * Math.sin(angle)
-      };
-    });
-
-    // Link data: { from, to, type, label }
-    // type: 'solid' = 构成/承载, 'dashed' = 转换/衍生
-    const links = [
-      // 词性 → 句子成分 (词在句中扮演角色)
-      { from:'pos',  to:'elem',   type:'solid', label:'充当' },
-      // 动词 → 时态/语态/语气 (动词承载)
-      { from:'pos',  to:'tense',  type:'solid', label:'承载' },
-      { from:'pos',  to:'voice',  type:'solid', label:'承载' },
-      { from:'pos',  to:'mood',   type:'solid', label:'承载' },
-      { from:'pos',  to:'modal',  type:'solid', label:'承载' },
-      // 时态/语态 → 非谓语 (剥离)
-      { from:'tense', to:'nonfin', type:'dashed', label:'剥离' },
-      { from:'voice', to:'nonfin', type:'dashed', label:'剥离' },
-      // 主动 ↔ 被动
-      { from:'voice', to:'voice',  type:'dashed', label:'主↔被' },
-      // 从句 → 句型
-      { from:'clause',to:'sent',   type:'solid', label:'组成' },
-      // 句子成分 → 从句 (从句作成分)
-      { from:'elem',  to:'clause', type:'dashed', label:'可作' },
-      // 语气 + 时态 → 虚拟语气
-      { from:'mood',  to:'tense',  type:'dashed', label:'依赖' },
-      // 非谓语 + 句子成分 → 独立主格
-      { from:'nonfin',to:'elem',   type:'dashed', label:'高级用法' },
-      // 倒装 ↔ 句型
-      { from:'inv',   to:'sent',   type:'solid', label:'变体' },
-      // 倒装 ↔ 强调
-      { from:'inv',   to:'inv',    type:'dashed', label:'强调手段' },
-      // 情态动词 ↔ 语气
-      { from:'modal', to:'mood',   type:'solid', label:'表达' },
-      // 比较结构 ↔ 句型 (比较状语从句)
-      { from:'comp',  to:'clause', type:'solid', label:'状语从句' },
-      // 主谓一致 ↔ 句子成分
-      { from:'sv',    to:'elem',   type:'solid', label:'约束' },
-      // 主谓一致 ↔ 动词
-      { from:'sv',    to:'pos',    type:'solid', label:'制约' }
-    ];
-
-    // Build a defs section for gradients and markers
-    const defs = el('defs', {});
-    // Arrow marker for dashed lines
-    const marker = el('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'8', refY:'5', markerWidth:'6', markerHeight:'6', orient:'auto' });
-    marker.appendChild(el('path', { d:'M0,0 L10,5 L0,10 Z', fill:'#a09890' }));
-    defs.appendChild(marker);
-    svg.appendChild(defs);
-
-    // Group for links
-    const linkGroup = el('g', {});
-    links.forEach((l, i) => {
-      const fromPos = positions.find(p => p.id === l.from);
-      const toPos = positions.find(p => p.id === l.to);
-      if (!fromPos || !toPos) return;
-
-      let x1 = fromPos.x, y1 = fromPos.y, x2 = toPos.x, y2 = toPos.y;
-
-      // Self-loop (voice ↔ voice, inv ↔ inv)
-      if (l.from === l.to) {
-        // Draw a small arc/loop
-        const loopR = 50;
-        const path = el('path', {
-          d: 'M' + (x1 + nodeR) + ',' + (y1 - 15) + ' C' + (x1 + loopR) + ',' + (y1 - loopR) + ' ' + (x1 + loopR) + ',' + (y1 + loopR) + ' ' + (x1 + nodeR) + ',' + (y1 + 15),
-          stroke: '#a09890',
-          'stroke-width': l.type === 'solid' ? '2' : '1.5',
-          'stroke-dasharray': l.type === 'dashed' ? '6,4' : 'none',
-          fill: 'none',
-          class: 'web-link'
-        });
-        path.dataset.linkId = i;
-        linkGroup.appendChild(path);
-        return;
-      }
-
-      // Trim lines to not overlap with nodes
-      const dx = x2 - x1, dy = y2 - y1;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const trimX = (dx / dist) * nodeR;
-      const trimY = (dy / dist) * nodeR;
-      x1 += trimX; y1 += trimY;
-      x2 -= trimX; y2 -= trimY;
-
-      const line = el('line', {
-        x1, y1, x2, y2,
-        stroke: '#a09890',
-        'stroke-width': l.type === 'solid' ? '2' : '1.5',
-        'stroke-dasharray': l.type === 'dashed' ? '6,4' : 'none',
-        'marker-end': l.type === 'dashed' ? 'url(#arrow)' : '',
-        class: 'web-link'
-      });
-      line.dataset.linkId = i;
-      line.dataset.from = l.from;
-      line.dataset.to = l.to;
-      line.dataset.label = l.label;
-
-      // Small label at midpoint
-      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-      const text = el('text', {
-        x: mx, y: my - 6,
-        'text-anchor': 'middle',
-        'font-size': '10',
-        'font-family': 'Inter, Noto Sans SC, sans-serif',
-        fill: '#a09890',
-        class: 'web-link-label',
-        'pointer-events': 'none'
-      });
-      text.textContent = l.label;
-      text.dataset.linkId = i;
-
-      linkGroup.appendChild(line);
-      linkGroup.appendChild(text);
-    });
-    svg.appendChild(linkGroup);
-
-    // Group for inner connections (from center to each node)
-    const innerGroup = el('g', {});
-    positions.forEach(p => {
-      const dx = p.x - cx, dy = p.y - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const startX = cx + (dx / dist) * 55; // Center node radius ~55
-      const startY = cy + (dy / dist) * 55;
-      const endX = p.x - (dx / dist) * nodeR;
-      const endY = p.y - (dy / dist) * nodeR;
-      const line = el('line', {
-        x1: startX, y1: startY, x2: endX, y2: endY,
-        stroke: p.color,
-        'stroke-width': '2',
-        'stroke-opacity': '0.3',
-        class: 'web-link inner-link'
-      });
-      line.dataset.nodeId = p.id;
-      innerGroup.appendChild(line);
-    });
-    svg.appendChild(innerGroup);
-
-    // Center node
-    const centerG = el('g', { class: 'web-node', style: 'cursor:default' });
-    centerG.appendChild(el('circle', {
-      cx, cy, r: 55,
-      fill: '#fdfcf9',
-      stroke: '#d5cec5',
-      'stroke-width': '2'
-    }));
-    const centerText = el('text', {
-      x: cx, y: cy - 7,
-      'text-anchor': 'middle',
-      'font-size': '15',
-      'font-weight': '700',
-      'font-family': '"Cormorant Garamond", "Noto Serif SC", serif',
-      fill: '#3b3733'
-    });
-    centerText.textContent = '英语语法';
-    centerG.appendChild(centerText);
-    const centerSub = el('text', {
-      x: cx, y: cy + 14,
-      'text-anchor': 'middle',
-      'font-size': '10',
-      'font-family': 'Inter, sans-serif',
-      fill: '#7a746e',
-      'font-style': 'italic'
-    });
-    centerSub.textContent = 'Grammar';
-    centerG.appendChild(centerSub);
-    svg.appendChild(centerG);
-
-    // Outer nodes
-    positions.forEach(p => {
-      const g = el('g', { class: 'web-node', style: 'cursor:pointer' });
-      g.dataset.nodeId = p.id;
-      g.dataset.href = p.href;
-
-      // Shadow circle
-      g.appendChild(el('circle', {
-        cx: p.x, cy: p.y, r: nodeR + 4,
-        fill: 'rgba(59,55,51,0.06)'
-      }));
-      // Main circle
-      g.appendChild(el('circle', {
-        cx: p.x, cy: p.y, r: nodeR,
-        fill: '#fdfcf9',
-        stroke: p.color,
-        'stroke-width': '2.5'
-      }));
-      // Label
-      const label = el('text', {
-        x: p.x, y: p.y - 4,
-        'text-anchor': 'middle',
-        'font-size': '13',
-        'font-weight': '600',
-        'font-family': '"Noto Serif SC", "Inter", sans-serif',
-        fill: '#3b3733'
-      });
-      label.textContent = p.label;
-      g.appendChild(label);
-      // EN label
-      const enLabel = el('text', {
-        x: p.x, y: p.y + 14,
-        'text-anchor': 'middle',
-        'font-size': '8',
-        'font-family': 'Inter, sans-serif',
-        fill: '#a09890',
-        'font-style': 'italic'
-      });
-      enLabel.textContent = p.en.length > 15 ? p.en.substring(0,15) : p.en;
-      g.appendChild(enLabel);
-
-      // Click → navigate
-      g.addEventListener('click', function() {
-        showGalaxy();
-        setTimeout(() => {
-          const target = document.querySelector(p.href);
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
-        }, 300);
-      });
-
-      // Hover → highlight connected nodes and links
-      g.addEventListener('mouseenter', function() {
-        const nid = p.id;
-        // Dim all nodes and links
-        svg.querySelectorAll('.web-node').forEach(n => n.classList.add('dimmed'));
-        svg.querySelectorAll('.web-link').forEach(l => l.classList.add('dimmed'));
-        svg.querySelectorAll('.web-link-label').forEach(l => l.style.opacity = '0.1');
-        // Highlight this node
-        g.classList.remove('dimmed');
-        g.classList.add('highlighted');
-        centerG.classList.remove('dimmed');
-        // Highlight connected links and their target nodes
-        svg.querySelectorAll('.web-link').forEach(l => {
-          if (l.dataset.from === nid || l.dataset.to === nid || l.dataset.nodeId === nid) {
-            l.classList.remove('dimmed');
-            l.classList.add('highlighted');
-            l.setAttribute('stroke-width', '3');
-          }
-        });
-        svg.querySelectorAll('.web-link-label').forEach(l => {
-          if (l.dataset.linkId && svg.querySelector('.web-link[data-link-id="' + l.dataset.linkId + '"]:not(.dimmed)')) {
-            l.style.opacity = '1';
-          }
-        });
-        // Highlight connected nodes
-        svg.querySelectorAll('.web-node').forEach(n => {
-          links.forEach(lk => {
-            if (lk.from === nid && lk.to === n.dataset.nodeId) { n.classList.remove('dimmed'); n.classList.add('highlighted'); }
-            if (lk.to === nid && lk.from === n.dataset.nodeId) { n.classList.remove('dimmed'); n.classList.add('highlighted'); }
-          });
-        });
-      });
-
-      g.addEventListener('mouseleave', function() {
-        svg.querySelectorAll('.web-node').forEach(n => { n.classList.remove('dimmed','highlighted'); });
-        svg.querySelectorAll('.web-link').forEach(l => { l.classList.remove('dimmed','highlighted'); l.setAttribute('stroke-width', l.dataset.nodeId ? '2' : (l.getAttribute('stroke-dasharray') === '6,4' ? '1.5' : '2')); });
-        svg.querySelectorAll('.web-link-label').forEach(l => l.style.opacity = '');
-      });
-
-      svg.appendChild(g);
-    });
-  }
 
 })();
 </script>
