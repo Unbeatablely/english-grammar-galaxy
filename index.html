@@ -771,33 +771,106 @@ body {
 .ld-rose span:first-child   { background: var(--morandi-mauve); }
 .ld-amber span:first-child  { background: var(--morandi-sand); }
 
-/* ========== QR Section ========== */
-.qr-section {
-  text-align: center;
-  padding: 4rem 2rem 2rem;
-  position: relative;
-  z-index: 1;
+/* ========== Floating QR Button & Popup ========== */
+#qr-float-btn {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.25s ease;
 }
-.qr-card {
-  display: inline-block;
+#qr-float-btn:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+  color: var(--text-primary);
+}
+#qr-float-btn .tooltip {
+  position: absolute;
+  left: 56px;
+  background: var(--text-primary);
+  color: #fdfcf9;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#qr-float-btn:hover .tooltip { opacity: 1; }
+
+#qr-popup {
+  position: fixed;
+  bottom: 6rem;
+  left: 2rem;
+  z-index: 1001;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--shadow-sm);
+  padding: 1.5rem 1.5rem 1.2rem;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) scale(0.95);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
 }
-.qr-card img {
+#qr-popup.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+#qr-popup img {
   display: block;
   width: 160px;
   height: 160px;
   border-radius: 8px;
+  margin: 0 auto;
 }
-.qr-card .qr-label {
-  margin-top: 1rem;
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text-secondary);
+#qr-popup p {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+}
+#qr-popup-close {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+#qr-popup-close:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  #qr-float-btn { bottom: 1.2rem; left: 1.2rem; width: 42px; height: 42px; }
+  #qr-popup { bottom: 5rem; left: 1.2rem; }
 }
 
 /* ========== Footer ========== */
@@ -1615,19 +1688,23 @@ footer {
 
 </div>
 
-<!-- ==================== QR Code Section ==================== -->
-<section class="qr-section">
-  <div class="qr-card">
-    <img
-      src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=fdfcf9&color=3b3733&data=https://unbeatablely.github.io/english-grammar-galaxy/"
-      alt="English Grammar QR Code"
-      width="200" height="200"
-      loading="lazy"
-      onerror="this.onerror=null; this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23fdfcf9%22/><text x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23a09890%22 font-size=%2214%22 font-family=%22sans-serif%22>Scan for Grammar</text></svg>');"
-    >
-    <p class="qr-label">📱 扫描二维码 · 探索更多语法资源</p>
-  </div>
-</section>
+<!-- ==================== Floating QR Button ==================== -->
+<button id="qr-float-btn" aria-label="扫码浏览">
+  📱
+  <span class="tooltip">扫码在手机上打开</span>
+</button>
+
+<div id="qr-popup">
+  <button id="qr-popup-close" aria-label="关闭">✕</button>
+  <img
+    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=fdfcf9&color=3b3733&data=https://unbeatablely.github.io/english-grammar-galaxy/"
+    alt="扫描二维码在手机上打开英语语法星系"
+    width="200" height="200"
+    loading="lazy"
+    onerror="this.onerror=null; this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23fdfcf9%22/><text x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23a09890%22 font-size=%2214%22 font-family=%22sans-serif%22>Scan Me</text></svg>');"
+  >
+  <p>📱 扫描二维码在手机上浏览</p>
+</div>
 
 <footer>
   <p>English Grammar Galaxy · 知识的宇宙，无限探索 · Morandi Edition ✨</p>
@@ -1723,7 +1800,29 @@ footer {
     });
   });
 
-  // ======= 6. Card Expansion Modal =======
+  // ======= 6. Floating QR Popup =======
+  const qrFloatBtn = document.getElementById('qr-float-btn');
+  const qrPopup = document.getElementById('qr-popup');
+  const qrPopupClose = document.getElementById('qr-popup-close');
+
+  qrFloatBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    qrPopup.classList.toggle('visible');
+  });
+
+  qrPopupClose.addEventListener('click', function(e) {
+    e.stopPropagation();
+    qrPopup.classList.remove('visible');
+  });
+
+  // Click anywhere else → close QR popup
+  document.addEventListener('click', function(e) {
+    if (qrPopup.classList.contains('visible') && !qrPopup.contains(e.target) && e.target !== qrFloatBtn) {
+      qrPopup.classList.remove('visible');
+    }
+  });
+
+  // ======= 7. Card Expansion Modal =======
   const modalOverlay = document.getElementById('card-modal-overlay');
   const modalContent = document.getElementById('card-modal-content');
   const modalClose = document.getElementById('card-modal-close');
