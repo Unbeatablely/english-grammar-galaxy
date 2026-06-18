@@ -2402,297 +2402,216 @@ footer {
 
     const svg = document.getElementById('web-svg');
     const NS = 'http://www.w3.org/2000/svg';
-
-    // Helper to create SVG elements
     function el(tag, attrs) {
       const e = document.createElementNS(NS, tag);
       for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
       return e;
     }
 
-    // Node data: { id, label, en, color, href }
-    const nodes = [
-      { id:'pos',     label:'词性',        en:'Parts of Speech',   color:'#a3b5c9', href:'#parts-of-speech' },
-      { id:'tense',   label:'时态',        en:'Tenses',            color:'#c9bd9f', href:'#tenses' },
-      { id:'voice',   label:'语态',        en:'Voice',             color:'#b8aec8', href:'#voice' },
-      { id:'mood',    label:'语气',        en:'Mood',              color:'#c8aa9f', href:'#mood' },
-      { id:'sent',    label:'句型',        en:'Sentence Types',    color:'#b0bfa4', href:'#sentence-types' },
-      { id:'clause',  label:'从句',        en:'Clauses',           color:'#a3b8b2', href:'#clauses' },
-      { id:'nonfin',  label:'非谓语',      en:'Non-finite Verbs',  color:'#c4aeb8', href:'#non-finite' },
-      { id:'elem',    label:'句子成分',    en:'S. Elements',       color:'#cfbfa8', href:'#sentence-elements' },
-      { id:'sv',      label:'主谓一致',    en:'S-V Agreement',     color:'#a4b2c4', href:'#subject-verb' },
-      { id:'inv',     label:'倒装强调',    en:'Inversion',         color:'#b8a4b8', href:'#inversion' },
-      { id:'modal',   label:'情态动词',    en:'Modal Verbs',       color:'#c4a89a', href:'#modal-verbs' },
-      { id:'comp',    label:'比较结构',    en:'Comparison',        color:'#aeb89a', href:'#comparison' }
-    ];
-
     const cx = 500, cy = 500;
-    const outerR = 380, innerR = 200;
-    const nodeR = 38;
+    const nodeR = 30;  // smaller, cleaner nodes
+    const R1 = 155;    // inner ring radius (4 core nodes)
+    const R2 = 365;    // outer ring radius (8 extended nodes)
 
-    // Compute outer node positions (12 nodes, 30° apart, starting from top)
-    const positions = nodes.map((n, i) => {
-      const angle = (i * 30 - 90) * Math.PI / 180;
-      return {
-        ...n,
-        x: cx + outerR * Math.cos(angle),
-        y: cy + outerR * Math.sin(angle)
-      };
-    });
-
-    // Link data: { from, to, type, label }
-    // type: 'solid' = 构成/承载, 'dashed' = 转换/衍生
-    const links = [
-      // 词性 → 句子成分 (词在句中扮演角色)
-      { from:'pos',  to:'elem',   type:'solid', label:'充当' },
-      // 动词 → 时态/语态/语气 (动词承载)
-      { from:'pos',  to:'tense',  type:'solid', label:'承载' },
-      { from:'pos',  to:'voice',  type:'solid', label:'承载' },
-      { from:'pos',  to:'mood',   type:'solid', label:'承载' },
-      { from:'pos',  to:'modal',  type:'solid', label:'承载' },
-      // 时态/语态 → 非谓语 (剥离)
-      { from:'tense', to:'nonfin', type:'dashed', label:'剥离' },
-      { from:'voice', to:'nonfin', type:'dashed', label:'剥离' },
-      // 主动 ↔ 被动
-      { from:'voice', to:'voice',  type:'dashed', label:'主↔被' },
-      // 从句 → 句型
-      { from:'clause',to:'sent',   type:'solid', label:'组成' },
-      // 句子成分 → 从句 (从句作成分)
-      { from:'elem',  to:'clause', type:'dashed', label:'可作' },
-      // 语气 + 时态 → 虚拟语气
-      { from:'mood',  to:'tense',  type:'dashed', label:'依赖' },
-      // 非谓语 + 句子成分 → 独立主格
-      { from:'nonfin',to:'elem',   type:'dashed', label:'高级用法' },
-      // 倒装 ↔ 句型
-      { from:'inv',   to:'sent',   type:'solid', label:'变体' },
-      // 倒装 ↔ 强调
-      { from:'inv',   to:'inv',    type:'dashed', label:'强调手段' },
-      // 情态动词 ↔ 语气
-      { from:'modal', to:'mood',   type:'solid', label:'表达' },
-      // 比较结构 ↔ 句型 (比较状语从句)
-      { from:'comp',  to:'clause', type:'solid', label:'状语从句' },
-      // 主谓一致 ↔ 句子成分
-      { from:'sv',    to:'elem',   type:'solid', label:'约束' },
-      // 主谓一致 ↔ 动词
-      { from:'sv',    to:'pos',    type:'solid', label:'制约' }
+    // Two-tier layout: inner ring = foundational, outer ring = derived/specialized
+    const innerNodes = [
+      { id:'pos',   label:'词性',     en:'Parts of Speech', color:'#a3b5c9', href:'#parts-of-speech' },
+      { id:'elem',  label:'句子成分', en:'S. Elements',     color:'#cfbfa8', href:'#sentence-elements' },
+      { id:'tense', label:'时态',     en:'Tenses',          color:'#c9bd9f', href:'#tenses' },
+      { id:'sent',  label:'句型',     en:'Sentences',       color:'#b0bfa4', href:'#sentence-types' }
+    ];
+    const outerNodes = [
+      { id:'voice',  label:'语态',     en:'Voice',            color:'#b8aec8', href:'#voice' },
+      { id:'mood',   label:'语气',     en:'Mood',             color:'#c8aa9f', href:'#mood' },
+      { id:'clause', label:'从句',     en:'Clauses',          color:'#a3b8b2', href:'#clauses' },
+      { id:'nonfin', label:'非谓语',   en:'Non-finite Verbs', color:'#c4aeb8', href:'#non-finite' },
+      { id:'sv',     label:'主谓一致', en:'S-V Agreement',    color:'#a4b2c4', href:'#subject-verb' },
+      { id:'inv',    label:'倒装强调', en:'Inversion',        color:'#b8a4b8', href:'#inversion' },
+      { id:'modal',  label:'情态动词', en:'Modal Verbs',      color:'#c4a89a', href:'#modal-verbs' },
+      { id:'comp',   label:'比较结构', en:'Comparison',       color:'#aeb89a', href:'#comparison' }
     ];
 
-    // Build a defs section for gradients and markers
+    // Compute positions: inner ring at 0°, 90°, 180°, 270°; outer ring at 22.5° offset increments
+    const innerPos = innerNodes.map((n, i) => ({
+      ...n, ring:'inner',
+      x: cx + R1 * Math.cos((i * 90 - 90) * Math.PI / 180),
+      y: cy + R1 * Math.sin((i * 90 - 90) * Math.PI / 180)
+    }));
+    const outerPos = outerNodes.map((n, i) => ({
+      ...n, ring:'outer',
+      x: cx + R2 * Math.cos((i * 45 - 67.5) * Math.PI / 180),
+      y: cy + R2 * Math.sin((i * 45 - 67.5) * Math.PI / 180)
+    }));
+    const allPos = [...innerPos, ...outerPos];
+
+    // Connections — only the most meaningful ones
+    const links = [
+      { from:'pos',   to:'elem',   type:'solid',  label:'充当句子成分' },
+      { from:'pos',   to:'tense',  type:'solid',  label:'动词承载时态' },
+      { from:'pos',   to:'voice',  type:'solid',  label:'动词承载语态' },
+      { from:'pos',   to:'mood',   type:'solid',  label:'动词承载语气' },
+      { from:'pos',   to:'modal',  type:'solid',  label:'情态动词归属' },
+      { from:'tense', to:'nonfin', type:'dashed',  label:'剥离时态' },
+      { from:'voice', to:'nonfin', type:'dashed',  label:'剥离语态' },
+      { from:'clause',to:'sent',   type:'solid',  label:'从句组成复合句' },
+      { from:'elem',  to:'clause', type:'dashed',  label:'从句可作成分' },
+      { from:'mood',  to:'tense',  type:'dashed',  label:'虚拟依赖时态' },
+      { from:'inv',   to:'sent',   type:'dashed',  label:'倒装句型变体' },
+      { from:'modal', to:'mood',   type:'solid',  label:'情态表达语气' },
+      { from:'comp',  to:'clause', type:'solid',  label:'比较状语从句' },
+      { from:'sv',    to:'elem',   type:'solid',  label:'主谓一致约束' }
+    ];
+
+    // Arrow marker
     const defs = el('defs', {});
-    // Arrow marker for dashed lines
-    const marker = el('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'8', refY:'5', markerWidth:'6', markerHeight:'6', orient:'auto' });
-    marker.appendChild(el('path', { d:'M0,0 L10,5 L0,10 Z', fill:'#a09890' }));
+    const marker = el('marker', { id:'arrow', viewBox:'0 0 10 10', refX:'7', refY:'5', markerWidth:'5', markerHeight:'5', orient:'auto' });
+    marker.appendChild(el('path', { d:'M0,0 L10,5 L0,10 Z', fill:'#b0a89e' }));
     defs.appendChild(marker);
     svg.appendChild(defs);
 
-    // Group for links
+    // Faint background rings
+    const ringGroup = el('g', {});
+    [R1, R2].forEach(r => {
+      ringGroup.appendChild(el('circle', { cx, cy, r, fill:'none', stroke:'#e5ded5', 'stroke-width':'1', 'stroke-dasharray':'4,6' }));
+    });
+    svg.appendChild(ringGroup);
+
+    // Draw connections as curved paths
     const linkGroup = el('g', {});
     links.forEach((l, i) => {
-      const fromPos = positions.find(p => p.id === l.from);
-      const toPos = positions.find(p => p.id === l.to);
-      if (!fromPos || !toPos) return;
+      const fromP = allPos.find(p => p.id === l.from);
+      const toP = allPos.find(p => p.id === l.to);
+      if (!fromP || !toP) return;
 
-      let x1 = fromPos.x, y1 = fromPos.y, x2 = toPos.x, y2 = toPos.y;
-
-      // Self-loop (voice ↔ voice, inv ↔ inv)
-      if (l.from === l.to) {
-        // Draw a small arc/loop
-        const loopR = 50;
-        const path = el('path', {
-          d: 'M' + (x1 + nodeR) + ',' + (y1 - 15) + ' C' + (x1 + loopR) + ',' + (y1 - loopR) + ' ' + (x1 + loopR) + ',' + (y1 + loopR) + ' ' + (x1 + nodeR) + ',' + (y1 + 15),
-          stroke: '#a09890',
-          'stroke-width': l.type === 'solid' ? '2' : '1.5',
-          'stroke-dasharray': l.type === 'dashed' ? '6,4' : 'none',
-          fill: 'none',
-          class: 'web-link'
-        });
-        path.dataset.linkId = i;
-        linkGroup.appendChild(path);
-        return;
-      }
-
-      // Trim lines to not overlap with nodes
+      const x1 = fromP.x, y1 = fromP.y, x2 = toP.x, y2 = toP.y;
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      // Slight arc offset for visual elegance
       const dx = x2 - x1, dy = y2 - y1;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const trimX = (dx / dist) * nodeR;
-      const trimY = (dy / dist) * nodeR;
-      x1 += trimX; y1 += trimY;
-      x2 -= trimX; y2 -= trimY;
+      const len = Math.sqrt(dx*dx+dy*dy);
+      const nx = -dy / len, ny = dx / len;
+      const offset = l.type === 'dashed' ? 20 : -25;
+      const cpx = mx + nx * offset, cpy = my + ny * offset;
 
-      const line = el('line', {
-        x1, y1, x2, y2,
-        stroke: '#a09890',
+      const path = el('path', {
+        d: 'M' + x1 + ',' + y1 + ' Q' + cpx + ',' + cpy + ' ' + x2 + ',' + y2,
+        stroke: l.type === 'solid' ? '#b0a89e' : '#c4bbb0',
         'stroke-width': l.type === 'solid' ? '2' : '1.5',
         'stroke-dasharray': l.type === 'dashed' ? '6,4' : 'none',
         'marker-end': l.type === 'dashed' ? 'url(#arrow)' : '',
+        fill: 'none',
         class: 'web-link'
       });
-      line.dataset.linkId = i;
-      line.dataset.from = l.from;
-      line.dataset.to = l.to;
-      line.dataset.label = l.label;
+      path.dataset.linkId = i;
+      path.dataset.from = l.from;
+      path.dataset.to = l.to;
+      path.dataset.label = l.label;
 
-      // Small label at midpoint
-      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      // Hidden label — only visible on hover
+      const labelX = cpx, labelY = cpy - 8;
       const text = el('text', {
-        x: mx, y: my - 6,
+        x: labelX, y: labelY,
         'text-anchor': 'middle',
         'font-size': '10',
-        'font-family': 'Inter, Noto Sans SC, sans-serif',
+        'font-family': 'Inter, "Noto Sans SC", sans-serif',
         fill: '#a09890',
         class: 'web-link-label',
+        opacity: '0',
         'pointer-events': 'none'
       });
       text.textContent = l.label;
       text.dataset.linkId = i;
 
-      linkGroup.appendChild(line);
+      linkGroup.appendChild(path);
       linkGroup.appendChild(text);
     });
     svg.appendChild(linkGroup);
 
-    // Group for inner connections (from center to each node)
-    const innerGroup = el('g', {});
-    positions.forEach(p => {
+    // Subtle lines from center to inner ring nodes only
+    const innerLines = el('g', {});
+    innerPos.forEach(p => {
       const dx = p.x - cx, dy = p.y - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const startX = cx + (dx / dist) * 55; // Center node radius ~55
-      const startY = cy + (dy / dist) * 55;
-      const endX = p.x - (dx / dist) * nodeR;
-      const endY = p.y - (dy / dist) * nodeR;
-      const line = el('line', {
-        x1: startX, y1: startY, x2: endX, y2: endY,
-        stroke: p.color,
-        'stroke-width': '2',
-        'stroke-opacity': '0.3',
-        class: 'web-link inner-link'
-      });
-      line.dataset.nodeId = p.id;
-      innerGroup.appendChild(line);
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      innerLines.appendChild(el('line', {
+        x1: cx + (dx/dist)*48, y1: cy + (dy/dist)*48,
+        x2: p.x - (dx/dist)*nodeR, y2: p.y - (dy/dist)*nodeR,
+        stroke: p.color, 'stroke-width': '1', 'stroke-opacity': '0.2',
+        class: 'web-link inner-line'
+      }));
     });
-    svg.appendChild(innerGroup);
+    svg.appendChild(innerLines);
 
     // Center node
     const centerG = el('g', { class: 'web-node', style: 'cursor:default' });
-    centerG.appendChild(el('circle', {
-      cx, cy, r: 55,
-      fill: '#fdfcf9',
-      stroke: '#d5cec5',
-      'stroke-width': '2'
-    }));
-    const centerText = el('text', {
-      x: cx, y: cy - 7,
-      'text-anchor': 'middle',
-      'font-size': '15',
-      'font-weight': '700',
-      'font-family': '"Cormorant Garamond", "Noto Serif SC", serif',
-      fill: '#3b3733'
-    });
-    centerText.textContent = '英语语法';
-    centerG.appendChild(centerText);
-    const centerSub = el('text', {
-      x: cx, y: cy + 14,
-      'text-anchor': 'middle',
-      'font-size': '10',
-      'font-family': 'Inter, sans-serif',
-      fill: '#7a746e',
-      'font-style': 'italic'
-    });
-    centerSub.textContent = 'Grammar';
-    centerG.appendChild(centerSub);
+    centerG.appendChild(el('circle', { cx, cy, r: 48, fill: '#fdfcf9', stroke: '#d5cec5', 'stroke-width': '2' }));
+    const ct1 = el('text', { x: cx, y: cy-6, 'text-anchor':'middle', 'font-size':'14', 'font-weight':'700', 'font-family':'"Cormorant Garamond","Noto Serif SC",serif', fill:'#3b3733' });
+    ct1.textContent = '英语语法'; centerG.appendChild(ct1);
+    const ct2 = el('text', { x: cx, y: cy+13, 'text-anchor':'middle', 'font-size':'9', 'font-family':'Inter,sans-serif', fill:'#7a746e', 'font-style':'italic' });
+    ct2.textContent = 'Grammar'; centerG.appendChild(ct2);
     svg.appendChild(centerG);
 
-    // Outer nodes
-    positions.forEach(p => {
+    // Draw nodes
+    function makeNode(p) {
       const g = el('g', { class: 'web-node', style: 'cursor:pointer' });
       g.dataset.nodeId = p.id;
       g.dataset.href = p.href;
 
-      // Shadow circle
-      g.appendChild(el('circle', {
-        cx: p.x, cy: p.y, r: nodeR + 4,
-        fill: 'rgba(59,55,51,0.06)'
-      }));
-      // Main circle
-      g.appendChild(el('circle', {
-        cx: p.x, cy: p.y, r: nodeR,
-        fill: '#fdfcf9',
-        stroke: p.color,
-        'stroke-width': '2.5'
-      }));
-      // Label
-      const label = el('text', {
-        x: p.x, y: p.y - 4,
-        'text-anchor': 'middle',
-        'font-size': '13',
-        'font-weight': '600',
-        'font-family': '"Noto Serif SC", "Inter", sans-serif',
-        fill: '#3b3733'
-      });
-      label.textContent = p.label;
-      g.appendChild(label);
-      // EN label
-      const enLabel = el('text', {
-        x: p.x, y: p.y + 14,
-        'text-anchor': 'middle',
-        'font-size': '8',
-        'font-family': 'Inter, sans-serif',
-        fill: '#a09890',
-        'font-style': 'italic'
-      });
-      enLabel.textContent = p.en.length > 15 ? p.en.substring(0,15) : p.en;
-      g.appendChild(enLabel);
+      g.appendChild(el('circle', { cx: p.x, cy: p.y, r: nodeR+3, fill: 'rgba(59,55,51,0.04)' }));
+      g.appendChild(el('circle', { cx: p.x, cy: p.y, r: nodeR, fill: '#fdfcf9', stroke: p.color, 'stroke-width': p.ring==='inner'?'3':'2.2' }));
+      const lb = el('text', { x: p.x, y: p.y-4, 'text-anchor':'middle', 'font-size': p.ring==='inner'?'13':'11.5', 'font-weight':'600', 'font-family':'"Noto Sans SC","Inter",sans-serif', fill:'#3b3733' });
+      lb.textContent = p.label; g.appendChild(lb);
+      const en = el('text', { x: p.x, y: p.y+12, 'text-anchor':'middle', 'font-size': p.ring==='inner'?'8':'7', 'font-family':'Inter,sans-serif', fill:'#a09890', 'font-style':'italic' });
+      en.textContent = p.en.length > 13 ? p.en.substring(0,13) : p.en; g.appendChild(en);
 
       // Click → navigate
       g.addEventListener('click', function() {
         showGalaxy();
         setTimeout(() => {
-          const target = document.querySelector(p.href);
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
+          const t = document.querySelector(p.href);
+          if (t) t.scrollIntoView({ behavior:'smooth' });
         }, 300);
       });
 
-      // Hover → highlight connected nodes and links
+      // Hover
       g.addEventListener('mouseenter', function() {
         const nid = p.id;
-        // Dim all nodes and links
         svg.querySelectorAll('.web-node').forEach(n => n.classList.add('dimmed'));
         svg.querySelectorAll('.web-link').forEach(l => l.classList.add('dimmed'));
-        svg.querySelectorAll('.web-link-label').forEach(l => l.style.opacity = '0.1');
-        // Highlight this node
-        g.classList.remove('dimmed');
-        g.classList.add('highlighted');
+        g.classList.remove('dimmed'); g.classList.add('highlighted');
         centerG.classList.remove('dimmed');
-        // Highlight connected links and their target nodes
+        // Highlight related links + show their labels
         svg.querySelectorAll('.web-link').forEach(l => {
-          if (l.dataset.from === nid || l.dataset.to === nid || l.dataset.nodeId === nid) {
-            l.classList.remove('dimmed');
-            l.classList.add('highlighted');
-            l.setAttribute('stroke-width', '3');
+          if (l.dataset.from === nid || l.dataset.to === nid) {
+            l.classList.remove('dimmed'); l.classList.add('highlighted');
+            l.setAttribute('stroke-width', l.getAttribute('stroke-dasharray')==='6,4' ? '2.5' : '3');
           }
         });
-        svg.querySelectorAll('.web-link-label').forEach(l => {
-          if (l.dataset.linkId && svg.querySelector('.web-link[data-link-id="' + l.dataset.linkId + '"]:not(.dimmed)')) {
-            l.style.opacity = '1';
+        svg.querySelectorAll('.web-link-label').forEach(lb => {
+          const lid = lb.dataset.linkId;
+          if (lid !== undefined && links[lid] && (links[lid].from === nid || links[lid].to === nid)) {
+            lb.setAttribute('opacity', '1');
           }
         });
         // Highlight connected nodes
         svg.querySelectorAll('.web-node').forEach(n => {
           links.forEach(lk => {
-            if (lk.from === nid && lk.to === n.dataset.nodeId) { n.classList.remove('dimmed'); n.classList.add('highlighted'); }
-            if (lk.to === nid && lk.from === n.dataset.nodeId) { n.classList.remove('dimmed'); n.classList.add('highlighted'); }
+            if ((lk.from === nid && lk.to === n.dataset.nodeId) || (lk.to === nid && lk.from === n.dataset.nodeId)) {
+              n.classList.remove('dimmed'); n.classList.add('highlighted');
+            }
           });
         });
       });
 
       g.addEventListener('mouseleave', function() {
         svg.querySelectorAll('.web-node').forEach(n => { n.classList.remove('dimmed','highlighted'); });
-        svg.querySelectorAll('.web-link').forEach(l => { l.classList.remove('dimmed','highlighted'); l.setAttribute('stroke-width', l.dataset.nodeId ? '2' : (l.getAttribute('stroke-dasharray') === '6,4' ? '1.5' : '2')); });
-        svg.querySelectorAll('.web-link-label').forEach(l => l.style.opacity = '');
+        svg.querySelectorAll('.web-link').forEach(l => { l.classList.remove('dimmed','highlighted'); l.setAttribute('stroke-width', l.getAttribute('stroke-dasharray')==='6,4'?'1.5':'2'); });
+        svg.querySelectorAll('.web-link-label').forEach(lb => lb.setAttribute('opacity', '0'));
       });
 
       svg.appendChild(g);
-    });
+    }
+
+    innerPos.forEach(makeNode);
+    outerPos.forEach(makeNode);
   }
 
 })();
