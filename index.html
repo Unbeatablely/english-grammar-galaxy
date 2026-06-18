@@ -154,12 +154,12 @@ body {
   border: 1.5px solid var(--border);
   pointer-events: none;
 }
-.orbit-ring.r1 { width: min(30vw, 240px); height: min(30vw, 240px); margin: calc(min(30vw, 240px) / -2) 0 0 calc(min(30vw, 240px) / -2); animation: spin 12s linear infinite; }
-.orbit-ring.r2 { width: min(45vw, 380px); height: min(45vw, 380px); margin: calc(min(45vw, 380px) / -2) 0 0 calc(min(45vw, 380px) / -2); animation: spin 18s linear infinite; }
-.orbit-ring.r3 { width: min(58vw, 500px); height: min(58vw, 500px); margin: calc(min(58vw, 500px) / -2) 0 0 calc(min(58vw, 500px) / -2); animation: spin 24s linear infinite; }
-.orbit-ring.r4 { width: min(70vw, 620px); height: min(70vw, 620px); margin: calc(min(70vw, 620px) / -2) 0 0 calc(min(70vw, 620px) / -2); animation: spin 30s linear infinite; }
-.orbit-ring.r5 { width: min(37vw, 310px); height: min(37vw, 310px); margin: calc(min(37vw, 310px) / -2) 0 0 calc(min(37vw, 310px) / -2); animation: spin 14s linear infinite; }
-.orbit-ring.r6 { width: min(52vw, 440px); height: min(52vw, 440px); margin: calc(min(52vw, 440px) / -2) 0 0 calc(min(52vw, 440px) / -2); animation: spin 22s linear infinite; }
+.orbit-ring.r1 { width: min(24vw, 200px); height: min(24vw, 200px); margin: calc(min(24vw, 200px) / -2) 0 0 calc(min(24vw, 200px) / -2); animation: spin 14s linear infinite; }
+.orbit-ring.r2 { width: min(36vw, 300px); height: min(36vw, 300px); margin: calc(min(36vw, 300px) / -2) 0 0 calc(min(36vw, 300px) / -2); animation: spin 18s linear infinite; }
+.orbit-ring.r3 { width: min(48vw, 400px); height: min(48vw, 400px); margin: calc(min(48vw, 400px) / -2) 0 0 calc(min(48vw, 400px) / -2); animation: spin 22s linear infinite; }
+.orbit-ring.r4 { width: min(58vw, 490px); height: min(58vw, 490px); margin: calc(min(58vw, 490px) / -2) 0 0 calc(min(58vw, 490px) / -2); animation: spin 26s linear infinite; }
+.orbit-ring.r5 { width: min(67vw, 570px); height: min(67vw, 570px); margin: calc(min(67vw, 570px) / -2) 0 0 calc(min(67vw, 570px) / -2); animation: spin 30s linear infinite; }
+.orbit-ring.r6 { width: min(76vw, 640px); height: min(76vw, 640px); margin: calc(min(76vw, 640px) / -2) 0 0 calc(min(76vw, 640px) / -2); animation: spin 34s linear infinite; }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
@@ -179,8 +179,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(12vw, 90px);
-  height: min(12vw, 90px);
+  width: min(9vw, 64px);
+  height: min(9vw, 64px);
   border-radius: 50%;
   cursor: pointer;
   transition: transform 0.35s ease, box-shadow 0.35s ease;
@@ -241,19 +241,19 @@ body {
 .planet-node .p-label .en { display: block; font-size: 0.7em; font-style: italic; opacity: 0.85; }
 
 /* Counter-rotation */
-.r1 .planet-anchor { animation: counter-spin-12 12s linear infinite; }
+.r1 .planet-anchor { animation: counter-spin-14 14s linear infinite; }
 .r2 .planet-anchor { animation: counter-spin-18 18s linear infinite; }
-.r3 .planet-anchor { animation: counter-spin-24 24s linear infinite; }
-.r4 .planet-anchor { animation: counter-spin-30 30s linear infinite; }
-.r5 .planet-anchor { animation: counter-spin-14 14s linear infinite; }
-.r6 .planet-anchor { animation: counter-spin-22 22s linear infinite; }
+.r3 .planet-anchor { animation: counter-spin-22 22s linear infinite; }
+.r4 .planet-anchor { animation: counter-spin-26 26s linear infinite; }
+.r5 .planet-anchor { animation: counter-spin-30 30s linear infinite; }
+.r6 .planet-anchor { animation: counter-spin-34 34s linear infinite; }
 
-@keyframes counter-spin-12 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes counter-spin-18 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes counter-spin-24 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
-@keyframes counter-spin-30 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @keyframes counter-spin-14 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-18 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 @keyframes counter-spin-22 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-26 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-30 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-34 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
 
 /* Hero Title */
 .hero-title-wrap {
