@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英语语法星系 | English Grammar Galaxy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ========== CSS Variables — Morandi Palette ========== */
+:root {
+  /* Background & Surface */
+  --bg-primary: #f7f4ef;
+  --bg-secondary: #efe9e0;
+  --card-bg: #fdfcf9;
+  --card-bg-hover: #faf7f2;
+
+  /* Text */
+  --text-primary: #3b3733;
+  --text-secondary: #7a746e;
+  --text-muted: #a09890;
+
+  /* Borders & Shadows */
+  --border: #e5ded5;
+  --border-focus: #d5cec5;
+  --shadow-sm: 0 2px 8px rgba(59,55,51,0.06);
+  --shadow-md: 0 8px 30px rgba(59,55,51,0.1);
+  --shadow-lg: 0 16px 50px rgba(59,55,51,0.13);
+
+  /* Morandi Accent Colors */
+  --morandi-blue:       #a3b5c9;
+  --morandi-blue-light:  #d8e2ed;
+  --morandi-blue-bg:     #edf2f7;
+
+  --morandi-gold:       #c9bd9f;
+  --morandi-gold-light:  #ede4cf;
+  --morandi-gold-bg:     #f7f3e8;
+
+  --morandi-lavender:       #b8aec8;
+  --morandi-lavender-light:  #e0d9ed;
+  --morandi-lavender-bg:     #f2eef7;
+
+  --morandi-rose:       #c8aa9f;
+  --morandi-rose-light:  #edd9d3;
+  --morandi-rose-bg:     #f7efeb;
+
+  --morandi-sage:       #b0bfa4;
+  --morandi-sage-light:  #dde8d5;
+  --morandi-sage-bg:     #eef4e8;
+
+  --morandi-teal:       #a3b8b2;
+  --morandi-teal-light:  #d1e3dd;
+  --morandi-teal-bg:     #eaf2ef;
+
+  --morandi-mauve:       #c4aeb8;
+  --morandi-mauve-light:  #ebdce3;
+  --morandi-mauve-bg:     #f5eef2;
+
+  --morandi-sand:       #cfbfa8;
+  --morandi-sand-light:  #ede2cf;
+  --morandi-sand-bg:     #f7f1e6;
+
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  background: linear-gradient(175deg, #f7f4ef 0%, #f0ece5 25%, #f5f2ec 50%, #ede8e0 100%);
+  color: var(--text-primary);
+  line-height: 1.75;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========== Subtle Background Texture (replaces starfield) ========== */
+#bg-texture {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  background:
+    radial-gradient(circle at 12% 18%, var(--morandi-gold-light) 0%, transparent 50%),
+    radial-gradient(circle at 78% 22%, var(--morandi-rose-light) 0%, transparent 45%),
+    radial-gradient(circle at 35% 82%, var(--morandi-lavender-light) 0%, transparent 48%),
+    radial-gradient(circle at 88% 70%, var(--morandi-blue-light) 0%, transparent 42%),
+    radial-gradient(circle at 55% 8%, var(--morandi-sage-light) 0%, transparent 40%),
+    radial-gradient(circle at 15% 65%, var(--morandi-teal-light) 0%, transparent 44%),
+    radial-gradient(circle at 68% 55%, var(--morandi-mauve-light) 0%, transparent 46%);
+}
+
+/* ========== Hero / Galaxy Section ========== */
+#hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.galaxy-container {
+  position: relative;
+  width: min(80vw, 700px);
+  height: min(80vw, 700px);
+  margin: 0 auto;
+}
+
+/* Central Sun — Morandi warm tone */
+.grammar-sun {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(18vw, 140px);
+  height: min(18vw, 140px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fdfaf5 0%, #e8dcc8 25%, #cfbfa8 60%, #b8a68c 100%);
+  box-shadow:
+    0 0 30px rgba(207,191,168,0.3),
+    0 0 60px rgba(207,191,168,0.15),
+    0 0 100px rgba(207,191,168,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: default;
+}
+.grammar-sun .sun-label {
+  text-align: center;
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: clamp(0.6rem, 1.5vw, 0.95rem);
+  color: #4a3f35;
+  line-height: 1.3;
+  user-select: none;
+}
+.grammar-sun .sun-label .en { display: block; font-style: italic; font-size: 0.85em; color: #6b5f52; }
+
+/* Orbit Rings */
+.orbit-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  pointer-events: none;
+}
+.orbit-ring.r1 { width: min(30vw, 240px); height: min(30vw, 240px); margin: calc(min(30vw, 240px) / -2) 0 0 calc(min(30vw, 240px) / -2); animation: spin 12s linear infinite; }
+.orbit-ring.r2 { width: min(45vw, 380px); height: min(45vw, 380px); margin: calc(min(45vw, 380px) / -2) 0 0 calc(min(45vw, 380px) / -2); animation: spin 18s linear infinite; }
+.orbit-ring.r3 { width: min(58vw, 500px); height: min(58vw, 500px); margin: calc(min(58vw, 500px) / -2) 0 0 calc(min(58vw, 500px) / -2); animation: spin 24s linear infinite; }
+.orbit-ring.r4 { width: min(70vw, 620px); height: min(70vw, 620px); margin: calc(min(70vw, 620px) / -2) 0 0 calc(min(70vw, 620px) / -2); animation: spin 30s linear infinite; }
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Planet Anchor */
+.planet-anchor {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.planet-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(12vw, 90px);
+  height: min(12vw, 90px);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Planet types — Morandi tones */
+.planet-node.p-fw { /* 词性 */
+  background: radial-gradient(circle at 35% 30%, #c8d6e6, #a3b5c9 60%, #7a8ea5 100%);
+  box-shadow: 0 4px 18px rgba(163,181,201,0.35);
+}
+.planet-node.p-ts { /* 时态 */
+  background: radial-gradient(circle at 35% 30%, #e4d8ba, #c9bd9f 60%, #a09070 100%);
+  box-shadow: 0 4px 18px rgba(201,189,159,0.35);
+}
+.planet-node.p-yt { /* 语态 */
+  background: radial-gradient(circle at 35% 30%, #d4cce4, #b8aec8 60%, #8e82a0 100%);
+  box-shadow: 0 4px 18px rgba(184,174,200,0.35);
+}
+.planet-node.p-yq { /* 语气 */
+  background: radial-gradient(circle at 35% 30%, #e0c8c0, #c8aa9f 60%, #9e7e72 100%);
+  box-shadow: 0 4px 18px rgba(200,170,159,0.35);
+}
+.planet-node.p-jx { /* 句型 */
+  background: radial-gradient(circle at 35% 30%, #cdd8c1, #b0bfa4 60%, #859678 100%);
+  box-shadow: 0 4px 18px rgba(176,191,164,0.35);
+}
+.planet-node.p-cj { /* 从句 */
+  background: radial-gradient(circle at 35% 30%, #bfd1cc, #a3b8b2 60%, #778f87 100%);
+  box-shadow: 0 4px 18px rgba(163,184,178,0.35);
+}
+.planet-node.p-fw2 { /* 非谓语 */
+  background: radial-gradient(circle at 35% 30%, #ddccd5, #c4aeb8 60%, #9a8492 100%);
+  box-shadow: 0 4px 18px rgba(196,174,184,0.35);
+}
+.planet-node.p-cf { /* 成分 */
+  background: radial-gradient(circle at 35% 30%, #e4d8c2, #cfbfa8 60%, #a69378 100%);
+  box-shadow: 0 4px 18px rgba(207,191,168,0.35);
+}
+
+.planet-node:hover {
+  transform: scale(1.25);
+  z-index: 100;
+  box-shadow: 0 8px 30px rgba(59,55,51,0.18);
+}
+
+.planet-node .p-label {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: clamp(0.55rem, 1.1vw, 0.8rem);
+  text-align: center;
+  line-height: 1.3;
+  user-select: none;
+  color: #fff;
+}
+.planet-node .p-label .zh { display: block; }
+.planet-node .p-label .en { display: block; font-size: 0.7em; font-style: italic; opacity: 0.85; }
+
+/* Counter-rotation */
+.r1 .planet-anchor { animation: counter-spin-12 12s linear infinite; }
+.r2 .planet-anchor { animation: counter-spin-18 18s linear infinite; }
+.r3 .planet-anchor { animation: counter-spin-24 24s linear infinite; }
+.r4 .planet-anchor { animation: counter-spin-30 30s linear infinite; }
+
+@keyframes counter-spin-12 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-18 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-24 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+@keyframes counter-spin-30 { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+/* Hero Title */
+.hero-title-wrap {
+  text-align: center;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 5;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+}
+.hero-subtitle {
+  font-weight: 300;
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  margin-top: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: float 2s ease-in-out infinite;
+}
+.scroll-hint .arrow {
+  width: 24px; height: 24px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(45deg);
+}
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ========== Content Wrapper ========== */
+.content-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+/* ========== Section Styles ========== */
+.section {
+  margin-bottom: 5rem;
+  scroll-margin-top: 2rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.section-icon {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+/* Section icon backgrounds — Morandi accent */
+.si-fw  { background: var(--morandi-blue-bg); }
+.si-ts  { background: var(--morandi-gold-bg); }
+.si-yt  { background: var(--morandi-lavender-bg); }
+.si-yq  { background: var(--morandi-rose-bg); }
+.si-jx  { background: var(--morandi-sage-bg); }
+.si-cj  { background: var(--morandi-teal-bg); }
+.si-fw2 { background: var(--morandi-mauve-bg); }
+.si-cf  { background: var(--morandi-sand-bg); }
+
+.section-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--text-primary);
+  flex: 1;
+}
+.section-title .en {
+  display: block;
+  font-size: 0.55em;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Back-to-galaxy link in section header */
+.back-link {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  transition: all 0.25s ease;
+  background: var(--card-bg);
+  white-space: nowrap;
+}
+.back-link:hover {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+  background: var(--bg-secondary);
+  transform: translateX(-2px);
+}
+
+/* ========== Card Expansion Modal ========== */
+#card-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(59,55,51,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+#card-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#card-modal {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 720px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 2.2rem;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.25s ease-out, transform 0.25s ease-out;
+}
+#card-modal-overlay.active #card-modal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#card-modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  margin: -0.6rem -0.6rem 0 0;
+  transition: all 0.2s;
+}
+#card-modal-close:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+}
+
+#card-modal h3 {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  padding-right: 3rem;
+}
+#card-modal .modal-en {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 1.2rem;
+}
+#card-modal .modal-body {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.85;
+}
+#card-modal .modal-body .tag {
+  display: inline-block;
+  padding: 0.18em 0.6em;
+  margin: 0.15em 0.2em;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-weight: 500;
+}
+#card-modal .modal-body .example {
+  display: block;
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--border-focus);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 0.86rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+}
+#card-modal .modal-body .example em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(0,0,0,0.03);
+  padding: 0.05em 0.2em;
+  border-radius: 3px;
+}
+#card-modal .modal-body .quote {
+  display: block;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  background: rgba(163,181,201,0.08);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.7;
+}
+#card-modal .modal-body .quote .quote-source {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.74rem;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: right;
+}
+#card-modal .modal-body .scenario-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.75rem;
+}
+#card-modal .modal-body .scenario-tags .s-tag {
+  font-size: 0.72rem;
+  padding: 0.15em 0.5em;
+  border-radius: 100px;
+  background: rgba(59,55,51,0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* Exam tip block in modal */
+#card-modal .modal-body .exam-tip {
+  display: block;
+  margin-top: 1.1rem;
+  padding: 0.85rem 1rem;
+  background: rgba(184,174,200,0.12);
+  border: 1px solid rgba(184,174,200,0.25);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+#card-modal .modal-body .exam-tip strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+#card-modal .modal-body .exam-tag {
+  display: inline-block;
+  padding: 0.12em 0.45em;
+  margin: 0.1em 0.15em;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.exam-tag.tem4  { background: #d8e2ed; color: #5a7088; }
+.exam-tag.tem8  { background: #e0d9ed; color: #6b5a7e; }
+.exam-tag.ielts { background: #d1e3dd; color: #4a7068; }
+
+@media (max-width: 768px) {
+  #card-modal-overlay { padding: 0.8rem; align-items: flex-end; }
+  #card-modal { max-height: 92vh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 1.5rem; }
+}
+
+/* ========== Card Styles ========== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.6rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  opacity: 0.7;
+}
+
+/* Card accent bar colors */
+.card-blue::before   { background: var(--morandi-blue); }
+.card-gold::before   { background: var(--morandi-gold); }
+.card-purple::before { background: var(--morandi-lavender); }
+.card-coral::before  { background: var(--morandi-rose); }
+.card-green::before  { background: var(--morandi-sage); }
+.card-teal::before   { background: var(--morandi-teal); }
+.card-rose::before   { background: var(--morandi-mauve); }
+.card-amber::before  { background: var(--morandi-sand); }
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-focus);
+}
+
+.card h3 {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+.card .card-en {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 400;
+  margin-bottom: 0.85rem;
+}
+.card .card-detail {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.card .tag {
+  display: inline-block;
+  padding: 0.15em 0.55em;
+  margin: 0.15em 0.2em;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Example block */
+.card .example {
+  display: block;
+  margin-top: 0.8rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--border-focus);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  line-height: 1.65;
+}
+.card .example em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: rgba(0,0,0,0.03);
+  padding: 0.05em 0.2em;
+  border-radius: 3px;
+}
+
+/* Scenario badges */
+.scenario-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.7rem;
+}
+.scenario-tags .s-tag {
+  font-size: 0.7rem;
+  padding: 0.15em 0.5em;
+  border-radius: 100px;
+  background: rgba(59,55,51,0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+/* Quote block */
+.card .quote {
+  display: block;
+  margin-top: 0.85rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(163,181,201,0.08);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+}
+.card .quote .quote-source {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* ========== Floating Back Button ========== */
+#back-to-galaxy {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--morandi-blue);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+#back-to-galaxy.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#back-to-galaxy:hover {
+  background: #8a9fb5;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+#back-to-galaxy .tooltip {
+  position: absolute;
+  right: 56px;
+  background: var(--text-primary);
+  color: #fdfcf9;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#back-to-galaxy:hover .tooltip { opacity: 1; }
+
+/* ========== Legend ========== */
+.legend-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.4rem;
+  margin: 1.5rem 0;
+}
+.legend-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.legend-dot span:first-child {
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.ld-blue span:first-child   { background: var(--morandi-blue); }
+.ld-gold span:first-child   { background: var(--morandi-gold); }
+.ld-purple span:first-child { background: var(--morandi-lavender); }
+.ld-coral span:first-child  { background: var(--morandi-rose); }
+.ld-green span:first-child  { background: var(--morandi-sage); }
+.ld-teal span:first-child   { background: var(--morandi-teal); }
+.ld-rose span:first-child   { background: var(--morandi-mauve); }
+.ld-amber span:first-child  { background: var(--morandi-sand); }
+
+/* ========== QR Section ========== */
+.qr-section {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+.qr-card {
+  display: inline-block;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+.qr-card img {
+  display: block;
+  width: 160px;
+  height: 160px;
+  border-radius: 8px;
+}
+.qr-card .qr-label {
+  margin-top: 1rem;
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* ========== Footer ========== */
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========== Summary Chips ========== */
+.categories-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+.cat-chip {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 0.55rem 1.2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: default;
+  transition: all 0.2s;
+}
+.cat-chip:hover {
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 768px) {
+  .galaxy-container { width: 90vw; height: 90vw; }
+  .card-grid { grid-template-columns: 1fr; }
+  .content-wrapper { padding: 0 1rem 3rem; }
+  .hero-title { font-size: 1.8rem; }
+  #back-to-galaxy { bottom: 1.2rem; right: 1.2rem; width: 42px; height: 42px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring, .planet-anchor { animation: none !important; }
+  .scroll-hint { animation: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Subtle background texture (replaces starfield) -->
+<div id="bg-texture"></div>
+
+<!-- ==================== FLOATING BACK BUTTON ==================== -->
+<button id="back-to-galaxy" title="返回星系" aria-label="返回星系">
+  ↑
+  <span class="tooltip">返回星系</span>
+</button>
+
+<!-- ==================== HERO / GALAXY ==================== -->
+<section id="hero">
+  <div class="galaxy-container">
+
+    <!-- Central Sun -->
+    <div class="grammar-sun">
+      <div class="sun-label">
+        <span class="zh">英语语法</span>
+        <span class="en">Grammar</span>
+      </div>
+    </div>
+
+    <!-- Ring 1 — 词性 -->
+    <div class="orbit-ring r1">
+      <div class="planet-anchor" style="transform: translate(-50%, -50%);">
+        <a href="#parts-of-speech" class="planet-node p-fw" title="词性 / Parts of Speech">
+          <span class="p-label"><span class="zh">词性</span><span class="en">Parts of Speech</span></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Ring 2 — 语态 -->
+    <div class="orbit-ring r2">
+      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(-45deg);">
+        <a href="#voice" class="planet-node p-yt" title="语态 / Voice">
+          <span class="p-label"><span class="zh">语态</span><span class="en">Voice</span></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Ring 3 — 句型 -->
+    <div class="orbit-ring r3">
+      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(-90deg);">
+        <a href="#sentence-types" class="planet-node p-jx" title="句型 / Sentence Types">
+          <span class="p-label"><span class="zh">句型</span><span class="en">Sentences</span></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Ring 4 — 非谓语 -->
+    <div class="orbit-ring r4">
+      <div class="planet-anchor" style="transform: translate(-50%, -50%) rotate(-135deg);">
+        <a href="#non-finite" class="planet-node p-fw2" title="非谓语 / Non-finite Verbs">
+          <span class="p-label"><span class="zh">非谓语</span><span class="en">Non-finite</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-title-wrap">
+    <h1 class="hero-title">英语语法星系</h1>
+    <p class="hero-subtitle">English Grammar Galaxy · 探索语言的宇宙</p>
+  </div>
+
+  <!-- Planet Legend -->
+  <div class="legend-row" style="margin-top: 2rem;">
+    <div class="legend-dot ld-blue"><span></span><span>词性</span></div>
+    <div class="legend-dot ld-purple"><span></span><span>语态</span></div>
+    <div class="legend-dot ld-green"><span></span><span>句型</span></div>
+    <div class="legend-dot ld-rose"><span></span><span>非谓语</span></div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>向下滚动探索</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ==================== DETAILED SECTIONS ==================== -->
+<div class="content-wrapper">
+
+  <!-- ===== 1. Parts of Speech 词性 ===== -->
+  <section class="section" id="parts-of-speech">
+    <div class="section-header">
+      <div class="section-icon si-fw">🔤</div>
+      <h2 class="section-title">词性 <span class="en">Parts of Speech</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+
+    <div class="card-grid">
+      <div class="card card-blue">
+        <h3>名词 <span class="card-en">Nouns</span></h3>
+        <div class="card-detail">
+          表示人、事物、地点或抽象概念。分为<span class="tag">可数</span><span class="tag">不可数</span><span class="tag">专有</span><span class="tag">普通</span><span class="tag">抽象</span><span class="tag">集合</span>
+          <span class="example">🗣️ The <em>book</em> on the <em>table</em> holds great <em>wisdom</em>.</span>
+          <span class="example">📝 The <em>analysis</em> of <em>data</em> reveals hidden <em>patterns</em>.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"What's in a <em>name</em>? That which we call a <em>rose</em> by any other <em>name</em> would smell as sweet."<span class="quote-source">— William Shakespeare, Romeo and Juliet</span></span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>动词 <span class="card-en">Verbs</span></h3>
+        <div class="card-detail">
+          表示动作或状态。分为<span class="tag">及物 vt.</span><span class="tag">不及物 vi.</span><span class="tag">系动词</span><span class="tag">助动词</span><span class="tag">情态动词</span>
+          <span class="example">🗣️ She <em>runs</em> every morning and <em>is</em> full of energy.</span>
+          <span class="example">💼 We <em>launched</em> the product and <em>secured</em> major contracts.</span>
+          <span class="example">✍️ The wind <em>howled</em> through the empty streets.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"I <em>came</em>, I <em>saw</em>, I <em>conquered</em>."<span class="quote-source">— Julius Caesar (attrib.)</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 短语动词（phrasal verbs）是专四词汇题的常客：put off（推迟）/ call off（取消）/ turn down（拒绝）/ carry out（执行）/ break down（故障；分解）/ come across（偶遇）/ get along with（相处）——注意同一动词 + 不同小品词的含义差异（give up 放弃 vs. give in 屈服 vs. give away 赠送/泄露）<br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 文学翻译中对动词的精准选择——避免通篇使用基础动词（do/make/get/go），根据语境选用更精确的同义词（conduct / perform / obtain / proceed / transform）</span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>形容词 <span class="card-en">Adjectives</span></h3>
+        <div class="card-detail">
+          修饰名词或代词，表示性质、特征。有<span class="tag">原级</span><span class="tag">比较级</span><span class="tag">最高级</span>变化。
+          <span class="example">🗣️ That's a <em>beautiful</em> dress! — This one is <em>more elegant</em>.</span>
+          <span class="example">📝 The results were <em>significant</em>; the <em>most compelling</em> finding was…</span>
+          <span class="example">✍️ It was a <em>dark</em> and <em>stormy</em> night, <em>bleak</em> and <em>unforgiving</em>.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"It was the <em>best</em> of times, it was the <em>worst</em> of times."<span class="quote-source">— Charles Dickens, A Tale of Two Cities</span></span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>副词 <span class="card-en">Adverbs</span></h3>
+        <div class="card-detail">
+          修饰动词、形容词、其他副词或整个句子。<span class="tag">方式</span><span class="tag">程度</span><span class="tag">频率</span><span class="tag">时间</span><span class="tag">地点</span>
+          <span class="example">🗣️ She sings <em>beautifully</em> and works <em>very</em> hard <em>every day</em>.</span>
+          <span class="example">📝 The experiment was <em>carefully</em> designed and <em>rigorously</em> executed.</span>
+          <span class="example">💼 We <em>urgently</em> need to <em>significantly</em> reduce costs.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"<em>Slowly</em> and <em>surely</em>, the tide <em>inexorably</em> rose."<span class="quote-source">— Adapted from Agatha Christie</span></span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>代词 <span class="card-en">Pronouns</span></h3>
+        <div class="card-detail">
+          代替名词的词。<span class="tag">人称</span><span class="tag">物主</span><span class="tag">反身</span><span class="tag">指示</span><span class="tag">不定</span><span class="tag">疑问</span><span class="tag">关系</span>
+          <span class="example">🗣️ <em>She</em> gave <em>her</em> book to <em>me</em>. <em>This</em> one is <em>mine</em>.</span>
+          <span class="example">📝 <em>One</em> must consider <em>all</em> the evidence before <em>one</em> concludes.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"To <em>thine</em> own <em>self</em> be true, and <em>it</em> must follow, as the night the day, <em>thou</em> canst not then be false to any man."<span class="quote-source">— Shakespeare, Hamlet</span></span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>介词 <span class="card-en">Prepositions</span></h3>
+        <div class="card-detail">
+          表示名词/代词与其他词的关系。<span class="tag">时间</span><span class="tag">地点</span><span class="tag">方向</span><span class="tag">方式</span><span class="tag">原因</span>
+          <span class="example">🗣️ The cat is <em>on</em> the roof <em>at</em> midnight. I'm going <em>to</em> the store.</span>
+          <span class="example">📝 <em>According to</em> the report, profits rose <em>by</em> 15% <em>during</em> Q3.</span>
+          <span class="example">✍️ <em>Beyond</em> the hills, <em>across</em> the river, lies a hidden valley.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"<em>In</em> the beginning God created the heaven and the earth."<span class="quote-source">— Genesis 1:1, King James Bible</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 固定搭配是专四语法与词汇的常考项目：介词 + 名词（at risk / in danger / on purpose / by accident / out of date）、动词 + 介词（depend on / result in / account for / apply for / belong to）、形容词 + 介词（be aware of / be familiar with / be responsible for / be absent from）——这些搭配需要逐个记忆<br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 完形填空中的介词选择、翻译题中英文介词到中文动词的转换（"He walked into the room <em>with</em> a smile on his face" = 他面带微笑走进房间）</span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>连词 <span class="card-en">Conjunctions</span></h3>
+        <div class="card-detail">
+          连接词、短语或句子。<span class="tag">并列 and/but/or</span><span class="tag">从属 because/if/when</span><span class="tag">关联 both…and</span>
+          <span class="example">🗣️ I like tea <em>and</em> coffee, <em>but</em> I prefer water.</span>
+          <span class="example">📝 <em>Although</em> the sample was small, the results were significant.</span>
+          <span class="example">💼 <em>Neither</em> the CEO <em>nor</em> the CFO was available for comment.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"<em>And</em> in the end, the love you take is equal to the love you make."<span class="quote-source">— Paul McCartney, The Beatles</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag ielts">雅思 IELTS</span> <strong>Coherence and Cohesion</strong> 评分标准直接考查连接手段的使用。高分作文需要使用多样化的连词和连接副词：<em>however / furthermore / moreover / consequently / nevertheless / in contrast / on the other hand / as a result</em>。避免过度使用简单连词（and / but / so），尤其在段首</span>
+        </div>
+      </div>
+
+      <div class="card card-blue">
+        <h3>冠词 · 感叹词 <span class="card-en">Articles &amp; Interjections</span></h3>
+        <div class="card-detail">
+          <span class="tag">不定冠词 a/an</span><span class="tag">定冠词 the</span><span class="tag">零冠词</span> —— 感叹词表达情绪：<em>Oh!</em> <em>Wow!</em> <em>Alas!</em>
+          <span class="example">🗣️ <em>A</em> dog chased <em>the</em> cat. <em>Wow!</em> That's amazing!</span>
+          <span class="example">📝 <em>The</em> universe is expanding. <em>An</em> electron is a fundamental particle.</span>
+          <span class="example">✍️ <em>Alas!</em> Poor Yorick! I knew him, Horatio.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"<em>The</em> journey of <em>a</em> thousand miles begins with <em>a</em> single step."<span class="quote-source">— Laozi (attrib.)</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. Tenses 时态 ===== -->
+  <section class="section" id="tenses">
+    <div class="section-header">
+      <div class="section-icon si-ts">⏳</div>
+      <h2 class="section-title">时态体系 <span class="en">Tenses — 12 种核心时态</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-gold">
+        <h3>一般现在时 <span class="card-en">Simple Present</span></h3>
+        <div class="card-detail">
+          经常性动作、客观事实、普遍真理。<span class="tag">do/does</span><span class="tag">动词原形/三单</span>
+          <span class="example">🗣️ I <em>walk</em> to school every day. She <em>drinks</em> tea, not coffee.</span>
+          <span class="example">📝 The Earth <em>revolves</em> around the Sun. Water <em>boils</em> at 100°C.</span>
+          <span class="example">💼 Our company <em>serves</em> over 10,000 clients worldwide.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"The sun also <em>rises</em>, and the sun <em>goes</em> down."<span class="quote-source">— Ecclesiastes 1:5</span></span>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>一般过去时 <span class="card-en">Simple Past</span></h3>
+        <div class="card-detail">
+          过去发生的动作或状态。<span class="tag">did</span><span class="tag">动词过去式</span><span class="tag">不规则变化</span>
+          <span class="example">🗣️ She <em>visited</em> Paris last year. They <em>were</em> so happy together.</span>
+          <span class="example">✍️ He <em>walked</em> into the room and <em>sat</em> down without a word.</span>
+          <span class="example">📝 In 1928, Fleming <em>discovered</em> penicillin by accident.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"I <em>had</em> a dream."<span class="quote-source">— Martin Luther King Jr., abridged</span></span>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>一般将来时 <span class="card-en">Simple Future</span></h3>
+        <div class="card-detail">
+          将来发生的动作或预测。<span class="tag">will + V</span><span class="tag">be going to</span><span class="tag">be about to</span>
+          <span class="example">🗣️ I <em>will call</em> you tomorrow. Look at those clouds — it <em>is going to rain</em>.</span>
+          <span class="example">💼 We <em>will launch</em> the new product next quarter. The deal <em>is about to close</em>.</span>
+          <span class="example">✍️ Tomorrow, and tomorrow, and tomorrow… Life <em>will go</em> on.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"I <em>shall return</em>."<span class="quote-source">— General Douglas MacArthur</span></span>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>现在进行时 <span class="card-en">Present Continuous</span></h3>
+        <div class="card-detail">
+          正在进行的动作或近期安排。<span class="tag">am/is/are + V-ing</span>
+          <span class="example">🗣️ She <em>is reading</em> a book right now. I <em>am meeting</em> him at 6.</span>
+          <span class="example">💼 We <em>are currently reviewing</em> your application.</span>
+          <span class="example">📝 The climate <em>is changing</em> at an unprecedented rate.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">📝 学术</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>过去进行时 <span class="card-en">Past Continuous</span></h3>
+        <div class="card-detail">
+          过去某时刻正在进行的动作。<span class="tag">was/were + V-ing</span>
+          <span class="example">🗣️ I <em>was sleeping</em> when you called. They <em>were playing</em> football at 3pm.</span>
+          <span class="example">✍️ The rain <em>was falling</em> steadily as she <em>was walking</em> home alone.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>将来进行时 <span class="card-en">Future Continuous</span></h3>
+        <div class="card-detail">
+          将来某时刻正在进行的动作。<span class="tag">will be + V-ing</span>
+          <span class="example">🗣️ This time tomorrow I <em>will be flying</em> to London.</span>
+          <span class="example">💼 We <em>will be discussing</em> the budget at 2pm tomorrow.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>现在完成时 <span class="card-en">Present Perfect</span></h3>
+        <div class="card-detail">
+          过去动作对现在的影响或持续到现在。<span class="tag">have/has + 过去分词</span>
+          <span class="example">🗣️ I <em>have finished</em> my homework. She <em>has lived</em> here since 2010.</span>
+          <span class="example">📝 Researchers <em>have identified</em> three key factors.</span>
+          <span class="example">💼 We <em>have seen</em> a 20% increase in sales this quarter.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"I <em>have been</em> young, and now am old; yet <em>have</em> I not <em>seen</em> the righteous forsaken."<span class="quote-source">— Psalm 37:25</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 现在完成时 vs 一般过去时是高频考点——关键词区分：since/for / already / yet / ever / never / recently / so far / in the past few years → 用现在完成时；yesterday / last week / in 2010 / …ago → 用一般过去时<br>
+          <span class="exam-tag ielts">雅思 IELTS</span> Writing Task 1 描述近期趋势："Sales <em>have increased</em> steadily over the past decade." Speaking 中展示语法多样性时，现在完成时是不可或缺的时态之一</span>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>过去完成时 <span class="card-en">Past Perfect</span></h3>
+        <div class="card-detail">
+          表示"过去的过去"。<span class="tag">had + 过去分词</span>
+          <span class="example">🗣️ By the time I arrived, the movie <em>had already started</em>.</span>
+          <span class="example">✍️ She realized she <em>had left</em> her keys in the door. The thief <em>had entered</em> while she slept.</span>
+          <span class="example">📝 The subjects <em>had shown</em> no prior symptoms before the treatment began.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span><span class="s-tag">📝 学术</span></div>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 阅读理解和翻译题中的叙事时间线判断——过去完成时标记"过去的过去"，常与 by the time / before / when / after 引导的时间状语从句搭配。改错题中注意与一般过去时的区分：两个过去的动作，先发生的用过去完成时</span>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>将来完成时 <span class="card-en">Future Perfect</span></h3>
+        <div class="card-detail">
+          将来某时之前已完成的动作。<span class="tag">will have + 过去分词</span>
+          <span class="example">🗣️ By next year, I <em>will have graduated</em> from university.</span>
+          <span class="example">💼 By Q4, we <em>will have completed</em> the merger process.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>现在完成进行时 <span class="card-en">Present Perfect Continuous</span></h3>
+        <div class="card-detail">
+          从过去持续到现在，强调持续性。<span class="tag">have/has been + V-ing</span>
+          <span class="example">🗣️ I <em>have been waiting</em> for two hours! Where have you been?</span>
+          <span class="example">📝 Scientists <em>have been studying</em> this phenomenon for decades.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>过去完成进行时 <span class="card-en">Past Perfect Continuous</span></h3>
+        <div class="card-detail">
+          过去某时之前一直进行的动作。<span class="tag">had been + V-ing</span>
+          <span class="example">🗣️ He <em>had been working</em> there for 10 years before he finally quit.</span>
+          <span class="example">✍️ The detective <em>had been following</em> the suspect for weeks before making the arrest.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-gold">
+        <h3>将来完成进行时 <span class="card-en">Future Perfect Continuous</span></h3>
+        <div class="card-detail">
+          持续到将来某时的动作。<span class="tag">will have been + V-ing</span>
+          <span class="example">🗣️ By June, I <em>will have been studying</em> here for exactly three years.</span>
+          <span class="example">💼 By the end of this project, our team <em>will have been collaborating</em> for 18 months.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. Voice 语态 ===== -->
+  <section class="section" id="voice">
+    <div class="section-header">
+      <div class="section-icon si-yt">🔄</div>
+      <h2 class="section-title">语态 <span class="en">Voice</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-purple">
+        <h3>主动语态 <span class="card-en">Active Voice</span></h3>
+        <div class="card-detail">
+          主语是动作的<strong>执行者</strong>。直接、有力、清晰。
+          <span class="example">🗣️ The chef <em>cooks</em> the meal with great care.</span>
+          <span class="example">📝 The researcher <em>conducted</em> three experiments to verify the hypothesis.</span>
+          <span class="example">💼 Our team <em>delivered</em> the project ahead of schedule.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"I <em>have nothing to offer</em> but blood, toil, tears and sweat."<span class="quote-source">— Winston Churchill (active, first-person)</span></span>
+        </div>
+      </div>
+
+      <div class="card card-purple">
+        <h3>被动语态 <span class="card-en">Passive Voice</span></h3>
+        <div class="card-detail">
+          主语是动作的<strong>承受者</strong>。结构：<span class="tag">be + 过去分词 (+ by 施动者)</span>
+          <span class="example">🗣️ The meal <em>was cooked</em> by a famous chef.</span>
+          <span class="example">📝 The experiment <em>was conducted</em> under controlled conditions.</span>
+          <span class="example">💼 The contract <em>was signed</em> by both parties yesterday.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"We hold these truths to <em>be</em> self-evident, that all men <em>are created</em> equal."<span class="quote-source">— Declaration of Independence</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag ielts">雅思 IELTS</span> Writing Task 1 图表描述大量使用被动："It <em>can be seen</em> that…" / "A significant increase <em>was observed</em> in…" / "The figure <em>is projected</em> to reach…" <strong>被动语态是雅思学术写作 Task 1 的必备技能。</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 各时态被动语态转换（尤其完成时和进行时被动）、不及物动词无被动（happen / appear / occur / take place / break out）</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-grid" style="margin-top:1rem;">
+      <div class="card card-purple">
+        <h3>被动语态 — 各时态对照 <span class="card-en">Passive Across Tenses</span></h3>
+        <div class="card-detail">
+          <span class="tag">一般现在</span> am/is/are <em>done</em><br>
+          <span class="tag">一般过去</span> was/were <em>done</em><br>
+          <span class="tag">一般将来</span> will be <em>done</em><br>
+          <span class="tag">现在进行</span> am/is/are being <em>done</em><br>
+          <span class="tag">过去进行</span> was/were being <em>done</em><br>
+          <span class="tag">现在完成</span> have/has been <em>done</em><br>
+          <span class="tag">过去完成</span> had been <em>done</em><br>
+          <span class="tag">情态动词</span> can/must/should be <em>done</em>
+          <span class="example">🗣️ The window <em>was broken</em> (by the storm). — 施动者不明确时用被动</span>
+          <span class="example">📝 In academic writing, passive voice is common: "It <em>has been shown</em> that…"</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. Mood 语气 ===== -->
+  <section class="section" id="mood">
+    <div class="section-header">
+      <div class="section-icon si-yq">🎭</div>
+      <h2 class="section-title">语气 <span class="en">Mood</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-coral">
+        <h3>陈述语气 <span class="card-en">Indicative Mood</span></h3>
+        <div class="card-detail">
+          陈述事实、观点或提出问题。最常用的语气，涵盖绝大多数日常交流。
+          <span class="example">🗣️ The Earth <em>orbits</em> the Sun. <em>Do</em> you like coffee?</span>
+          <span class="example">📝 The study <em>demonstrates</em> a clear correlation between diet and health.</span>
+          <span class="example">💼 Our revenue <em>exceeded</em> projections for the third consecutive quarter.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+
+      <div class="card card-coral">
+        <h3>祈使语气 <span class="card-en">Imperative Mood</span></h3>
+        <div class="card-detail">
+          表达命令、请求、建议、警告。通常省略主语 you，直接用动词原形。
+          <span class="example">🗣️ <em>Open</em> the door, please. <em>Don't</em> be late! <em>Let's</em> go!</span>
+          <span class="example">💼 <em>Please find</em> the report attached. <em>Do not hesitate</em> to contact us.</span>
+          <span class="example">✍️ <em>To be</em>, or not <em>to be</em>… (不定式也可表祈使)</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"<em>Ask</em> not what your country can do for you — <em>ask</em> what you can do for your country."<span class="quote-source">— John F. Kennedy</span></span>
+        </div>
+      </div>
+
+      <div class="card card-coral">
+        <h3>虚拟语气 <span class="card-en">Subjunctive Mood</span></h3>
+        <div class="card-detail">
+          表达愿望、假设、建议、要求等<strong>非事实</strong>情况。英语中最易被忽略的语气。<br><br>
+          <strong>▸ 与现在相反：</strong><span class="tag">If I were…</span><br>
+          <span class="example">If I <em>were</em> you, I <em>would accept</em> the offer. (但我不是你)</span><br>
+          <strong>▸ 与过去相反：</strong><span class="tag">If I had done…</span><br>
+          <span class="example">If she <em>had studied</em> harder, she <em>would have passed</em>. (但她当时没努力)</span><br>
+          <strong>▸ 与将来可能相反：</strong><span class="tag">If I were to… / should…</span><br>
+          <span class="example">If it <em>were to rain</em> tomorrow, the event <em>would be</em> canceled.</span><br>
+          <strong>▸ wish 后的虚拟：</strong><br>
+          <span class="example">I wish I <em>were</em> taller. I wish I <em>had known</em> the truth earlier.</span><br>
+          <strong>▸ 建议/要求/命令后的 that 从句：</strong>(动词原形)<br>
+          <span class="example">I suggest that he <em>go</em> immediately. It is essential that she <em>be</em> present.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">💼 商务</span></div>
+          <span class="quote">"If music <em>be</em> the food of love, play on."<span class="quote-source">— Shakespeare, Twelfth Night</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 条件句三种基本虚拟（与现在/过去/将来相反）、wish 后的虚拟、as if/though、it's (high) time that… did、would rather that… did<br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 含蓄虚拟（but for / without / otherwise / or）、错综时间条件句（从句过去 + 主句现在）、名词性从句中的虚拟（suggest/order/require/insist/recommend that sb. <em>(should) do</em>）<br>
+          <span class="exam-tag ielts">雅思 IELTS</span> Speaking Part 3 表达假设与推测（If I <em>were to speculate</em>… / I <em>would imagine</em> that…）、Writing Task 2 让步假设（Even if it <em>were</em> the case…）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 5. Sentence Types 句型 ===== -->
+  <section class="section" id="sentence-types">
+    <div class="section-header">
+      <div class="section-icon si-jx">🏗️</div>
+      <h2 class="section-title">句子类型 <span class="en">Sentence Types</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-green">
+        <h3>简单句 <span class="card-en">Simple Sentence</span></h3>
+        <div class="card-detail">
+          一个<strong>独立分句</strong>，包含一个主语和一个谓语。五大基本句型：
+          <span class="tag">S+V</span><span class="tag">S+V+O</span><span class="tag">S+V+C</span><span class="tag">S+V+O+O</span><span class="tag">S+V+O+C</span>
+          <span class="example">🗣️ The cat <em>slept</em>. — S+V (主谓)</span>
+          <span class="example">🗣️ I <em>love</em> coffee. — S+V+O (主谓宾)</span>
+          <span class="example">🗣️ She <em>is</em> a doctor. — S+V+C (主系表)</span>
+          <span class="example">🗣️ He <em>gave</em> me a gift. — S+V+O+O (主谓双宾)</span>
+          <span class="example">🗣️ They <em>elected</em> him president. — S+V+O+C (主谓宾补)</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span></div>
+        </div>
+      </div>
+
+      <div class="card card-green">
+        <h3>并列句 <span class="card-en">Compound Sentence</span></h3>
+        <div class="card-detail">
+          两个或多个<strong>独立分句</strong>由并列连词连接。
+          <span class="tag">FANBOYS: for, and, nor, but, or, yet, so</span>
+          <span class="example">🗣️ I wanted to go, <em>but</em> it was too late, <em>so</em> I stayed home.</span>
+          <span class="example">💼 The market is volatile, <em>yet</em> our portfolio remains stable.</span>
+          <span class="example">✍️ The sun was setting, <em>and</em> the sky turned a brilliant shade of crimson.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"It is a far, far better thing that I do, than I have ever done; it is a far, far better rest that I go to than I have ever known."<span class="quote-source">— Dickens, A Tale of Two Cities</span></span>
+        </div>
+      </div>
+
+      <div class="card card-green">
+        <h3>复合句 <span class="card-en">Complex Sentence</span></h3>
+        <div class="card-detail">
+          一个<strong>主句</strong> + 一个或多个<strong>从句</strong>。从句由从属连词或关系词引导。
+          <span class="tag">because</span><span class="tag">although</span><span class="tag">if</span><span class="tag">when</span><span class="tag">which</span><span class="tag">that</span>
+          <span class="example">🗣️ <em>Although</em> I was tired, I finished the work <em>that</em> was due.</span>
+          <span class="example">📝 <em>Because</em> the sample size was limited, further research <em>that</em> involves more participants is needed.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"<em>When</em> you want something, all the universe conspires in helping you to achieve it."<span class="quote-source">— Paulo Coelho, The Alchemist</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag ielts">雅思 IELTS</span> <strong>Writing Task 2 Band 7+ 的关键要求</strong>——使用多种复杂句式（a mix of simple and complex sentence forms）。建议在每段中使用：1 个复合句（主句+从句）+ 1 个并列句（FANBOYS）+ 1 个简单句（强调观点），形成节奏变化。不要全篇简单句或全篇复合句——<strong>多样性</strong>才是高分关键<br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 写作中避免流水句（run-on sentences）——两个独立分句之间不能只用逗号连接，需要用连词或分号</span>
+        </div>
+      </div>
+
+      <div class="card card-green">
+        <h3>四大功能句型 <span class="card-en">By Function</span></h3>
+        <div class="card-detail">
+          <span class="tag">陈述句 Declarative</span> I enjoy learning English.<br>
+          <span class="tag">疑问句 Interrogative</span> Do you enjoy learning English? What do you find most challenging?<br>
+          <span class="tag">祈使句 Imperative</span> Practice English every single day.<br>
+          <span class="tag">感叹句 Exclamatory</span> How beautiful this language is! What a journey it has been!
+          <span class="example">💼 <em>Could</em> you please send the documents? (疑问表请求)</span>
+          <span class="example">🗣️ <em>What an incredible</em> performance that was! (感叹)</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 6. Clauses 从句 ===== -->
+  <section class="section" id="clauses">
+    <div class="section-header">
+      <div class="section-icon si-cj">🔗</div>
+      <h2 class="section-title">从句体系 <span class="en">Clauses</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-teal">
+        <h3>名词性从句 <span class="card-en">Noun Clauses</span></h3>
+        <div class="card-detail">
+          在句中充当<strong>名词</strong>的角色。引导词：<span class="tag">that</span><span class="tag">whether/if</span><span class="tag">wh-词</span><br>
+          <strong>▸ 主语从句：</strong><span class="example"><em>What you said</em> makes perfect sense.</span>
+          <strong>▸ 宾语从句：</strong><span class="example">I know <em>that he is honest</em>. She asked <em>whether I was available</em>.</span>
+          <strong>▸ 表语从句：</strong><span class="example">The problem is <em>that we lack sufficient funding</em>.</span>
+          <strong>▸ 同位语从句：</strong><span class="example">The fact <em>that he lied</em> shocked everyone in the room.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"It is a truth universally acknowledged, <em>that a single man in possession of a good fortune, must be in want of a wife</em>."<span class="quote-source">— Jane Austen, Pride and Prejudice (that-同位语从句)</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 同位语从句 vs 定语从句的区分是专八改错和语法题的经典陷阱：同位语从句中 that 不作成分（只起连接作用），定语从句中 that/which 作主语或宾语。比较：The news <em>that he told me</em>（定语从句，that 作 told 的宾语）vs. The news <em>that he won the prize</em>（同位语从句，that 不作成分）<br>
+          <span class="exam-tag ielts">雅思 IELTS</span> 学术写作中使用 that 引导的同位语从句表达事实和观点："The fact <em>that</em>…" / "There is evidence <em>that</em>…" / "The assumption <em>that</em>…" 能有效提升学术正式度</span>
+        </div>
+      </div>
+
+      <div class="card card-teal">
+        <h3>定语从句 <span class="card-en">Relative Clauses</span></h3>
+        <div class="card-detail">
+          修饰<strong>名词或代词</strong>，相当于形容词。关系词：<br>
+          <span class="tag">who</span><span class="tag">whom</span><span class="tag">whose</span><span class="tag">which</span><span class="tag">that</span><span class="tag">when</span><span class="tag">where</span><span class="tag">why</span><br><br>
+          <strong>▸ 限定性（不可缺少）：</strong><br>
+          <span class="example">The book <em>that I borrowed from you</em> was absolutely fascinating.</span>
+          <strong>▸ 非限定性（补充信息，逗号隔开，不用 that）：</strong><br>
+          <span class="example">My father, <em>who is a retired doctor</em>, still volunteers at the clinic.</span>
+          <span class="example">Paris, <em>where I spent my childhood</em>, will always be home.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"The person, <em>be it gentleman or lady, who has not pleasure in a good novel</em>, must be intolerably stupid."<span class="quote-source">— Jane Austen</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 定语从句是专四语法选择题的必考点：限定性 vs 非限定性（逗号 + which/who，不能用 that）、介词 + which/whom（in which / of whom / to which）、whose 的用法（= of which / of whom）<br>
+          <span class="exam-tag ielts">雅思 IELTS</span> Writing Task 2 高分句式：用 which 引导非限定性定语从句对前文观点进行补充评论，"…, which suggests that…" / "…, which has led to considerable debate." <strong>这能直接提升 Grammatical Range 评分。</strong></span>
+        </div>
+      </div>
+
+      <div class="card card-teal">
+        <h3>状语从句 <span class="card-en">Adverbial Clauses</span></h3>
+        <div class="card-detail">
+          修饰<strong>动词、形容词或整个句子</strong>，表示各种状语关系：<br>
+          <span class="tag">时间 when/while/as/after/before/since/until</span>
+          <span class="tag">地点 where/wherever</span>
+          <span class="tag">原因 because/since/as/now that</span>
+          <span class="tag">目的 so that/in order that/for fear that</span>
+          <span class="tag">结果 so…that/such…that</span>
+          <span class="tag">条件 if/unless/as long as/provided that</span>
+          <span class="tag">让步 although/though/even though/while</span>
+          <span class="tag">方式 as/as if/as though</span>
+          <span class="tag">比较 than/as…as/the more…the more</span>
+          <span class="example">🗣️ <em>When</em> the rain stopped, we went out <em>because</em> the sun was shining.</span>
+          <span class="example">📝 <em>Although</em> the data is promising, we cannot draw conclusions <em>until</em> the trial is complete.</span>
+          <span class="example">✍️ <em>Wherever</em> you go, there you are.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"<em>If</em> you can dream—and not make dreams your master; <em>If</em> you can think—and not make thoughts your aim…"<span class="quote-source">— Rudyard Kipling, "If—"</span></span>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 翻译题高频考点——英译汉时状语从句的语序调整（英语状语从句在后，汉语在前）；改错题中 as / though 引导的倒装让步状语从句（"<em>Try as he might</em>, he couldn't solve it." = Although he tried hard…）<br>
+          <span class="exam-tag ielts">雅思 IELTS</span> Writing Task 2 中使用让步状语从句（Although / Even though / While it is true that…）展示辩证思维，是 Band 7+ 的标志性句式</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. Non-finite Verbs 非谓语 ===== -->
+  <section class="section" id="non-finite">
+    <div class="section-header">
+      <div class="section-icon si-fw2">🌿</div>
+      <h2 class="section-title">非谓语动词 <span class="en">Non-finite Verbs</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-rose">
+        <h3>不定式 <span class="card-en">Infinitive (to + V)</span></h3>
+        <div class="card-detail">
+          兼有名词、形容词、副词的性质。用途极广。<br>
+          <span class="tag">作主语</span> <em>To learn</em> a language requires patience.<br>
+          <span class="tag">作宾语</span> I want <em>to travel</em> the world someday.<br>
+          <span class="tag">作宾补</span> She asked me <em>to wait</em> for her outside.<br>
+          <span class="tag">作定语</span> I have a lot of work <em>to finish</em> before Friday.<br>
+          <span class="tag">作状语</span> He came <em>to help</em> (目的). She is old enough <em>to decide</em> (结果).
+          <span class="example">📝 <em>To understand</em> quantum mechanics, one must first master linear algebra.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+          <span class="quote">"<em>To be</em>, or not <em>to be</em>: that is the question."<span class="quote-source">— Shakespeare, Hamlet</span></span>
+        </div>
+      </div>
+
+      <div class="card card-rose">
+        <h3>动名词 <span class="card-en">Gerund (V-ing)</span></h3>
+        <div class="card-detail">
+          动词的 -ing 形式，起<strong>名词</strong>作用。<br>
+          <span class="tag">作主语</span> <em>Swimming</em> is excellent exercise for the whole body.<br>
+          <span class="tag">作宾语</span> I really enjoy <em>reading</em> historical novels.<br>
+          <span class="tag">作表语</span> My favorite hobby is <em>painting</em> landscapes.<br>
+          <span class="tag">作定语</span> a <em>swimming</em> pool, a <em>reading</em> room<br>
+          <strong>只能接动名词的常见动词：</strong><span class="tag">enjoy</span><span class="tag">avoid</span><span class="tag">suggest</span><span class="tag">mind</span><span class="tag">finish</span><span class="tag">practice</span><span class="tag">admit</span><span class="tag">consider</span><span class="tag">deny</span><span class="tag">postpone</span>
+          <span class="example">🗣️ Would you <em>mind opening</em> the window? I <em>avoid eating</em> too late at night.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span></div>
+        </div>
+      </div>
+
+      <div class="card card-rose">
+        <h3>分词 <span class="card-en">Participles</span></h3>
+        <div class="card-detail">
+          <strong>现在分词 (V-ing)：</strong>表示主动/进行<br>
+          <span class="tag">作定语</span> the <em>sleeping</em> baby, a <em>burning</em> desire<br>
+          <span class="tag">作状语</span> <em>Walking</em> home, I ran into an old friend.<br>
+          <span class="tag">作补语</span> I saw him <em>running</em> across the street.<br><br>
+          <strong>过去分词 (V-ed)：</strong>表示被动/完成<br>
+          <span class="tag">作定语</span> a <em>broken</em> window, the <em>forgotten</em> hero<br>
+          <span class="tag">作状语</span> <em>Frightened</em> by the noise, the deer ran away.<br>
+          <span class="tag">作补语</span> I had my hair <em>cut</em> yesterday.
+          <span class="example">✍️ <em>Exhausted</em> from the journey, she collapsed onto the bed.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-rose">
+        <h3>不定式 vs. 动名词 <span class="card-en">Key Differences</span></h3>
+        <div class="card-detail">
+          <strong>意义不同的动词对：</strong><br>
+          <span class="tag">remember to do</span> 记得要去做（未做）<br>
+          <span class="tag">remember doing</span> 记得做过（已做）<br>
+          <span class="tag">forget to do</span> 忘记要做（未做）<br>
+          <span class="tag">forget doing</span> 忘记做过（已做，用于否定句）<br>
+          <span class="tag">stop to do</span> 停下来去做另一件事<br>
+          <span class="tag">stop doing</span> 停止正在做的事<br>
+          <span class="tag">try to do</span> 努力/设法做（困难的事）<br>
+          <span class="tag">try doing</span> 尝试做（看看效果）<br>
+          <span class="tag">regret to do</span> 遗憾地要做（正式通知）<br>
+          <span class="tag">regret doing</span> 后悔做过某事<br>
+          <span class="tag">mean to do</span> 打算做<br>
+          <span class="tag">mean doing</span> 意味着
+          <span class="example">🗣️ I <em>remember locking</em> the door, but I'll check anyway. (记得锁过了)</span>
+          <span class="example">🗣️ Please <em>remember to lock</em> the door before you leave. (别忘了锁)</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span></div>
+          <span class="exam-tip"><strong>📋 考试聚焦：</strong><br>
+          <span class="exam-tag tem4">专四 TEM-4</span> 非谓语动词是专四语法与词汇部分的<strong>第一大考点</strong>。forget / remember / regret / stop / try / mean / go on 后接 to do 和 doing 的区别几乎年年出现。建议记忆口诀："<em>forget to do 忘去做，forget doing 忘做过；remember to do 记去做，remember doing 记做过；try to do 努力做，try doing 试试看；mean to do 打算做，mean doing 意味着</em>"<br>
+          <span class="exam-tag tem8">专八 TEM-8</span> 独立主格结构（Nominative Absolute）："<em>Weather permitting</em>, we'll go hiking." / "<em>All things considered</em>, it was a success." 分词完成式 having done / having been done 表示动作先于谓语动词发生</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 8. Sentence Elements 句子成分 ===== -->
+  <section class="section" id="sentence-elements">
+    <div class="section-header">
+      <div class="section-icon si-cf">🧩</div>
+      <h2 class="section-title">句子成分 <span class="en">Sentence Elements</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="card-grid">
+      <div class="card card-amber">
+        <h3>主语 <span class="card-en">Subject</span></h3>
+        <div class="card-detail">
+          句子的主体，动作的执行者或被描述对象。常由<span class="tag">名词</span><span class="tag">代词</span><span class="tag">动名词</span><span class="tag">不定式</span><span class="tag">名词从句</span>充当。
+          <span class="example">🗣️ <em>The sun</em> rises in the east. — 名词作主语</span>
+          <span class="example">📝 <em>What the study reveals</em> is alarming. — 名词从句作主语（主语从句）</span>
+          <span class="example">✍️ <em>To err</em> is human; <em>to forgive</em>, divine. — 不定式作主语</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3>谓语 <span class="card-en">Predicate</span></h3>
+        <div class="card-detail">
+          说明主语的动作或状态。由<span class="tag">动词</span>充当，是句子的核心。
+          <span class="example">🗣️ The baby <em>cried</em>. → 简单谓语（一个动词）</span>
+          <span class="example">🗣️ She <em>can speak</em> three languages. → 复合谓语（情态动词 + 实义动词）</span>
+          <span class="example">🗣️ He <em>is reading</em> a novel. → 复合谓语（助动词 + 分词）</span>
+          <span class="example">📝 The theory <em>has been widely accepted</em> by the scientific community.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span></div>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3>宾语 <span class="card-en">Object</span></h3>
+        <div class="card-detail">
+          动作的承受者。<span class="tag">直接宾语</span>动作直接对象 <span class="tag">间接宾语</span>动作间接对象 <span class="tag">介词宾语</span>介词后的宾语
+          <span class="example">🗣️ She gave <em>me</em> (间宾) <em>a book</em> (直宾).</span>
+          <span class="example">🗣️ I'm thinking <em>about you</em>. — 介词宾语</span>
+          <span class="example">💼 Please send <em>the client</em> (间宾) <em>the updated contract</em> (直宾).</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">💼 商务</span></div>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3>补语 <span class="card-en">Complement</span></h3>
+        <div class="card-detail">
+          补充说明主语或宾语的成分。
+          <span class="tag">主补 (Subject Complement)</span> — 系动词之后<br>
+          <span class="example">🗣️ He is <em>a brilliant scientist</em>. She looks <em>tired</em> today.</span>
+          <span class="tag">宾补 (Object Complement)</span> — 补充说明宾语<br>
+          <span class="example">🗣️ We elected him <em>president</em>. They painted the wall <em>white</em>.</span>
+          <span class="example">✍️ The news left her <em>speechless</em>. — 形容词作宾补</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3>定语 <span class="card-en">Attribute</span></h3>
+        <div class="card-detail">
+          修饰名词或代词的成分。<span class="tag">前置定语</span>位于名词前 <span class="tag">后置定语</span>位于名词后
+          <span class="example">🗣️ a <em>beautiful</em> flower — 形容词前置</span>
+          <span class="example">🗣️ the girl <em>in red</em> — 介词短语后置</span>
+          <span class="example">🗣️ The book <em>on the desk</em> is mine. — 介词短语后置</span>
+          <span class="example">📝 The methodology <em>employed in this study</em> is rigorous. — 分词短语后置</span>
+          <span class="example">✍️ The house, <em>weathered by centuries of storms</em>, stood proudly on the cliff.</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+        </div>
+      </div>
+
+      <div class="card card-amber">
+        <h3>状语 <span class="card-en">Adverbial</span></h3>
+        <div class="card-detail">
+          修饰动词、形容词、副词或全句。表示<span class="tag">时间</span><span class="tag">地点</span><span class="tag">方式</span><span class="tag">原因</span><span class="tag">目的</span><span class="tag">结果</span><span class="tag">条件</span><span class="tag">程度</span><span class="tag">频率</span><span class="tag">让步</span>。
+          <span class="example">🗣️ She arrived <em>yesterday</em>. (时间) He ran <em>quickly</em>. (方式)</span>
+          <span class="example">📝 <em>To ensure accuracy</em>, the experiment was repeated three times. (目的)</span>
+          <span class="example">✍️ <em>Slowly and deliberately</em>, the old man opened the letter. (方式)</span>
+          <div class="scenario-tags"><span class="s-tag">🗣️ 日常</span><span class="s-tag">📝 学术</span><span class="s-tag">✍️ 文学</span></div>
+          <span class="quote">"<em>Quietly</em> and <em>without fuss</em>, she changed the world."<span class="quote-source">— Adapted</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Timeline Summary ===== -->
+  <section class="section" id="summary">
+    <div class="section-header">
+      <div class="section-icon" style="background: var(--bg-secondary);">🌟</div>
+      <h2 class="section-title">语法学习路径 <span class="en">Learning Pathway</span></h2>
+      <a href="#hero" class="back-link">← 返回星系</a>
+    </div>
+    <div class="categories-overview">
+      <div class="cat-chip">① 词性 → 认识单词的「身份」</div>
+      <div class="cat-chip">② 句子成分 → 理解词在句中的「角色」</div>
+      <div class="cat-chip">③ 时态 → 掌握时间的「维度」</div>
+      <div class="cat-chip">④ 语态 → 切换表达的「视角」</div>
+      <div class="cat-chip">⑤ 句型 → 搭建句子的「框架」</div>
+      <div class="cat-chip">⑥ 从句 → 丰富表达的「层次」</div>
+      <div class="cat-chip">⑦ 语气 → 传递态度的「温度」</div>
+      <div class="cat-chip">⑧ 非谓语 → 精简句式的「艺术」</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ==================== QR Code Section ==================== -->
+<section class="qr-section">
+  <div class="qr-card">
+    <img
+      src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&bgcolor=fdfcf9&color=3b3733&data=https://github.com/topics/english-grammar"
+      alt="English Grammar QR Code"
+      width="200" height="200"
+      loading="lazy"
+      onerror="this.onerror=null; this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><rect width=%22200%22 height=%22200%22 fill=%22%23fdfcf9%22/><text x=%22100%22 y=%22100%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23a09890%22 font-size=%2214%22 font-family=%22sans-serif%22>Scan for Grammar</text></svg>');"
+    >
+    <p class="qr-label">📱 扫描二维码 · 探索更多语法资源</p>
+  </div>
+</section>
+
+<footer>
+  <p>English Grammar Galaxy · 知识的宇宙，无限探索 · Morandi Edition ✨</p>
+</footer>
+
+<!-- ==================== Card Expansion Modal ==================== -->
+<div id="card-modal-overlay">
+  <div id="card-modal">
+    <button id="card-modal-close" aria-label="关闭">✕</button>
+    <div id="card-modal-content"></div>
+  </div>
+</div>
+
+<!-- ==================== JavaScript ==================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ======= 1. Section reveal on scroll =======
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.section').forEach(section => {
+    section.style.opacity = '0';
+    section.style.transform = 'translateY(30px)';
+    section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    sectionObserver.observe(section);
+  });
+
+  // ======= 2. Floating back-to-galaxy button =======
+  const backBtn = document.getElementById('back-to-galaxy');
+  const heroSection = document.getElementById('hero');
+
+  if (backBtn && heroSection) {
+    const heroObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          backBtn.classList.remove('visible');
+        } else {
+          backBtn.classList.add('visible');
+        }
+      });
+    }, { threshold: 0 });
+
+    heroObserver.observe(heroSection);
+
+    backBtn.addEventListener('click', function() {
+      document.querySelector('#hero').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // ======= 3. Planet click — smooth scroll =======
+  document.querySelectorAll('.planet-node').forEach(planet => {
+    planet.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // ======= 4. Back links in sections — smooth scroll =======
+  document.querySelectorAll('.back-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // ======= 5. Planet hover fix =======
+  document.querySelectorAll('.planet-node').forEach(planet => {
+    planet.addEventListener('mouseenter', function() {
+      this.style.zIndex = '100';
+    });
+    planet.addEventListener('mouseleave', function() {
+      this.style.zIndex = '';
+    });
+  });
+
+  // ======= 6. Card Expansion Modal =======
+  const modalOverlay = document.getElementById('card-modal-overlay');
+  const modalContent = document.getElementById('card-modal-content');
+  const modalClose = document.getElementById('card-modal-close');
+  let scrollPosition = 0;
+  let modalOpen = false;
+
+  function openModal(card) {
+    if (modalOpen) return;
+    modalOpen = true;
+
+    // Lock body scroll (overflow:hidden — smoother than position:fixed)
+    scrollPosition = window.scrollY;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = 'var(--scrollbar-width, 0px)';
+
+    // Clone card content into modal
+    const title = card.querySelector('h3')?.innerHTML || '';
+    const cardEn = card.querySelector('.card-en')?.innerHTML || '';
+    const detail = card.querySelector('.card-detail')?.innerHTML || '';
+    let accentClass = '';
+    const cardClasses = card.className.split(' ');
+    for (const cls of cardClasses) {
+      if (cls.startsWith('card-')) { accentClass = cls; break; }
+    }
+
+    modalContent.innerHTML = ''
+      + '<h3>' + title + '</h3>'
+      + '<span class="modal-en">' + cardEn + '</span>'
+      + '<div class="modal-body ' + accentClass + '">' + detail + '</div>';
+
+    // Show modal (small delay ensures DOM update before transition)
+    requestAnimationFrame(() => {
+      modalOverlay.classList.add('active');
+    });
+  }
+
+  function closeModal() {
+    if (!modalOpen) return;
+    modalOverlay.classList.remove('active');
+    modalOpen = false;
+
+    // Restore body scroll
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    window.scrollTo(0, scrollPosition);
+  }
+
+  // Click card → open modal (stopPropagation prevents any bubble issues)
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('a')) return;
+      e.stopPropagation();
+      openModal(this);
+    });
+  });
+
+  // Close button
+  modalClose.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeModal();
+  });
+
+  // Click overlay background → close (with guard)
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === modalOverlay) closeModal();
+  });
+
+  // ESC key → close
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      closeModal();
+    }
+  });
+
+})();
+</script>
+
+</body>
+</html>
