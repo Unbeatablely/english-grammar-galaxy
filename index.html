@@ -411,11 +411,11 @@ footer{text-align:center;padding:2rem;color:var(--text-muted);font-size:0.8rem;p
 <section id="grammar-web">
 <h2 class="web-title">语法网络 · 从 0 到 1</h2>
 <p class="web-subtitle" id="gw-step-label">起源：英语语法体系</p>
-<div class="web-svg-container"><svg viewBox="0 0 1000 1000" id="web-svg"></svg></div>
+<div class="web-svg-container" id="gw-stage" style="position:relative;overflow:hidden"></div>
 <div style="display:flex;align-items:center;gap:0.8rem;margin-top:1rem;flex-wrap:wrap;justify-content:center">
-  <button id="gw-prev" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s" title="上一步">◀</button>
-  <button id="gw-play" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--c-noun);color:#fff;font-size:1.1rem;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm)" title="自动播放">▶</button>
-  <button id="gw-next" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s" title="下一步">▶</button>
+  <button id="gw-prev" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s">◀</button>
+  <button id="gw-play" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--c-noun);color:#fff;font-size:1.1rem;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm)">▶</button>
+  <button id="gw-next" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s">▶</button>
   <div id="gw-dots" style="display:flex;gap:0.35rem;align-items:center"></div>
 </div>
 <button id="web-back-btn" style="margin-top:0.8rem;display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.2rem;border:1px solid var(--border);border-radius:100px;background:var(--card-bg);color:var(--text-secondary);font-size:0.85rem;cursor:pointer;transition:all 0.25s;box-shadow:var(--shadow-sm)">🌌 返回星系</button>
@@ -475,8 +475,8 @@ _vt.addEventListener('click',function(e){e.stopPropagation();hero.style.display=
 _wbb.addEventListener('click',function(e){e.stopPropagation();gwStop();_gw.style.display='none';hero.style.display='';_cw.style.display='';window.scrollTo(0,0);});
 }
 
-// Grammar Web — Progressive Timeline
-let gwCurrent=0,gwTimer=null,gwPlaying=false,gwBuilt=false;
+// Grammar Web — Progressive Timeline (pure DOM)
+var gwCurrent=0,gwTimer=null,gwPlaying=false,gwBuilt=false,gwStageEl=null,gwNodeDivs={},gwLinkDivs=[],gwDotsContainer=null;
 const gwSteps=[
 {label:'起源：英语语法体系',nodes:[],links:[]},
 {label:'第1步：词法基础 — 名词·冠词·代词',nodes:['noun','art','pron'],links:[{from:'noun',to:'art',type:'solid',label:'修饰'},{from:'noun',to:'pron',type:'solid',label:'替代'}]},
@@ -505,91 +505,66 @@ ell:{x:380,y:520,color:'#a8b8a4',en:'Ellipsis',href:'#ellipsis'},there:{x:520,y:
 it:{x:560,y:420,color:'#c0b4a4',en:'It Usage',href:'#it-usage'},comp:{x:700,y:360,color:'#a4b89a',en:'Comparison',href:'#comparison'}
 };
 
-// Label map — defined first so renderGW can use it
-const gwNodeLabels={noun:'名词',art:'冠词',pron:'代词',adj:'形副',num:'数词',prep:'介词',conj:'连词',verb:'动词',tense:'时态',voice:'语态',mood:'语气',nonfin:'非谓语',modal:'情态',elem:'成分',sent:'句型',clause:'从句',sv:'主谓一致',inv:'倒装',emp:'强调',ell:'省略',there:'There be',it:'It用法',comp:'比较'};
+// Grammar Web — pure DOM implementation
+var gwNodeLabels={noun:'名词',art:'冠词',pron:'代词',adj:'形副',num:'数词',prep:'介词',conj:'连词',verb:'动词',tense:'时态',voice:'语态',mood:'语气',nonfin:'非谓语',modal:'情态',elem:'成分',sent:'句型',clause:'从句',sv:'主谓一致',inv:'倒装',emp:'强调',ell:'省略',there:'There be',it:'It用法',comp:'比较'};
 
 function renderGW(){
 if(gwBuilt)return;gwBuilt=true;
-const svg=document.getElementById('web-svg'),NS='http://www.w3.org/2000/svg',cx=500,cy=400,nR=24;
-function el(t,a){const e=document.createElementNS(NS,t);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
-svg.innerHTML=''; // Clear previous content
-// Defs
-const defs=el('defs',{});
-const mk=el('marker',{id:'arrow',viewBox:'0 0 10 10',refX:'7',refY:'5',markerWidth:'5',markerHeight:'5',orient:'auto'});
-mk.appendChild(el('path',{d:'M0,0 L10,5 L0,10 Z',fill:'#b0a89e'}));defs.appendChild(mk);
-svg.appendChild(defs);
+var stage=document.getElementById('gw-stage');
+if(!stage)return;
+stage.style.width='100%';stage.style.maxWidth='900px';stage.style.height='min(85vw,700px)';stage.style.margin='0 auto';
+stage.style.background='radial-gradient(circle at center, rgba(207,191,168,0.08) 0%, transparent 70%)';
 
-// Center
-const cg=el('g',{class:'web-node',id:'gw-center',style:'cursor:default'});
-cg.appendChild(el('circle',{cx,cy,r:38,fill:'#fdfcf9',stroke:'#d5cec5','stroke-width':'2.5'}));
-const ct=el('text',{x:cx,y:cy-4,'text-anchor':'middle','font-size':'14','font-weight':'700','font-family':'"Cormorant Garamond","Noto Serif SC",serif',fill:'#3b3733'});ct.textContent='语法体系';cg.appendChild(ct);
-svg.appendChild(cg);
+var center=document.createElement('div');center.id='gw-center';
+center.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:#fdfcf9;border:2.5px solid #d5cec5;display:flex;align-items:center;justify-content:center;z-index:10;font-family:"Cormorant Garamond","Noto Serif SC",serif;font-weight:700;font-size:14px;color:#3b3733';
+center.textContent='语法体系';stage.appendChild(center);
 
-// Pre-create all nodes (hidden) and links
-const nodeEls={};
-Object.entries(gwPositions).forEach(([id,p])=>{
-const g=el('g',{class:'web-node',style:'cursor:pointer;opacity:0;transition:opacity 0.5s ease,transform 0.5s ease;transform:scale(0.6)'});
-g.dataset.nodeId=id;g.dataset.href=p.href;
-g.appendChild(el('circle',{cx:p.x,cy:p.y,r:nR+2,fill:'rgba(59,55,51,0.04)'}));
-g.appendChild(el('circle',{cx:p.x,cy:p.y,r:nR,fill:'#fdfcf9',stroke:p.color,'stroke-width':'2.2'}));
-const lb=el('text',{x:p.x,y:p.y-3,'text-anchor':'middle','font-size':'11','font-weight':'600','font-family':'"Noto Sans SC","Inter",sans-serif',fill:'#3b3733'});lb.textContent=gwNodeLabels[id]||id;g.appendChild(lb);
-const en=el('text',{x:p.x,y:p.y+11,'text-anchor':'middle','font-size':'7','font-family':'Inter,sans-serif',fill:'#a09890','font-style':'italic'});en.textContent=(p.en||'').length>10?(p.en||'').substring(0,10):(p.en||'');g.appendChild(en);
-g.addEventListener('click',function(){showGalaxy();setTimeout(()=>{const t=document.querySelector(p.href);if(t)t.scrollIntoView({behavior:'smooth'});},300);});
-svg.appendChild(g);nodeEls[id]=g;
+var nodeDefs=[
+{id:'noun',x:68,y:18,c:'#a3b5c9',h:'#nouns'},{id:'art',x:82,y:32,c:'#9bb5c0',h:'#articles'},{id:'pron',x:86,y:50,c:'#b0bcc9',h:'#pronouns'},
+{id:'adj',x:80,y:68,c:'#b8aec8',h:'#adjectives'},{id:'num',x:66,y:80,c:'#c4aeb8',h:'#numerals'},{id:'prep',x:48,y:84,c:'#cfbfa8',h:'#prepositions'},
+{id:'conj',x:30,y:80,c:'#b5bfa9',h:'#conjunctions'},{id:'verb',x:16,y:68,c:'#c8aa9f',h:'#verbs-detail'},
+{id:'tense',x:10,y:48,c:'#c9bd9f',h:'#tenses'},{id:'voice',x:10,y:30,c:'#a3b8b2',h:'#voice'},
+{id:'mood',x:20,y:16,c:'#c8aa8f',h:'#mood'},{id:'nonfin',x:36,y:10,c:'#b8a4b8',h:'#non-finite'},{id:'modal',x:50,y:12,c:'#c4a09a',h:'#modal-verbs'},
+{id:'elem',x:44,y:32,c:'#aeb89a',h:'#sentence-elements'},{id:'sent',x:60,y:44,c:'#a4b2c4',h:'#sentence-types'},
+{id:'clause',x:58,y:28,c:'#a4b8b0',h:'#clauses'},{id:'sv',x:72,y:60,c:'#c4a89a',h:'#subject-verb'},
+{id:'inv',x:32,y:44,c:'#b4a4c0',h:'#inversion'},{id:'emp',x:24,y:60,c:'#c0a4a8',h:'#emphasis'},
+{id:'ell',x:40,y:66,c:'#a8b8a4',h:'#ellipsis'},{id:'there',x:56,y:68,c:'#b0aca4',h:'#there-be'},
+{id:'it',x:62,y:52,c:'#c0b4a4',h:'#it-usage'},{id:'comp',x:76,y:44,c:'#a4b89a',h:'#comparison'}
+];
+
+gwNodeDivs={};
+nodeDefs.forEach(function(nd){
+var d=document.createElement('div');d.id='gw-node-'+nd.id;d.title=gwNodeLabels[nd.id]+' - 点击跳转';
+d.style.cssText='position:absolute;left:'+nd.x+'%;top:'+nd.y+'%;transform:translate(-50%,-50%) scale(0.6);width:48px;height:48px;border-radius:50%;background:#fdfcf9;border:2.2px solid '+nd.c+';display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 0.5s ease,transform 0.5s ease;z-index:5;font-size:10px;font-weight:600;font-family:"Noto Sans SC","Inter",sans-serif;color:#3b3733';
+d.textContent=gwNodeLabels[nd.id];
+d.addEventListener('click',function(){showGalaxy();setTimeout(function(){var t=document.querySelector(nd.h);if(t)t.scrollIntoView({behavior:'smooth'});},300);});
+stage.appendChild(d);gwNodeDivs[nd.id]=d;
 });
 
-// Collect all links from steps
-const allLinkData=[];
-gwSteps.forEach(s=>{s.links.forEach(l=>{const k=l.from+'-'+l.to;if(!allLinkData.find(x=>x.key===k)){allLinkData.push({...l,key:k});}});});
-const linkGroup=el('g',{});linkGroup.id='gw-links';
-allLinkData.forEach((l,i)=>{
-const fp=gwPositions[l.from],tp=gwPositions[l.to];
-if(!fp||!tp)return;
-const mx=(fp.x+tp.x)/2,my=(fp.y+tp.y)/2,dx=tp.x-fp.x,dy=tp.y-fp.y,len=Math.sqrt(dx*dx+dy*dy),nx=-dy/len,ny=dx/len,off=l.type==='dashed'?15:-20;
-const p=el('path',{d:'M'+fp.x+','+fp.y+' Q'+(mx+nx*off)+','+(my+ny*off)+' '+tp.x+','+tp.y,stroke:l.type==='solid'?'#b0a89e':'#c4bbb0','stroke-width':l.type==='solid'?'1.8':'1.3','stroke-dasharray':l.type==='dashed'?'6,4':'none','marker-end':l.type==='dashed'?'url(#arrow)':'',fill:'none',class:'web-link',opacity:'0',transition:'opacity 0.5s ease'});
-p.dataset.from=l.from;p.dataset.to=l.to;
-linkGroup.appendChild(p);
-// Label (hidden)
-const tx=el('text',{x:mx+nx*off,y:my+ny*off-7,'text-anchor':'middle','font-size':'9','font-family':'Inter,"Noto Sans SC",sans-serif',fill:'#a09890',class:'web-link-label',opacity:'0','pointer-events':'none'});tx.textContent=l.label;tx.dataset.from=l.from;tx.dataset.to=l.to;
-linkGroup.appendChild(tx);
-});
-svg.appendChild(linkGroup);
-
-// Progress dots
-const dotsEl=document.getElementById('gw-dots');
-dotsEl.innerHTML='';gwSteps.forEach((_,i)=>{const d=document.createElement('span');d.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(i===0?'var(--c-noun)':'var(--border)')+';transition:background 0.3s;cursor:pointer';d.addEventListener('click',()=>gwGoTo(i));dotsEl.appendChild(d);});
+gwDotsContainer=document.getElementById('gw-dots');
+if(gwDotsContainer){gwDotsContainer.innerHTML='';gwSteps.forEach(function(_,i){var dot=document.createElement('span');dot.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(i===0?'var(--c-noun)':'var(--border)')+';transition:background 0.3s;cursor:pointer';dot.addEventListener('click',function(){gwGoTo(i);});gwDotsContainer.appendChild(dot);});}
+gwGoTo(0);
+}
 
 function gwUpdateUI(){
-const s=gwSteps[gwCurrent];document.getElementById('gw-step-label').textContent=s.label;
-// Update dots
-dotsEl.querySelectorAll('span').forEach((d,i)=>{d.style.background=i===gwCurrent?'var(--c-noun)':i<gwCurrent?'var(--text-muted)':'var(--border)';});
-// Show nodes that have appeared in steps 0..gwCurrent
-const visibleNodes=new Set();
-for(let i=0;i<=gwCurrent;i++) gwSteps[i].nodes.forEach(n=>visibleNodes.add(n));
-Object.entries(nodeEls).forEach(([id,g])=>{if(visibleNodes.has(id)){g.style.opacity='1';g.style.transform='scale(1)';}else{g.style.opacity='0';g.style.transform='scale(0.6)';}});
-// Show links that appear in steps 0..gwCurrent (both endpoints visible)
-const visibleLinks=new Set();
-for(let i=0;i<=gwCurrent;i++) gwSteps[i].links.forEach(l=>visibleLinks.add(l.from+'-'+l.to));
-linkGroup.querySelectorAll('.web-link').forEach(l=>{const k=l.dataset.from+'-'+l.dataset.to;if(visibleLinks.has(k)){l.setAttribute('opacity','1');}else{l.setAttribute('opacity','0');}});
-linkGroup.querySelectorAll('.web-link-label').forEach(lb=>{const k=lb.dataset.from+'-'+lb.dataset.to;lb.setAttribute('opacity',visibleLinks.has(k)?'0.7':'0');});
-// Disable prev/next at edges
-document.getElementById('gw-prev').style.opacity=gwCurrent===0?'0.3':'1';
-document.getElementById('gw-next').style.opacity=gwCurrent===gwSteps.length-1?'0.3':'1';
+var labelEl=document.getElementById('gw-step-label');if(labelEl)labelEl.textContent=gwSteps[gwCurrent].label;
+if(gwDotsContainer){gwDotsContainer.querySelectorAll('span').forEach(function(d,i){d.style.background=i===gwCurrent?'var(--c-noun)':i<gwCurrent?'var(--text-muted)':'var(--border)';});}
+var visibleNodes={};for(var i=0;i<=gwCurrent;i++)gwSteps[i].nodes.forEach(function(n){visibleNodes[n]=true;});
+Object.keys(gwNodeDivs).forEach(function(id){var d=gwNodeDivs[id];if(visibleNodes[id]){d.style.opacity='1';d.style.transform='translate(-50%,-50%) scale(1)';}else{d.style.opacity='0';d.style.transform='translate(-50%,-50%) scale(0.6)';}});
+var pb=document.getElementById('gw-prev'),nb=document.getElementById('gw-next');if(pb)pb.style.opacity=gwCurrent===0?'0.3':'1';if(nb)nb.style.opacity=gwCurrent===gwSteps.length-1?'0.3':'1';
 }
 
 function gwGoTo(n){if(n<0||n>=gwSteps.length)return;gwCurrent=n;gwUpdateUI();}
 function gwNext(){if(gwCurrent<gwSteps.length-1){gwCurrent++;gwUpdateUI();}else{gwStop();}}
 function gwPrev(){if(gwCurrent>0){gwCurrent--;gwUpdateUI();}}
-function gwPlay(){if(gwPlaying)return gwStop();gwPlaying=true;document.getElementById('gw-play').textContent='⏸';if(gwCurrent>=gwSteps.length-1)gwGoTo(0);gwTimer=setInterval(()=>gwNext(),2200);}
-function gwStop(){gwPlaying=false;clearInterval(gwTimer);document.getElementById('gw-play').textContent='▶';}
+function gwPlay(){if(gwPlaying){gwStop();return;}gwPlaying=true;var pb=document.getElementById('gw-play');if(pb)pb.textContent='⏸';if(gwCurrent>=gwSteps.length-1)gwGoTo(0);gwTimer=setInterval(function(){gwNext();},2200);}
+function gwStop(){gwPlaying=false;clearInterval(gwTimer);var pb=document.getElementById('gw-play');if(pb)pb.textContent='▶';}
 
-document.getElementById('gw-next').addEventListener('click',gwNext);
-document.getElementById('gw-prev').addEventListener('click',gwPrev);
-document.getElementById('gw-play').addEventListener('click',gwPlay);
+// Attach control listeners
+var nb=document.getElementById('gw-next');if(nb)nb.addEventListener('click',gwNext);
+var pb=document.getElementById('gw-prev');if(pb)pb.addEventListener('click',gwPrev);
+var pl=document.getElementById('gw-play');if(pl)pl.addEventListener('click',gwPlay);
 
-// Init at step 0
-gwGoTo(0);
-}
 })();
 </script>
 </body>
