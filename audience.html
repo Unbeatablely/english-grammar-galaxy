@@ -191,61 +191,79 @@ html, body {
   letter-spacing: 0.04em;
 }
 
-/* ══════════ SLIDE 8 — QR + LIVE LINK ══════════ */
-.s8 .qr-top {
-  margin-bottom: 1.5rem;
-}
-
-.s8 .qr-top img {
-  width: clamp(120px, 18vw, 170px); height: clamp(120px, 18vw, 170px);
-  border-radius: 12px; border: 1px solid #2a2a2e;
-  background: #fdfcf9; padding: 8px;
-}
-
-.s8 .link-card {
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  padding: 2rem 2.5rem;
-  background: #141416; border: 1px solid #2a2a2e;
-  border-radius: 16px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
-  position: relative;
-  z-index: 20;
-}
-
-.s8 .link-card:hover {
-  border-color: #c9a95c;
-  box-shadow: 0 0 40px rgba(201,169,92,0.1);
-  transform: translateY(-2px);
-}
-
-.s8 .link-card .link-label {
+/* ══════════ SLIDE 8 — LIVE DEMO ══════════ */
+.s8 .demo-eyebrow {
   font-size: clamp(0.7rem, 1vw, 0.8rem);
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: #8a7550;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: #8a7550; margin-bottom: 2rem;
 }
 
-.s8 .link-card .link-url {
-  font-size: clamp(1rem, 2vw, 1.5rem);
+.s8 .demo-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.2rem);
   font-weight: 700; font-style: italic;
-  color: #e0dcd4;
+  line-height: 1.15; color: #e0dcd4;
+  margin-bottom: 2.5rem;
+}
+
+.s8 .demo-title .gold { color: #c9a95c; font-style: italic; }
+
+.s8 .demo-link {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.8rem 3rem;
+  background: linear-gradient(135deg, rgba(201,169,92,0.1) 0%, rgba(201,169,92,0.03) 100%);
+  border: 1px solid rgba(201,169,92,0.3);
+  border-radius: 16px;
+  text-decoration: none; cursor: pointer;
+  transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s, background 0.35s;
+  position: relative; z-index: 20;
+  max-width: 90vw;
+}
+
+.s8 .demo-link:hover {
+  border-color: #c9a95c;
+  box-shadow: 0 0 80px rgba(201,169,92,0.15), 0 0 20px rgba(201,169,92,0.06);
+  transform: translateY(-3px);
+  background: linear-gradient(135deg, rgba(201,169,92,0.16) 0%, rgba(201,169,92,0.05) 100%);
+}
+
+.s8 .demo-link .dl-icon {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  flex-shrink: 0;
+}
+
+.s8 .demo-link .dl-body {
+  text-align: left;
+}
+
+.s8 .demo-link .dl-label {
+  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: #8a7550; margin-bottom: 0.2rem;
+}
+
+.s8 .demo-link .dl-url {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 700; font-style: italic;
+  color: #c9a95c;
   word-break: break-all;
 }
 
-.s8 .link-card .link-arrow {
-  font-size: 1.2rem; color: #c9a95c;
-  transition: transform 0.3s;
+.s8 .demo-link .dl-arrow {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: #c9a95c;
+  flex-shrink: 0;
+  transition: transform 0.35s;
 }
 
-.s8 .link-card:hover .link-arrow {
-  transform: translateX(4px);
+.s8 .demo-link:hover .dl-arrow {
+  transform: translateX(8px);
 }
 
-.s8 .link-hint {
-  margin-top: 1.2rem;
-  font-size: clamp(0.7rem, 1vw, 0.8rem);
-  color: #5a5752; letter-spacing: 0.04em;
+.s8 .demo-hint {
+  margin-top: 2rem;
+  font-size: clamp(0.75rem, 1vw, 0.85rem);
+  color: #5a5752;
+  letter-spacing: 0.04em;
 }
 
 /* ══════════ SLIDE 9 — THANK YOU ══════════ */
@@ -356,18 +374,20 @@ html, body {
     <p class="qr-label">unbeatablely.github.io/english-grammar-galaxy</p>
   </div>
 
-  <!-- ═══ SLIDE 8: QR + LIVE LINK ═══ -->
+  <!-- ═══ SLIDE 8: LIVE DEMO ═══ -->
   <div class="slide s8" data-index="7">
-    <div class="qr-top">
-      <img src="qr-code.png" alt="QR Code" width="170" height="170" loading="lazy">
-    </div>
-    <a class="link-card" href="https://unbeatablely.github.io/english-grammar-galaxy/" target="_blank" rel="noopener"
+    <div class="demo-eyebrow">See it for yourself</div>
+    <p class="demo-title">The Grammar Tool<br>a humanities student built <span class="gold">with AI.</span></p>
+    <a class="demo-link" href="https://unbeatablely.github.io/english-grammar-galaxy/" target="_blank" rel="noopener"
        onclick="event.stopPropagation();">
-      <span class="link-label">Live Demo</span>
-      <span class="link-url">unbeatablely.github.io/english-grammar-galaxy</span>
-      <span class="link-arrow">→</span>
+      <span class="dl-icon">🌐</span>
+      <span class="dl-body">
+        <span class="dl-label">Open Live Demo</span>
+        <span class="dl-url">English Grammar Galaxy</span>
+      </span>
+      <span class="dl-arrow">↗</span>
     </a>
-    <p class="link-hint">Click the link to open · Scan the QR to save</p>
+    <p class="demo-hint">Click to open the live site</p>
   </div>
 
   <!-- ═══ SLIDE 9: THANK YOU ═══ -->
