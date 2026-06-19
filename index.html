@@ -467,8 +467,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mo.classLis
 
 // View Toggle
 const vt=document.getElementById('view-toggle'),gw=document.getElementById('grammar-web'),cw=document.querySelector('.content-wrapper'),wbb=document.getElementById('web-back-btn');
-function showGW(){hero.style.display='none';cw.style.display='none';gw.classList.add('active');bb.classList.remove('visible');window.scrollTo(0,0);renderGW();}
-function showGalaxy(){gw.classList.remove('active');hero.style.display='';cw.style.display='';window.scrollTo(0,0);}
+function showGW(){hero.style.display='none';cw.style.display='none';gw.classList.add('active');bb.classList.remove('visible');window.scrollTo(0,0);gwStop();renderGW();}
+function showGalaxy(){gwStop();gw.classList.remove('active');hero.style.display='';cw.style.display='';window.scrollTo(0,0);}
 vt.addEventListener('click',function(e){e.stopPropagation();showGW();});
 wbb.addEventListener('click',function(e){e.stopPropagation();showGalaxy();});
 
@@ -502,10 +502,14 @@ ell:{x:380,y:520,color:'#a8b8a4',en:'Ellipsis',href:'#ellipsis'},there:{x:520,y:
 it:{x:560,y:420,color:'#c0b4a4',en:'It Usage',href:'#it-usage'},comp:{x:700,y:360,color:'#a4b89a',en:'Comparison',href:'#comparison'}
 };
 
+// Label map — defined first so renderGW can use it
+const gwNodeLabels={noun:'名词',art:'冠词',pron:'代词',adj:'形副',num:'数词',prep:'介词',conj:'连词',verb:'动词',tense:'时态',voice:'语态',mood:'语气',nonfin:'非谓语',modal:'情态',elem:'成分',sent:'句型',clause:'从句',sv:'主谓一致',inv:'倒装',emp:'强调',ell:'省略',there:'There be',it:'It用法',comp:'比较'};
+
 function renderGW(){
 if(gwBuilt)return;gwBuilt=true;
 const svg=document.getElementById('web-svg'),NS='http://www.w3.org/2000/svg',cx=500,cy=400,nR=24;
 function el(t,a){const e=document.createElementNS(NS,t);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
+svg.innerHTML=''; // Clear previous content
 // Defs
 const defs=el('defs',{});
 const mk=el('marker',{id:'arrow',viewBox:'0 0 10 10',refX:'7',refY:'5',markerWidth:'5',markerHeight:'5',orient:'auto'});
@@ -519,7 +523,7 @@ const ct=el('text',{x:cx,y:cy-4,'text-anchor':'middle','font-size':'14','font-we
 svg.appendChild(cg);
 
 // Pre-create all nodes (hidden) and links
-const nodeEls={},linkEls=[];
+const nodeEls={};
 Object.entries(gwPositions).forEach(([id,p])=>{
 const g=el('g',{class:'web-node',style:'cursor:pointer;opacity:0;transition:opacity 0.5s ease,transform 0.5s ease;transform:scale(0.6)'});
 g.dataset.nodeId=id;g.dataset.href=p.href;
@@ -530,7 +534,6 @@ const en=el('text',{x:p.x,y:p.y+11,'text-anchor':'middle','font-size':'7','font-
 g.addEventListener('click',function(){showGalaxy();setTimeout(()=>{const t=document.querySelector(p.href);if(t)t.scrollIntoView({behavior:'smooth'});},300);});
 svg.appendChild(g);nodeEls[id]=g;
 });
-const gwNodeLabels={noun:'名词',art:'冠词',pron:'代词',adj:'形副',num:'数词',prep:'介词',conj:'连词',verb:'动词',tense:'时态',voice:'语态',mood:'语气',nonfin:'非谓语',modal:'情态',elem:'成分',sent:'句型',clause:'从句',sv:'主谓一致',inv:'倒装',emp:'强调',ell:'省略',there:'There be',it:'It用法',comp:'比较'};
 
 // Collect all links from steps
 const allLinkData=[];
