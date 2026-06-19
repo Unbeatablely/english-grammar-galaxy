@@ -466,11 +466,14 @@ mo.addEventListener('click',function(e){if(e.target===mo)closeModal();});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&mo.classList.contains('active'))closeModal();});
 
 // View Toggle
-const vt=document.getElementById('view-toggle'),gw=document.getElementById('grammar-web'),cw=document.querySelector('.content-wrapper'),wbb=document.getElementById('web-back-btn');
-function showGW(){hero.style.display='none';cw.style.display='none';gw.classList.add('active');bb.classList.remove('visible');window.scrollTo(0,0);gwStop();renderGW();}
-function showGalaxy(){gwStop();gw.classList.remove('active');hero.style.display='';cw.style.display='';window.scrollTo(0,0);}
-vt.addEventListener('click',function(e){e.stopPropagation();showGW();});
-wbb.addEventListener('click',function(e){e.stopPropagation();showGalaxy();});
+const _vt=document.getElementById('view-toggle');
+const _gw=document.getElementById('grammar-web');
+const _cw=document.querySelector('.content-wrapper');
+const _wbb=document.getElementById('web-back-btn');
+if(_vt&&_gw&&_cw&&_wbb){
+_vt.addEventListener('click',function(e){e.stopPropagation();hero.style.display='none';_cw.style.display='none';_gw.style.display='flex';_gw.style.flexDirection='column';_gw.style.alignItems='center';_gw.style.justifyContent='center';bb.classList.remove('visible');gwStop();renderGW();});
+_wbb.addEventListener('click',function(e){e.stopPropagation();gwStop();_gw.style.display='none';hero.style.display='';_cw.style.display='';window.scrollTo(0,0);});
+}
 
 // Grammar Web — Progressive Timeline
 let gwCurrent=0,gwTimer=null,gwPlaying=false,gwBuilt=false;
