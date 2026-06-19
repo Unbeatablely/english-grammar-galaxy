@@ -191,8 +191,65 @@ html, body {
   letter-spacing: 0.04em;
 }
 
-/* ══════════ SLIDE 8 — THANK YOU ══════════ */
-.s8 .thanks {
+/* ══════════ SLIDE 8 — QR + LIVE LINK ══════════ */
+.s8 .qr-top {
+  margin-bottom: 1.5rem;
+}
+
+.s8 .qr-top img {
+  width: clamp(120px, 18vw, 170px); height: clamp(120px, 18vw, 170px);
+  border-radius: 12px; border: 1px solid #2a2a2e;
+  background: #fdfcf9; padding: 8px;
+}
+
+.s8 .link-card {
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  padding: 2rem 2.5rem;
+  background: #141416; border: 1px solid #2a2a2e;
+  border-radius: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  position: relative;
+  z-index: 20;
+}
+
+.s8 .link-card:hover {
+  border-color: #c9a95c;
+  box-shadow: 0 0 40px rgba(201,169,92,0.1);
+  transform: translateY(-2px);
+}
+
+.s8 .link-card .link-label {
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: #8a7550;
+}
+
+.s8 .link-card .link-url {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  font-weight: 700; font-style: italic;
+  color: #e0dcd4;
+  word-break: break-all;
+}
+
+.s8 .link-card .link-arrow {
+  font-size: 1.2rem; color: #c9a95c;
+  transition: transform 0.3s;
+}
+
+.s8 .link-card:hover .link-arrow {
+  transform: translateX(4px);
+}
+
+.s8 .link-hint {
+  margin-top: 1.2rem;
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
+  color: #5a5752; letter-spacing: 0.04em;
+}
+
+/* ══════════ SLIDE 9 — THANK YOU ══════════ */
+.s9 .thanks {
   font-size: clamp(3rem, 7vw, 6rem);
   font-weight: 700; font-style: italic; color: #c9a95c;
 }
@@ -299,8 +356,22 @@ html, body {
     <p class="qr-label">unbeatablely.github.io/english-grammar-galaxy</p>
   </div>
 
-  <!-- ═══ SLIDE 8: THANK YOU ═══ -->
+  <!-- ═══ SLIDE 8: QR + LIVE LINK ═══ -->
   <div class="slide s8" data-index="7">
+    <div class="qr-top">
+      <img src="qr-code.png" alt="QR Code" width="170" height="170" loading="lazy">
+    </div>
+    <a class="link-card" href="https://unbeatablely.github.io/english-grammar-galaxy/" target="_blank" rel="noopener"
+       onclick="event.stopPropagation();">
+      <span class="link-label">Live Demo</span>
+      <span class="link-url">unbeatablely.github.io/english-grammar-galaxy</span>
+      <span class="link-arrow">→</span>
+    </a>
+    <p class="link-hint">Click the link to open · Scan the QR to save</p>
+  </div>
+
+  <!-- ═══ SLIDE 9: THANK YOU ═══ -->
+  <div class="slide s9" data-index="8">
     <div class="thanks">Thank you.</div>
     <p class="thanks-sub">Now go redefine something.</p>
   </div>
@@ -361,8 +432,8 @@ html, body {
 
   // Click on slide area to advance
   document.getElementById('slides').addEventListener('click', e => {
-    // Don't advance if clicking a nav dot
-    if (e.target.closest('#nav') || e.target.closest('button')) return;
+    // Don't advance if clicking nav, button, or a link
+    if (e.target.closest('#nav') || e.target.closest('button') || e.target.closest('a')) return;
     // Click on right half = next, left half = prev
     const x = e.clientX;
     if (x > window.innerWidth / 2) next();
