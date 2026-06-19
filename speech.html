@@ -3,327 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Doesn't Replace Us — It Redefines Who We Can Become</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;900&family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<title>Speech Script — AI Doesn't Replace Us</title>
 <style>
-/* ========== Vars ========== */
 :root {
-  --bg-deep: #1a1a1c;
-  --bg-card: #242427;
-  --gold: #d4b87a;
-  --gold-dim: #8a734d;
-  --text-primary: #e8e4dd;
-  --text-secondary: #a8a49d;
-  --text-muted: #6b6760;
-  --accent-teal: #7db5a8;
-  --accent-coral: #d49484;
-  --accent-lavender: #b8a8cc;
-  --border: #323235;
-  --radius: 16px;
-  --radius-sm: 8px;
+  --bg: #0f0f11;
+  --card: #1a1a1e;
+  --gold: #c9a95c;
+  --gold-dim: #7a6a3f;
+  --text: #d4d0c8;
+  --text-dim: #88847c;
+  --text-muted: #5a5752;
+  --border: #2a2a2e;
+  --accent-coral: #c9847a;
+  --accent-teal: #7aa89e;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; font-size: 16px; }
 
 body {
-  font-family: 'Inter', 'Noto Serif SC', system-ui, sans-serif;
-  background: var(--bg-deep);
-  color: var(--text-primary);
-  line-height: 1.75;
-  overflow-x: hidden;
+  font-family: 'Times New Roman', 'Noto Serif SC', serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.85;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ========== Ambient Background ========== */
 #ambient {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(212,184,122,0.06) 0%, transparent 55%),
-    radial-gradient(ellipse at 75% 35%, rgba(125,181,168,0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 75%, rgba(212,148,132,0.04) 0%, transparent 45%),
-    radial-gradient(ellipse at 85% 80%, rgba(184,168,204,0.05) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 15%, rgba(201,169,92,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 75%, rgba(122,168,158,0.04) 0%, transparent 50%);
 }
 
-/* ========== Timeline Progress Bar ========== */
 #progress-bar {
   position: fixed; top: 0; left: 0; height: 3px;
   background: linear-gradient(90deg, var(--gold), var(--accent-teal), var(--accent-coral));
-  z-index: 1000;
-  transition: width 0.1s linear;
+  z-index: 1000; transition: width 0.1s linear;
 }
 
-/* ========== Hero ========== */
+/* ── Hero ── */
 .hero {
   position: relative; z-index: 1;
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 4rem 2rem;
-  text-align: center;
+  padding: 3rem 2rem; text-align: center;
 }
 
-.hero-meta {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
-  color: var(--gold-dim);
-  margin-bottom: 2rem;
+.hero .eyebrow {
+  font-family: 'Times New Roman', serif;
+  font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold-dim); margin-bottom: 2rem;
 }
 
 .hero h1 {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-weight: 700;
-  font-size: clamp(2.5rem, 7vw, 5.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
-  max-width: 900px;
-  margin-bottom: 1.5rem;
+  font-family: 'Times New Roman', serif;
+  font-weight: 700; font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1.15; color: var(--text); max-width: 800px;
+  font-style: italic;
 }
 
-.hero h1 .accent { color: var(--gold); font-style: italic; }
+.hero h1 em { color: var(--gold); font-style: italic; }
 
-.hero .subtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 300;
-  color: var(--text-secondary);
-  max-width: 600px;
-  line-height: 1.6;
+.hero .sub {
+  font-size: 1rem; color: var(--text-dim); margin-top: 1.5rem; letter-spacing: 0.03em;
 }
 
 .hero .scroll-hint {
-  position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
   animation: float 2.5s ease-in-out infinite;
 }
 
 .hero .scroll-hint span {
-  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted);
+  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--text-muted);
 }
 
-.hero .scroll-hint .arrow {
-  width: 1px; height: 36px;
-  background: linear-gradient(to bottom, var(--gold-dim), transparent);
+.hero .scroll-hint .line {
+  width: 1px; height: 30px; background: linear-gradient(to bottom, var(--gold-dim), transparent);
 }
 
 @keyframes float {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
-  50% { transform: translateX(-50%) translateY(10px); opacity: 1; }
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
+  50% { transform: translateX(-50%) translateY(8px); opacity: 1; }
 }
 
-/* ========== Main Content ========== */
+/* ── Main ── */
 .main {
   position: relative; z-index: 1;
-  max-width: 780px; margin: 0 auto; padding: 0 2rem 6rem;
+  max-width: 720px; margin: 0 auto; padding: 0 2rem 5rem;
 }
 
-/* ========== Speech Block ========== */
+/* ── Speech Paragraph ── */
 .speech-block {
-  margin-bottom: 5rem;
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  margin-bottom: 3.5rem;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .speech-block.visible { opacity: 1; transform: translateY(0); }
 
 .speech-block p {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-  font-weight: 400;
-  line-height: 1.85;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
-  letter-spacing: 0.01em;
+  font-family: 'Times New Roman', 'Noto Serif SC', serif;
+  font-size: 1.3rem; line-height: 1.9; color: var(--text);
+  margin-bottom: 1.2rem;
 }
 
-.speech-block p strong {
-  font-weight: 700;
-  color: #ffffff;
-}
+.speech-block p strong { color: #fff; font-weight: 700; }
 
 .speech-block .highlight {
-  background: linear-gradient(120deg, rgba(212,184,122,0.2) 0%, rgba(212,184,122,0.08) 100%);
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
-  font-weight: 600;
+  color: var(--gold); font-style: italic;
 }
 
-/* ========== Cue Tags ========== */
-.cue-tag {
-  display: inline-flex; align-items: center; gap: 0.5rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
-  padding: 0.4rem 1rem;
-  border-radius: 100px;
-  margin-bottom: 1.5rem;
+/* ── Cue Tags ── */
+.cue {
+  display: inline-block;
+  font-family: 'Times New Roman', serif;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.45rem 1rem; border-radius: 100px; margin-bottom: 1.8rem;
 }
 
-.cue-chart {
-  color: var(--accent-teal);
-  border: 1px solid rgba(125,181,168,0.3);
-  background: rgba(125,181,168,0.08);
-}
+.cue-chart { color: var(--accent-teal); border: 1px solid rgba(122,168,158,0.35); background: rgba(122,168,158,0.07); }
+.cue-qr    { color: var(--accent-coral); border: 1px solid rgba(201,132,122,0.35); background: rgba(201,132,122,0.07); }
 
-.cue-qr {
-  color: var(--accent-coral);
-  border: 1px solid rgba(212,148,132,0.3);
-  background: rgba(212,148,132,0.08);
-}
-
-/* ========== Big Quote Pull ========== */
-.big-pull {
-  margin: 4rem 0;
-  padding: 2.5rem 2rem;
-  border-left: 3px solid var(--gold);
-  background: linear-gradient(135deg, rgba(212,184,122,0.06) 0%, rgba(212,184,122,0.02) 100%);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-}
-
-.big-pull p {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-  font-weight: 700;
-  font-style: italic;
-  line-height: 1.4;
-  color: var(--gold);
-  margin: 0;
-}
-
-/* ========== Chart Embed Section ========== */
+/* ── Chart Embed ── */
 .chart-embed {
-  margin: 3rem 0 5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  margin: 2rem 0 4rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
   overflow: hidden;
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .chart-embed.visible { opacity: 1; transform: translateY(0); }
 
-.chart-embed .chart-header {
-  display: flex; align-items: center; gap: 0.75rem;
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
-  color: var(--accent-teal);
+.chart-embed .ch-header {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-teal);
 }
 
-.chart-embed .chart-header .dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--accent-teal);
+.chart-embed .ch-header .dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent-teal);
 }
 
-.chart-embed img {
-  display: block; width: 100%; height: auto;
-}
+.chart-embed img { display: block; width: 100%; height: auto; }
 
-/* ========== QR Section ========== */
-.qr-section {
-  display: flex; flex-direction: column; align-items: center;
-  margin: 4rem 0 2rem;
-  padding: 3rem 2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+/* ── QR ── */
+.qr-block {
+  margin: 3rem 0 2rem;
+  padding: 2.5rem 2rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
   text-align: center;
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.qr-section.visible { opacity: 1; transform: translateY(0); }
+.qr-block.visible { opacity: 1; transform: translateY(0); }
 
-.qr-section .qr-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent-coral);
-  margin-bottom: 1.5rem;
+.qr-block .qr-eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-coral); margin-bottom: 1.2rem;
 }
 
-.qr-section img {
-  width: 200px; height: 200px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
+.qr-block img {
+  width: 180px; height: 180px; border-radius: 8px; border: 1px solid var(--border);
 }
 
-.qr-section .qr-url {
-  margin-top: 1.25rem;
-  font-size: 0.85rem; color: var(--text-muted);
-  font-family: 'Inter', monospace;
+.qr-block .qr-url {
+  display: block; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted);
 }
 
-/* ========== Closing ========== */
-.closing-line {
-  text-align: center;
-  margin: 5rem 0 3rem;
+/* ── Rhythm ── */
+.rhythm {
+  display: flex; gap: 0.5rem; margin-top: 5rem; padding-top: 2rem; border-top: 1px solid var(--border);
 }
 
-.closing-line p {
-  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  font-weight: 700;
-  font-style: italic;
-  line-height: 1.3;
-  color: var(--text-primary);
-}
-
-.closing-line p .accent { color: var(--gold); }
-
-.closing-line .thank-you {
-  display: block;
-  margin-top: 1.5rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--text-muted);
-  font-style: normal;
-}
-
-/* ========== Rhythm Strip ========== */
-.rhythm-strip {
-  display: flex; gap: 0.5rem;
-  margin: 5rem 0 0;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border);
-}
-
-.rhythm-seg {
-  flex: 1;
-  padding: 1rem 0.75rem;
-  background: var(--bg-card);
-  border-radius: var(--radius-sm);
-  text-align: center;
-  opacity: 0; transform: translateY(20px);
+.rhythm .seg {
+  flex: 1; padding: 0.8rem 0.5rem; background: var(--card); border-radius: 8px; text-align: center;
+  opacity: 0; transform: translateY(16px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.rhythm-seg.visible { opacity: 1; transform: translateY(0); }
+.rhythm .seg.visible { opacity: 1; transform: translateY(0); }
 
-.rhythm-seg .seg-time {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em;
-  color: var(--text-muted);
-  margin-bottom: 0.4rem;
+.rhythm .seg .t {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; color: var(--text-muted); margin-bottom: 0.3rem;
 }
 
-.rhythm-seg .seg-label {
-  font-size: 0.78rem; font-weight: 600; color: var(--text-secondary);
-  line-height: 1.4;
+.rhythm .seg .l {
+  font-size: 0.72rem; color: var(--text-dim); line-height: 1.4;
 }
 
-.rhythm-seg:nth-child(1) .seg-time { color: var(--gold); }
-.rhythm-seg:nth-child(3) .seg-time { color: var(--accent-teal); }
-.rhythm-seg:nth-child(5) .seg-time { color: var(--accent-coral); }
+.rhythm .seg:nth-child(1) .t { color: var(--gold); }
+.rhythm .seg:nth-child(3) .t { color: var(--accent-teal); }
+.rhythm .seg:nth-child(5) .t { color: var(--accent-coral); }
 
-/* ========== Footer ========== */
+/* ── Footer ── */
 footer {
-  text-align: center; padding: 3rem 2rem;
-  color: var(--text-muted); font-size: 0.75rem;
+  text-align: center; padding: 3rem 2rem; color: var(--text-muted); font-size: 0.7rem;
   position: relative; z-index: 1;
 }
 
-/* ========== Responsive ========== */
 @media (max-width: 600px) {
-  .hero { padding: 3rem 1.25rem; min-height: 90vh; }
-  .main { padding: 0 1.25rem 4rem; }
-  .big-pull { padding: 1.5rem; }
-  .rhythm-strip { flex-wrap: wrap; }
-  .rhythm-seg { flex: 1 1 40%; }
+  .hero { padding: 2rem 1rem; }
+  .main { padding: 0 1rem 3rem; }
+  .rhythm { flex-wrap: wrap; }
+  .rhythm .seg { flex: 1 1 40%; }
 }
 </style>
 </head>
@@ -332,170 +213,106 @@ footer {
 <div id="ambient"></div>
 <div id="progress-bar"></div>
 
-<!-- ==================== HERO ==================== -->
+<!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
-  <div class="hero-meta">English Reading · 3-Minute Speech</div>
-  <h1>
-    AI Doesn't <span class="accent">Replace</span> Us —<br>
-    It <span class="accent">Redefines</span> Who We<br>
-    Can Become
-  </h1>
-  <p class="subtitle">A humanities student's journey into AI modeling,<br>and what it reveals about the future of work.</p>
-
+  <div class="eyebrow">English Reading · 1.5-Minute Speech</div>
+  <h1>AI Doesn't <em>Replace</em> Us —<br>It <em>Redefines</em> Who We<br>Can Become</h1>
+  <p class="sub">A humanities student's journey into AI · New Economic Trends</p>
   <div class="scroll-hint">
-    <span>Scroll to read</span>
-    <div class="arrow"></div>
+    <span>Scroll to rehearse</span>
+    <div class="line"></div>
   </div>
 </section>
 
-<!-- ==================== MAIN SPEECH ==================== -->
+<!-- ═══════════ SPEECH ═══════════ -->
 <div class="main">
 
-  <!-- ── Opening ── -->
+  <!-- Opening -->
   <div class="speech-block">
     <p>Good morning, everyone.</p>
-    <p><strong>Six months ago,</strong> if you had told me I would be building 3D models and training AI, I would have laughed. I study humanities. I read literature. I analyze texts. My world was words, not code.</p>
-    <p>But here I am — having just built something that combines both: <span class="highlight">an interactive English grammar learning tool</span>, powered by AI-assisted modeling. And that journey taught me something crucial about the future of work.</p>
+    <p><strong>Six months ago,</strong> if you told me a humanities student would be building AI models, I would have laughed. But here I am — I built <span class="highlight">an interactive English grammar tool</span>, powered by AI. And that journey changed how I see the future of work.</p>
   </div>
 
-  <!-- ── Problem ── -->
+  <!-- Problem + History -->
   <div class="speech-block">
-    <p>We've all heard the fear: "<strong>AI is coming for our jobs.</strong>" It's a headline that sells. But it's also a question built on the wrong assumption — the assumption that the relationship between humans and technology is a <span class="highlight">zero-sum game</span>.</p>
-    <p>History tells a different story.</p>
+    <p>We all know the fear: "<strong>AI is coming for our jobs.</strong>" But history tells a different story.</p>
   </div>
 
-  <!-- ── CHART CUE ── -->
-  <span class="cue-tag cue-chart">◈  Show Chart Slide</span>
+  <span class="cue cue-chart">◈ Show Chart</span>
 
   <div class="chart-embed">
-    <div class="chart-header">
-      <div class="dot"></div>
-      Slide 2 — Data Visualization
-    </div>
-    <img src="job-revolution-chart.png" alt="Every Tech Revolution Creates More Jobs Than It Destroys" loading="lazy">
-  </div>
-
-  <!-- ── Evidence ── -->
-  <div class="speech-block">
-    <p>When the printing press arrived in the 15th century, scribes panicked. But printing didn't kill writing — <strong>it redefined it.</strong> Scribes became editors, publishers, and authors. The printing press eliminated about 30,000 scribe jobs across Europe — but it created over 300,000 new roles in publishing, bookselling, and journalism.</p>
-    <p><strong>Ten times more jobs created than destroyed.</strong></p>
+    <div class="ch-header"><div class="dot"></div> Slide — Data Visualization</div>
+    <img src="job-revolution-chart.png" alt="Job revolution comparison chart" loading="lazy">
   </div>
 
   <div class="speech-block">
-    <p>When spreadsheets were invented in the 1980s, bookkeepers feared obsolescence. Instead, they became financial analysts, freed from manual calculation to focus on strategy. About 400,000 bookkeeping jobs were displaced — but 3.5 million new roles emerged in data analysis, financial planning, and business intelligence.</p>
-    <p><strong>Nearly nine times more.</strong></p>
+    <p>When the printing press arrived, scribes panicked — yet it created <strong>ten times more jobs</strong> than it destroyed. When spreadsheets appeared, bookkeepers feared obsolescence — but <strong>3.5 million new roles</strong> emerged in analysis and strategy.</p>
+    <p>Every tech revolution follows the same pattern: technology doesn't eliminate work. <strong>It redefines it upward</strong> — toward creativity, judgment, and insight.</p>
   </div>
 
-  <!-- ── Big Pull Quote ── -->
-  <div class="big-pull">
-    <p>Technology doesn't eliminate human work — it redefines it upward, toward creativity, judgment, and insight.</p>
-  </div>
-
-  <!-- ── Core Insight ── -->
+  <!-- Core Insight -->
   <div class="speech-block">
-    <p>So what does AI redefine for us?</p>
-    <p>Here's the insight that changed everything for me: <strong>the most scarce resource in an AI-driven economy isn't coding ability.</strong> It's the capacity to <span class="highlight">ask the right questions</span>, to <span class="highlight">judge what is "good,"</span> and to <span class="highlight">connect ideas across domains.</span></p>
-    <p>And these — asking questions, making judgments, connecting ideas — these are exactly what a humanities education trains us to do.</p>
+    <p>Here's what I learned: <strong>the most scarce resource in an AI economy isn't coding.</strong> It's the ability to <span class="highlight">ask the right questions</span>, judge what is good, and connect ideas across fields.</p>
+    <p>Sound familiar? That's exactly what a humanities education trains us to do.</p>
   </div>
 
-  <!-- ── Personal Case ── -->
+  <!-- Personal Case -->
   <div class="speech-block">
-    <p>When I built that grammar tool, I didn't write thousands of lines of code. <strong>I described what I wanted.</strong> I made design decisions. I judged whether the output was pedagogically sound. The AI handled the implementation — <strong>I provided the direction.</strong></p>
-    <p>The tool became proof that a literature student can create software — not because I became an engineer, but because <span class="highlight">engineering itself got redefined.</span></p>
+    <p>When I built that grammar tool, I didn't write code. <strong>I described what I wanted.</strong> I made design choices. The AI executed — I directed.</p>
+    <p>A literature student built software — not by becoming an engineer, but because <span class="highlight">engineering itself got redefined.</span></p>
   </div>
 
-  <!-- ── Big Pull Quote 2 ── -->
-  <div class="big-pull">
-    <p>The question is no longer "Will AI replace me?" — that frames you as passive, as something that can be replaced.</p>
-  </div>
-
-  <!-- ── Call to Action ── -->
+  <!-- Call to Action -->
   <div class="speech-block">
-    <p>The right question is: <strong>"What do I want to redefine with AI?"</strong></p>
-    <p>Maybe you'll redefine how we learn history, by building immersive AI-powered timelines. Maybe you'll redefine how we access legal information, by creating AI agents that translate legalese into plain language. Maybe you'll redefine something none of us has even imagined yet.</p>
+    <p>So don't ask: <strong>"Will AI replace me?"</strong></p>
+    <p>Ask: <strong>"What do I want to redefine with AI?"</strong></p>
+    <p>If I can build this — imagine what <em>you</em> can build in <em>your</em> field.</p>
   </div>
 
-  <!-- ── Closing ── -->
-  <div class="speech-block">
-    <p><strong>Don't ask whether AI will replace you. Ask what you will redefine with it.</strong></p>
-    <p>And if a humanities student can build an AI-powered grammar tool — imagine what <em>you</em> can build in <em>your</em> field.</p>
+  <span class="cue cue-qr">◈ Show QR Code</span>
+
+  <div class="qr-block">
+    <div class="qr-eyebrow">Scan to see what a humanities student built with AI</div>
+    <img src="qr-code.png" alt="QR Code" width="180" height="180" loading="lazy">
+    <span class="qr-url">unbeatablely.github.io/english-grammar-galaxy</span>
   </div>
 
-  <!-- ── QR CUE ── -->
-  <span class="cue-tag cue-qr">◈  Show QR Code Slide</span>
-
-  <!-- ── QR Section ── -->
-  <div class="qr-section">
-    <div class="qr-label">Scan to see what a humanities student built with AI</div>
-    <img src="qr-code.png" alt="QR Code — English Grammar Galaxy" width="200" height="200" loading="lazy">
-    <div class="qr-url">unbeatablely.github.io/english-grammar-galaxy</div>
+  <!-- Closing -->
+  <div class="speech-block" style="text-align:center;">
+    <p style="font-size:2rem; font-style:italic;">Thank <span class="highlight">you.</span></p>
   </div>
 
-  <!-- ── Final Closing ── -->
-  <div class="closing-line">
-    <p>Thank <span class="accent">you.</span></p>
-    <span class="thank-you">End of Speech</span>
+  <!-- Rhythm -->
+  <div class="rhythm">
+    <div class="seg"><div class="t">0:00–0:15</div><div class="l">Hook<br>Personal Story</div></div>
+    <div class="seg"><div class="t">0:15–0:35</div><div class="l">Evidence<br>History + Chart</div></div>
+    <div class="seg"><div class="t">0:35–0:55</div><div class="l">Insight<br>Core Argument</div></div>
+    <div class="seg"><div class="t">0:55–1:10</div><div class="l">Proof<br>Personal Case</div></div>
+    <div class="seg"><div class="t">1:10–1:30</div><div class="l">Closing<br>Call to Action</div></div>
   </div>
-
-  <!-- ── Rhythm Strip ── -->
-  <div class="rhythm-strip">
-    <div class="rhythm-seg">
-      <div class="seg-time">0:00 – 0:30</div>
-      <div class="seg-label">Hook<br>Personal Story</div>
-    </div>
-    <div class="rhythm-seg">
-      <div class="seg-time">0:30 – 1:10</div>
-      <div class="seg-label">Evidence<br>Historical Data</div>
-    </div>
-    <div class="rhythm-seg">
-      <div class="seg-time">1:10 – 1:50</div>
-      <div class="seg-label">Insight<br>Core Argument</div>
-    </div>
-    <div class="rhythm-seg">
-      <div class="seg-time">1:50 – 2:20</div>
-      <div class="seg-label">Proof<br>Personal Case</div>
-    </div>
-    <div class="rhythm-seg">
-      <div class="seg-time">2:20 – 3:00</div>
-      <div class="seg-label">Closing<br>Call to Action</div>
-    </div>
-  </div>
-
 </div>
 
-<footer>
-  English Reading Course · 3-Minute Speech · New Economic Trends
-</footer>
+<footer>English Reading Course · New Economic Trends</footer>
 
-<!-- ==================== JS ==================== -->
 <script>
 (function() {
   'use strict';
 
-  // ── Scroll Progress Bar ──
+  // Progress bar
   const bar = document.getElementById('progress-bar');
   window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    const pct = document.documentElement.scrollHeight > window.innerHeight
+      ? (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 : 0;
     bar.style.width = Math.min(pct, 100) + '%';
   });
 
-  // ── Reveal on Scroll ──
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  // Reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
 
-  document.querySelectorAll('.speech-block, .chart-embed, .qr-section, .rhythm-seg').forEach(el => {
-    observer.observe(el);
-  });
-
+  document.querySelectorAll('.speech-block, .chart-embed, .qr-block, .rhythm .seg').forEach(el => obs.observe(el));
 })();
 </script>
-
 </body>
 </html>
