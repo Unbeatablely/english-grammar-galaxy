@@ -514,6 +514,57 @@ var stage=document.getElementById('gw-stage');
 if(!stage)return;
 stage.style.width='100%';stage.style.maxWidth='900px';stage.style.height='min(85vw,700px)';stage.style.margin='0 auto';
 stage.style.background='radial-gradient(circle at center, rgba(207,191,168,0.08) 0%, transparent 70%)';
+// SVG layer for connecting lines
+var svgNS='http://www.w3.org/2000/svg';
+var svgLayer=document.createElementNS(svgNS,'svg');
+svgLayer.id='gw-svg-layer';
+svgLayer.setAttribute('viewBox','0 0 1000 800');
+svgLayer.setAttribute('preserveAspectRatio','xMidYMid meet');
+svgLayer.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;z-index:2;pointer-events:none';
+stage.appendChild(svgLayer);
+
+// Link definitions: {from, to, type, label}
+var gwLinkDefs=[
+{from:'noun',to:'art',t:'solid',l:'修饰'},{from:'noun',to:'pron',t:'solid',l:'替代'},{from:'adj',to:'noun',t:'solid',l:'修饰'},
+{from:'verb',to:'tense',t:'solid',l:'承载'},{from:'verb',to:'voice',t:'solid',l:'承载'},{from:'verb',to:'mood',t:'solid',l:'承载'},
+{from:'verb',to:'nonfin',t:'dashed',l:'衍生'},{from:'verb',to:'modal',t:'solid',l:'包含'},
+{from:'tense',to:'nonfin',t:'dashed',l:'剥离'},{from:'voice',to:'nonfin',t:'dashed',l:'剥离'},{from:'mood',to:'tense',t:'dashed',l:'依赖'},
+{from:'prep',to:'noun',t:'solid',l:'修饰'},{from:'conj',to:'sent',t:'solid',l:'连接'},
+{from:'elem',to:'sent',t:'solid',l:'组成'},{from:'sent',to:'clause',t:'solid',l:'包含'},{from:'clause',to:'elem',t:'dashed',l:'充当'},
+{from:'sv',to:'verb',t:'solid',l:'约束'},{from:'inv',to:'sent',t:'dashed',l:'变体'},{from:'emp',to:'inv',t:'dashed',l:'手段'},
+{from:'ell',to:'sent',t:'solid',l:'简化'},{from:'comp',to:'adj',t:'solid',l:'延伸'},{from:'adj',to:'comp',t:'dashed',l:'比较'},
+{from:'it',to:'sent',t:'solid',l:'形式'},{from:'there',to:'elem',t:'solid',l:'存在句'},
+];
+
+// Create SVG link elements
+gwLinkDivs=[];
+gwLinkDefs.forEach(function(lk,i){
+var path=document.createElementNS(svgNS,'path');
+path.setAttribute('fill','none');
+path.setAttribute('stroke',lk.t==='solid'?'#b0a89e':'#c4bbb0');
+path.setAttribute('stroke-width',lk.t==='solid'?'2':'1.5');
+if(lk.t==='dashed')path.setAttribute('stroke-dasharray','6,4');
+path.setAttribute('opacity','0');
+path.setAttribute('data-from',lk.from);
+path.setAttribute('data-to',lk.to);
+path.style.transition='opacity 0.5s ease';
+svgLayer.appendChild(path);
+gwLinkDivs.push({el:path,from:lk.from,to:lk.to,label:lk.l});
+
+// Label
+var txt=document.createElementNS(svgNS,'text');
+txt.setAttribute('fill','#a09890');
+txt.setAttribute('font-size','10');
+txt.setAttribute('font-family','Inter,"Noto Sans SC",sans-serif');
+txt.setAttribute('text-anchor','middle');
+txt.setAttribute('opacity','0');
+txt.textContent=lk.l;
+txt.setAttribute('data-from',lk.from);
+txt.setAttribute('data-to',lk.to);
+svgLayer.appendChild(txt);
+gwLinkDivs[gwLinkDivs.length-1].labelEl=txt;
+});
+
 
 var center=document.createElement('div');center.id='gw-center';
 center.style.cssText='position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:#fdfcf9;border:2.5px solid #d5cec5;display:flex;align-items:center;justify-content:center;z-index:10;font-family:"Cormorant Garamond","Noto Serif SC",serif;font-weight:700;font-size:14px;color:#3b3733';
@@ -551,6 +602,27 @@ var labelEl=document.getElementById('gw-step-label');if(labelEl)labelEl.textCont
 if(gwDotsContainer){gwDotsContainer.querySelectorAll('span').forEach(function(d,i){d.style.background=i===gwCurrent?'var(--c-noun)':i<gwCurrent?'var(--text-muted)':'var(--border)';});}
 var visibleNodes={};for(var i=0;i<=gwCurrent;i++)gwSteps[i].nodes.forEach(function(n){visibleNodes[n]=true;});
 Object.keys(gwNodeDivs).forEach(function(id){var d=gwNodeDivs[id];if(visibleNodes[id]){d.style.opacity='1';d.style.transform='translate(-50%,-50%) scale(1)';}else{d.style.opacity='0';d.style.transform='translate(-50%,-50%) scale(0.6)';}});
+
+// Draw connecting lines
+gwLinkDivs.forEach(function(lk){
+var fromDiv=gwNodeDivs[lk.from],toDiv=gwNodeDivs[lk.to];
+if(!fromDiv||!toDiv)return;
+var fromVisible=fromDiv.style.opacity==='1',toVisible=toDiv.style.opacity==='1';
+if(fromVisible&&toVisible){
+var sr=stage.getBoundingClientRect();
+var fr=fromDiv.getBoundingClientRect(),tr=toDiv.getBoundingClientRect();
+var x1=((fr.left+fr.width/2)-sr.left)/sr.width*1000;
+var y1=((fr.top+fr.height/2)-sr.top)/sr.height*800;
+var x2=((tr.left+tr.width/2)-sr.left)/sr.width*1000;
+var y2=((tr.top+tr.height/2)-sr.top)/sr.height*800;
+var mx=(x1+x2)/2,my=(y1+y2)/2;
+var dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy)||1;
+var nx=-dy/len,ny=dx/len,off=20;
+lk.el.setAttribute('d','M'+x1+','+y1+' Q'+(mx+nx*off)+','+(my+ny*off)+' '+x2+','+y2);
+lk.el.setAttribute('opacity','1');
+if(lk.labelEl){lk.labelEl.setAttribute('x',mx+nx*off+10);lk.labelEl.setAttribute('y',my+ny*off-8);lk.labelEl.setAttribute('opacity','0.85');}
+}else{lk.el.setAttribute('opacity','0');if(lk.labelEl)lk.labelEl.setAttribute('opacity','0');}
+});
 var pb=document.getElementById('gw-prev'),nb=document.getElementById('gw-next');if(pb)pb.style.opacity=gwCurrent===0?'0.3':'1';if(nb)nb.style.opacity=gwCurrent===gwSteps.length-1?'0.3':'1';
 }
 
