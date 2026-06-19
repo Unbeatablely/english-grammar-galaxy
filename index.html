@@ -409,10 +409,16 @@ footer{text-align:center;padding:2rem;color:var(--text-muted);font-size:0.8rem;p
 
 <!-- Grammar Web -->
 <section id="grammar-web">
-<h2 class="web-title">语法网络 · 穿针引线</h2>
-<p class="web-subtitle">每一个语法点都不是孤岛——Hover 节点查看关联 · 点击跳转章节</p>
+<h2 class="web-title">语法网络 · 从 0 到 1</h2>
+<p class="web-subtitle" id="gw-step-label">起源：英语语法体系</p>
 <div class="web-svg-container"><svg viewBox="0 0 1000 1000" id="web-svg"></svg></div>
-<button id="web-back-btn" style="margin-top:1.5rem;display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 1.3rem;border:1px solid var(--border);border-radius:100px;background:var(--card-bg);color:var(--text-secondary);font-size:0.85rem;cursor:pointer;transition:all 0.25s;box-shadow:var(--shadow-sm)">🌌 返回星系</button>
+<div style="display:flex;align-items:center;gap:0.8rem;margin-top:1rem;flex-wrap:wrap;justify-content:center">
+  <button id="gw-prev" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s" title="上一步">◀</button>
+  <button id="gw-play" style="width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--c-noun);color:#fff;font-size:1.1rem;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm)" title="自动播放">▶</button>
+  <button id="gw-next" style="width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);font-size:1.1rem;cursor:pointer;transition:all 0.2s" title="下一步">▶</button>
+  <div id="gw-dots" style="display:flex;gap:0.35rem;align-items:center"></div>
+</div>
+<button id="web-back-btn" style="margin-top:0.8rem;display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1.2rem;border:1px solid var(--border);border-radius:100px;background:var(--card-bg);color:var(--text-secondary);font-size:0.85rem;cursor:pointer;transition:all 0.25s;box-shadow:var(--shadow-sm)">🌌 返回星系</button>
 </section>
 
 <!-- QR Popup -->
@@ -466,94 +472,117 @@ function showGalaxy(){gw.classList.remove('active');hero.style.display='';cw.sty
 vt.addEventListener('click',function(e){e.stopPropagation();showGW();});
 wbb.addEventListener('click',function(e){e.stopPropagation();showGalaxy();});
 
-// Grammar Web SVG
-let gwRendered=false;
-function renderGW(){if(gwRendered)return;gwRendered=true;
-const svg=document.getElementById('web-svg'),NS='http://www.w3.org/2000/svg';
-function el(t,a){const e=document.createElementNS(NS,t);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
-const cx=500,cy=500,nR=26,R1=140,R2=280,R3=400;
-// Group data
-const groups=[{label:'词法',color:'#a3b5c9',r:R1,ids:['noun','art','pron','adj','verb','num','prep','conj'],nodes:[
-{id:'noun',label:'名词',en:'Nouns',color:'#a3b5c9',href:'#nouns'},{id:'art',label:'冠词',en:'Articles',color:'#9bb5c0',href:'#articles'},{id:'pron',label:'代词',en:'Pronouns',color:'#b0bcc9',href:'#pronouns'},{id:'adj',label:'形副',en:'Adj&Adv',color:'#b8aec8',href:'#adjectives'},{id:'verb',label:'动词',en:'Verbs',color:'#c8aa9f',href:'#verbs-detail'},{id:'num',label:'数词',en:'Numerals',color:'#c4aeb8',href:'#numerals'},{id:'prep',label:'介词',en:'Prep.',color:'#cfbfa8',href:'#prepositions'},{id:'conj',label:'连词',en:'Conj.',color:'#b5bfa9',href:'#conjunctions'}
-]},{label:'动词核心',color:'#c9bd9f',r:R2,ids:['tense','voice','mood','nonfin'],nodes:[
-{id:'tense',label:'时态',en:'Tenses',color:'#c9bd9f',href:'#tenses'},{id:'voice',label:'语态',en:'Voice',color:'#a3b8b2',href:'#voice'},{id:'mood',label:'语气',en:'Mood',color:'#c8aa8f',href:'#mood'},{id:'nonfin',label:'非谓语',en:'Non-finite',color:'#b8a4b8',href:'#non-finite'}
-]},{label:'句法',color:'#aeb89a',r:R3,ids:['elem','sent','clause'],nodes:[
-{id:'elem',label:'句子成分',en:'Elements',color:'#aeb89a',href:'#sentence-elements'},{id:'sent',label:'句型',en:'Sentences',color:'#a4b2c4',href:'#sentence-types'},{id:'clause',label:'从句',en:'Clauses',color:'#a4b8b0',href:'#clauses'}
-]}];
-const specialNodes=[{id:'sv',label:'主谓一致',en:'S-V Agr.',color:'#c4a89a',href:'#subject-verb'},{id:'inv',label:'倒装',en:'Inversion',color:'#b4a4c0',href:'#inversion'},{id:'emp',label:'强调',en:'Emphasis',color:'#c0a4a8',href:'#emphasis'},{id:'ell',label:'省略',en:'Ellipsis',color:'#a8b8a4',href:'#ellipsis'},{id:'there',label:'There be',en:'There be',color:'#b0aca4',href:'#there-be'},{id:'it',label:'It用法',en:'It Usage',color:'#c0b4a4',href:'#it-usage'},{id:'modal',label:'情态动词',en:'Modals',color:'#c4a09a',href:'#modal-verbs'},{id:'comp',label:'比较结构',en:'Comparison',color:'#a4b89a',href:'#comparison'}];
-
-// Place nodes
-const allNodes=[],allPos=[];
-groups.forEach((g,gi)=>{
-const n=g.nodes.length;
-g.nodes.forEach((nd,i)=>{
-const a=(i*360/n-90)*Math.PI/180;
-const pos={...nd,x:cx+g.r*Math.cos(a),y:cy+g.r*Math.sin(a),ring:gi};
-allNodes.push(nd);allPos.push(pos);
-});
-});
-// Special nodes on outer arc
-const sR=385,sStart=-60;
-specialNodes.forEach((nd,i)=>{
-const a=(sStart+i*17.14)*Math.PI/180;
-allNodes.push(nd);allPos.push({...nd,x:cx+sR*Math.cos(a),y:cy+sR*Math.sin(a),ring:3});
-});
-
-// Links
-const links=[
-{from:'noun',to:'art',type:'solid',label:'修饰'},{from:'noun',to:'pron',type:'solid',label:'替代'},{from:'adj',to:'noun',type:'solid',label:'修饰'},{from:'verb',to:'tense',type:'solid',label:'承载'},{from:'verb',to:'voice',type:'solid',label:'承载'},{from:'verb',to:'mood',type:'solid',label:'承载'},{from:'verb',to:'nonfin',type:'dashed',label:'衍生'},{from:'verb',to:'modal',type:'solid',label:'包含'},{from:'tense',to:'nonfin',type:'dashed',label:'剥离'},{from:'voice',to:'nonfin',type:'dashed',label:'剥离'},{from:'mood',to:'tense',type:'dashed',label:'依赖'},{from:'prep',to:'elem',type:'solid',label:'构成'},{from:'conj',to:'clause',type:'solid',label:'引导'},{from:'elem',to:'sent',type:'solid',label:'组成'},{from:'sent',to:'clause',type:'solid',label:'包含'},{from:'clause',to:'elem',type:'dashed',label:'充当'},{from:'sv',to:'verb',type:'solid',label:'约束'},{from:'inv',to:'sent',type:'dashed',label:'变体'},{from:'emp',to:'inv',type:'dashed',label:'手段'},{from:'ell',to:'sent',type:'solid',label:'简化'},{from:'comp',to:'adj',type:'solid',label:'延伸'},
+// Grammar Web — Progressive Timeline
+let gwCurrent=0,gwTimer=null,gwPlaying=false,gwBuilt=false;
+const gwSteps=[
+{label:'起源：英语语法体系',nodes:[],links:[]},
+{label:'第1步：词法基础 — 名词·冠词·代词',nodes:['noun','art','pron'],links:[{from:'noun',to:'art',type:'solid',label:'修饰'},{from:'noun',to:'pron',type:'solid',label:'替代'}]},
+{label:'第2步：词法扩展 — 形容词·副词·数词',nodes:['adj','num'],links:[{from:'adj',to:'noun',type:'solid',label:'修饰'}]},
+{label:'第3步：词法深化 — 介词·连词·动词',nodes:['prep','conj','verb'],links:[{from:'prep',to:'elem',type:'solid',label:'构成短语'},{from:'conj',to:'sent',type:'solid',label:'连接句子'}]},
+{label:'第4步：动词核心 — 时态·语态',nodes:['tense','voice'],links:[{from:'verb',to:'tense',type:'solid',label:'承载时态'},{from:'verb',to:'voice',type:'solid',label:'承载语态'}]},
+{label:'第5步：动词延伸 — 语气·非谓语·情态动词',nodes:['mood','nonfin','modal'],links:[{from:'verb',to:'mood',type:'solid',label:'承载语气'},{from:'verb',to:'nonfin',type:'dashed',label:'衍生非谓语'},{from:'verb',to:'modal',type:'solid',label:'包含情态'},{from:'tense',to:'nonfin',type:'dashed',label:'剥离时态'},{from:'voice',to:'nonfin',type:'dashed',label:'剥离语态'},{from:'mood',to:'tense',type:'dashed',label:'依赖时态'}]},
+{label:'第6步：句子骨架 — 句子成分',nodes:['elem'],links:[{from:'verb',to:'elem',type:'solid',label:'构成谓语'},{from:'noun',to:'elem',type:'solid',label:'充当主/宾语'}]},
+{label:'第7步：句子成型 — 句型分类',nodes:['sent'],links:[{from:'elem',to:'sent',type:'solid',label:'组成句型'}]},
+{label:'第8步：复合结构 — 三大从句',nodes:['clause'],links:[{from:'sent',to:'clause',type:'solid',label:'从句扩展'},{from:'clause',to:'elem',type:'dashed',label:'从句充当成分'}]},
+{label:'第9步：特殊规则(上) — 主谓一致·倒装·强调',nodes:['sv','inv','emp'],links:[{from:'sv',to:'verb',type:'solid',label:'约束动词'},{from:'inv',to:'sent',type:'dashed',label:'句型变体'},{from:'emp',to:'inv',type:'dashed',label:'强调手段'}]},
+{label:'第10步：特殊规则(下) — 省略·There be·It用法',nodes:['ell','there','it'],links:[{from:'ell',to:'sent',type:'solid',label:'简化句型'}]},
+{label:'第11步：表达维度 — 比较结构',nodes:['comp'],links:[{from:'comp',to:'adj',type:'solid',label:'延伸比较'}]},
+{label:'完整框架：英语语法体系',nodes:[],links:[]}
 ];
+const gwPositions={
+noun:{x:650,y:160,color:'#a3b5c9',en:'Nouns',href:'#nouns'},art:{x:780,y:260,color:'#9bb5c0',en:'Articles',href:'#articles'},pron:{x:820,y:400,color:'#b0bcc9',en:'Pronouns',href:'#pronouns'},
+adj:{x:750,y:540,color:'#b8aec8',en:'Adj&Adv',href:'#adjectives'},num:{x:620,y:640,color:'#c4aeb8',en:'Numerals',href:'#numerals'},prep:{x:460,y:700,color:'#cfbfa8',en:'Prep.',href:'#prepositions'},
+conj:{x:300,y:680,color:'#b5bfa9',en:'Conj.',href:'#conjunctions'},verb:{x:160,y:580,color:'#c8aa9f',en:'Verbs',href:'#verbs-detail'},
+tense:{x:120,y:420,color:'#c9bd9f',en:'Tenses',href:'#tenses'},voice:{x:100,y:280,color:'#a3b8b2',en:'Voice',href:'#voice'},
+mood:{x:200,y:160,color:'#c8aa8f',en:'Mood',href:'#mood'},nonfin:{x:320,y:100,color:'#b8a4b8',en:'Non-finite',href:'#non-finite'},modal:{x:460,y:110,color:'#c4a09a',en:'Modals',href:'#modal-verbs'},
+elem:{x:380,y:250,color:'#aeb89a',en:'Elements',href:'#sentence-elements'},sent:{x:500,y:360,color:'#a4b2c4',en:'Sentences',href:'#sentence-types'},
+clause:{x:560,y:250,color:'#a4b8b0',en:'Clauses',href:'#clauses'},sv:{x:620,y:480,color:'#c4a89a',en:'S-V Agr.',href:'#subject-verb'},
+inv:{x:300,y:360,color:'#b4a4c0',en:'Inversion',href:'#inversion'},emp:{x:240,y:480,color:'#c0a4a8',en:'Emphasis',href:'#emphasis'},
+ell:{x:380,y:520,color:'#a8b8a4',en:'Ellipsis',href:'#ellipsis'},there:{x:520,y:560,color:'#b0aca4',en:'There be',href:'#there-be'},
+it:{x:560,y:420,color:'#c0b4a4',en:'It Usage',href:'#it-usage'},comp:{x:700,y:360,color:'#a4b89a',en:'Comparison',href:'#comparison'}
+};
 
+function renderGW(){
+if(gwBuilt)return;gwBuilt=true;
+const svg=document.getElementById('web-svg'),NS='http://www.w3.org/2000/svg',cx=500,cy=400,nR=24;
+function el(t,a){const e=document.createElementNS(NS,t);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);return e;}
 // Defs
 const defs=el('defs',{});
 const mk=el('marker',{id:'arrow',viewBox:'0 0 10 10',refX:'7',refY:'5',markerWidth:'5',markerHeight:'5',orient:'auto'});
 mk.appendChild(el('path',{d:'M0,0 L10,5 L0,10 Z',fill:'#b0a89e'}));defs.appendChild(mk);
-// Faint rings
-groups.forEach(g=>{defs.appendChild(el('circle',{cx,cy,r:g.r,fill:'none',stroke:g.color,'stroke-width':'1','stroke-dasharray':'3,5','stroke-opacity':'0.25'}));});
 svg.appendChild(defs);
 
-// Links
-const lg=el('g',{});
-links.forEach((l,i)=>{
-const fp=allPos.find(p=>p.id===l.from),tp=allPos.find(p=>p.id===l.to);
-if(!fp||!tp)return;
-const mx=(fp.x+tp.x)/2,my=(fp.y+tp.y)/2,dx=tp.x-fp.x,dy=tp.y-fp.y,len=Math.sqrt(dx*dx+dy*dy),nx=-dy/len,ny=dx/len,off=l.type==='dashed'?18:-22;
-const p=el('path',{d:'M'+fp.x+','+fp.y+' Q'+(mx+nx*off)+','+(my+ny*off)+' '+tp.x+','+tp.y,stroke:l.type==='solid'?'#b0a89e':'#c4bbb0','stroke-width':l.type==='solid'?'1.8':'1.3','stroke-dasharray':l.type==='dashed'?'6,4':'none','marker-end':l.type==='dashed'?'url(#arrow)':'',fill:'none',class:'web-link'});
-p.dataset.linkId=i;p.dataset.from=l.from;p.dataset.to=l.to;
-const tx=el('text',{x:mx+nx*off,y:my+ny*off-7,'text-anchor':'middle','font-size':'9','font-family':'Inter,"Noto Sans SC",sans-serif',fill:'#a09890',class:'web-link-label',opacity:'0','pointer-events':'none'});tx.textContent=l.label;tx.dataset.linkId=i;
-lg.appendChild(p);lg.appendChild(tx);
-});
-svg.appendChild(lg);
-
 // Center
-const cg=el('g',{class:'web-node',style:'cursor:default'});
-cg.appendChild(el('circle',{cx,cy,r:42,fill:'#fdfcf9',stroke:'#d5cec5','stroke-width':'2'}));
-const ct1=el('text',{x:cx,y:cy-5,'text-anchor':'middle','font-size':'13','font-weight':'700','font-family':'"Cormorant Garamond","Noto Serif SC",serif',fill:'#3b3733'});ct1.textContent='语法体系';cg.appendChild(ct1);
+const cg=el('g',{class:'web-node',id:'gw-center',style:'cursor:default'});
+cg.appendChild(el('circle',{cx,cy,r:38,fill:'#fdfcf9',stroke:'#d5cec5','stroke-width':'2.5'}));
+const ct=el('text',{x:cx,y:cy-4,'text-anchor':'middle','font-size':'14','font-weight':'700','font-family':'"Cormorant Garamond","Noto Serif SC",serif',fill:'#3b3733'});ct.textContent='语法体系';cg.appendChild(ct);
 svg.appendChild(cg);
 
-// Draw nodes
-allPos.forEach(p=>{
-const g=el('g',{class:'web-node',style:'cursor:pointer'});g.dataset.nodeId=p.id;g.dataset.href=p.href;
+// Pre-create all nodes (hidden) and links
+const nodeEls={},linkEls=[];
+Object.entries(gwPositions).forEach(([id,p])=>{
+const g=el('g',{class:'web-node',style:'cursor:pointer;opacity:0;transition:opacity 0.5s ease,transform 0.5s ease;transform:scale(0.6)'});
+g.dataset.nodeId=id;g.dataset.href=p.href;
 g.appendChild(el('circle',{cx:p.x,cy:p.y,r:nR+2,fill:'rgba(59,55,51,0.04)'}));
 g.appendChild(el('circle',{cx:p.x,cy:p.y,r:nR,fill:'#fdfcf9',stroke:p.color,'stroke-width':'2.2'}));
-const lb=el('text',{x:p.x,y:p.y-3,'text-anchor':'middle','font-size':'11','font-weight':'600','font-family':'"Noto Sans SC","Inter",sans-serif',fill:'#3b3733'});lb.textContent=p.label;g.appendChild(lb);
-const en=el('text',{x:p.x,y:p.y+11,'text-anchor':'middle','font-size':'7','font-family':'Inter,sans-serif',fill:'#a09890','font-style':'italic'});en.textContent=p.en.length>11?p.en.substring(0,11):p.en;g.appendChild(en);
+const lb=el('text',{x:p.x,y:p.y-3,'text-anchor':'middle','font-size':'11','font-weight':'600','font-family':'"Noto Sans SC","Inter",sans-serif',fill:'#3b3733'});lb.textContent=gwNodeLabels[id]||id;g.appendChild(lb);
+const en=el('text',{x:p.x,y:p.y+11,'text-anchor':'middle','font-size':'7','font-family':'Inter,sans-serif',fill:'#a09890','font-style':'italic'});en.textContent=(p.en||'').length>10?(p.en||'').substring(0,10):(p.en||'');g.appendChild(en);
 g.addEventListener('click',function(){showGalaxy();setTimeout(()=>{const t=document.querySelector(p.href);if(t)t.scrollIntoView({behavior:'smooth'});},300);});
-g.addEventListener('mouseenter',function(){
-svg.querySelectorAll('.web-node').forEach(n=>n.classList.add('dimmed'));
-svg.querySelectorAll('.web-link').forEach(l=>l.classList.add('dimmed'));
-g.classList.remove('dimmed');g.classList.add('highlighted');cg.classList.remove('dimmed');
-svg.querySelectorAll('.web-link').forEach(l=>{if(l.dataset.from===p.id||l.dataset.to===p.id){l.classList.remove('dimmed');l.classList.add('highlighted');l.setAttribute('stroke-width',l.getAttribute('stroke-dasharray')==='6,4'?'2.3':'2.8');}});
-svg.querySelectorAll('.web-link-label').forEach(lb=>{const lid=lb.dataset.linkId;if(lid!==undefined&&links[lid]&&(links[lid].from===p.id||links[lid].to===p.id))lb.setAttribute('opacity','1');});
-svg.querySelectorAll('.web-node').forEach(n=>{links.forEach(lk=>{if((lk.from===p.id&&lk.to===n.dataset.nodeId)||(lk.to===p.id&&lk.from===n.dataset.nodeId)){n.classList.remove('dimmed');n.classList.add('highlighted');}});});
+svg.appendChild(g);nodeEls[id]=g;
 });
-g.addEventListener('mouseleave',function(){
-svg.querySelectorAll('.web-node').forEach(n=>{n.classList.remove('dimmed','highlighted');});
-svg.querySelectorAll('.web-link').forEach(l=>{l.classList.remove('dimmed','highlighted');l.setAttribute('stroke-width',l.getAttribute('stroke-dasharray')==='6,4'?'1.3':'1.8');});
-svg.querySelectorAll('.web-link-label').forEach(lb=>lb.setAttribute('opacity','0'));
+const gwNodeLabels={noun:'名词',art:'冠词',pron:'代词',adj:'形副',num:'数词',prep:'介词',conj:'连词',verb:'动词',tense:'时态',voice:'语态',mood:'语气',nonfin:'非谓语',modal:'情态',elem:'成分',sent:'句型',clause:'从句',sv:'主谓一致',inv:'倒装',emp:'强调',ell:'省略',there:'There be',it:'It用法',comp:'比较'};
+
+// Collect all links from steps
+const allLinkData=[];
+gwSteps.forEach(s=>{s.links.forEach(l=>{const k=l.from+'-'+l.to;if(!allLinkData.find(x=>x.key===k)){allLinkData.push({...l,key:k});}});});
+const linkGroup=el('g',{});linkGroup.id='gw-links';
+allLinkData.forEach((l,i)=>{
+const fp=gwPositions[l.from],tp=gwPositions[l.to];
+if(!fp||!tp)return;
+const mx=(fp.x+tp.x)/2,my=(fp.y+tp.y)/2,dx=tp.x-fp.x,dy=tp.y-fp.y,len=Math.sqrt(dx*dx+dy*dy),nx=-dy/len,ny=dx/len,off=l.type==='dashed'?15:-20;
+const p=el('path',{d:'M'+fp.x+','+fp.y+' Q'+(mx+nx*off)+','+(my+ny*off)+' '+tp.x+','+tp.y,stroke:l.type==='solid'?'#b0a89e':'#c4bbb0','stroke-width':l.type==='solid'?'1.8':'1.3','stroke-dasharray':l.type==='dashed'?'6,4':'none','marker-end':l.type==='dashed'?'url(#arrow)':'',fill:'none',class:'web-link',opacity:'0',transition:'opacity 0.5s ease'});
+p.dataset.from=l.from;p.dataset.to=l.to;
+linkGroup.appendChild(p);
+// Label (hidden)
+const tx=el('text',{x:mx+nx*off,y:my+ny*off-7,'text-anchor':'middle','font-size':'9','font-family':'Inter,"Noto Sans SC",sans-serif',fill:'#a09890',class:'web-link-label',opacity:'0','pointer-events':'none'});tx.textContent=l.label;tx.dataset.from=l.from;tx.dataset.to=l.to;
+linkGroup.appendChild(tx);
 });
-svg.appendChild(g);
-});
+svg.appendChild(linkGroup);
+
+// Progress dots
+const dotsEl=document.getElementById('gw-dots');
+dotsEl.innerHTML='';gwSteps.forEach((_,i)=>{const d=document.createElement('span');d.style.cssText='width:8px;height:8px;border-radius:50%;background:'+(i===0?'var(--c-noun)':'var(--border)')+';transition:background 0.3s;cursor:pointer';d.addEventListener('click',()=>gwGoTo(i));dotsEl.appendChild(d);});
+
+function gwUpdateUI(){
+const s=gwSteps[gwCurrent];document.getElementById('gw-step-label').textContent=s.label;
+// Update dots
+dotsEl.querySelectorAll('span').forEach((d,i)=>{d.style.background=i===gwCurrent?'var(--c-noun)':i<gwCurrent?'var(--text-muted)':'var(--border)';});
+// Show nodes that have appeared in steps 0..gwCurrent
+const visibleNodes=new Set();
+for(let i=0;i<=gwCurrent;i++) gwSteps[i].nodes.forEach(n=>visibleNodes.add(n));
+Object.entries(nodeEls).forEach(([id,g])=>{if(visibleNodes.has(id)){g.style.opacity='1';g.style.transform='scale(1)';}else{g.style.opacity='0';g.style.transform='scale(0.6)';}});
+// Show links that appear in steps 0..gwCurrent (both endpoints visible)
+const visibleLinks=new Set();
+for(let i=0;i<=gwCurrent;i++) gwSteps[i].links.forEach(l=>visibleLinks.add(l.from+'-'+l.to));
+linkGroup.querySelectorAll('.web-link').forEach(l=>{const k=l.dataset.from+'-'+l.dataset.to;if(visibleLinks.has(k)){l.setAttribute('opacity','1');}else{l.setAttribute('opacity','0');}});
+linkGroup.querySelectorAll('.web-link-label').forEach(lb=>{const k=lb.dataset.from+'-'+lb.dataset.to;lb.setAttribute('opacity',visibleLinks.has(k)?'0.7':'0');});
+// Disable prev/next at edges
+document.getElementById('gw-prev').style.opacity=gwCurrent===0?'0.3':'1';
+document.getElementById('gw-next').style.opacity=gwCurrent===gwSteps.length-1?'0.3':'1';
+}
+
+function gwGoTo(n){if(n<0||n>=gwSteps.length)return;gwCurrent=n;gwUpdateUI();}
+function gwNext(){if(gwCurrent<gwSteps.length-1){gwCurrent++;gwUpdateUI();}else{gwStop();}}
+function gwPrev(){if(gwCurrent>0){gwCurrent--;gwUpdateUI();}}
+function gwPlay(){if(gwPlaying)return gwStop();gwPlaying=true;document.getElementById('gw-play').textContent='⏸';if(gwCurrent>=gwSteps.length-1)gwGoTo(0);gwTimer=setInterval(()=>gwNext(),2200);}
+function gwStop(){gwPlaying=false;clearInterval(gwTimer);document.getElementById('gw-play').textContent='▶';}
+
+document.getElementById('gw-next').addEventListener('click',gwNext);
+document.getElementById('gw-prev').addEventListener('click',gwPrev);
+document.getElementById('gw-play').addEventListener('click',gwPlay);
+
+// Init at step 0
+gwGoTo(0);
 }
 })();
 </script>
