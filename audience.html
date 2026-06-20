@@ -3,432 +3,793 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Doesn't Replace Us — Presentation</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<title>AI Doesn't Replace Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-/* ══════════ RESET ══════════ */
+/* ═══════════════════════════════════════
+   EDITORIAL MAGAZINE LAYOUT SYSTEM
+   ═══════════════════════════════════════ */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream:      #faf8f3;
+  --paper:      #f5f1e8;
+  --warm-white: #fefdfa;
+  --ink:        #1c1a17;
+  --ink-light:  #5c5852;
+  --ink-muted:  #9b9690;
+  --gold:       #c8963e;
+  --gold-light: #e8cc8a;
+  --gold-pale:  #f7efda;
+  --teal:       #3d8b80;
+  --teal-pale:  #e8f2f0;
+  --coral:      #e8815b;
+  --coral-pale: #fdf0eb;
+  --border:     #e5e0d6;
+  --border-sub: #f0ebe2;
+}
 
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
-  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
-  background: #fefcf7;
-  color: #1a1f2e;
+  font-family: 'DM Sans', 'Noto Sans SC', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  user-select: none;
-  -webkit-user-select: none;
+  user-select: none; -webkit-user-select: none;
 }
 
-/* ══════════ SLIDE CONTAINER ══════════ */
+/* ═══════════ SLIDE CONTAINER ═══════════ */
 #slides { position: relative; width: 100%; height: 100%; }
 
 .slide {
   position: absolute; inset: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 4vw 6vw;
-  opacity: 0; transform: scale(0.97);
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none; text-align: center;
-  background: #fefcf7;
+  display: grid;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; z-index: 10; }
+
+/* ═══════════ TYPOGRAPHY ═══════════ */
+.display { font-family: 'Playfair Display', 'Noto Sans SC', serif; }
+.sans   { font-family: 'DM Sans', 'Noto Sans SC', sans-serif; }
+
+.gold  { color: var(--gold); }
+.teal  { color: var(--teal); }
+.coral { color: var(--coral); }
+
+/* ═══════════ SLIDE 1: COVER — FULL-BLEED EDITORIAL ═══════════ */
+.s1 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  background: var(--warm-white);
 }
 
-.slide.active { opacity: 1; transform: scale(1); pointer-events: auto; z-index: 10; }
-
-/* ══════════ TYPOGRAPHY HELPERS ══════════ */
-.fancy { font-family: 'Playfair Display', 'Noto Sans SC', serif; }
-.gold  { color: #c8963e; }
-.teal  { color: #3d8b80; }
-.coral { color: #e8815b; }
-.navy  { color: #1a1f2e; }
-
-/* ══════════ COMMON ELEMENTS ══════════ */
-.tag {
-  display: inline-block;
-  font-size: clamp(0.65rem, 0.9vw, 0.75rem);
-  font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
-  color: #c8963e; margin-bottom: 1.8rem;
-  padding: 0.35rem 1rem;
-  border: 1px solid rgba(200,150,62,0.25);
-  border-radius: 100px;
-  background: rgba(200,150,62,0.04);
+.s1 .s1-left {
+  background: var(--ink);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2rem 3rem 2rem 5vw;
+  position: relative;
 }
 
-.card {
-  background: #fff; border: 1px solid #e8e4da;
-  border-radius: 20px; box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+.s1 .s1-left .issue-tag {
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem;
 }
 
-.divider {
-  width: 48px; height: 3px; background: #c8963e; border-radius: 2px;
-  margin: 0 auto;
-}
-
-/* ══════════ SLIDE 1 — TITLE ══════════ */
-.s1 { background: linear-gradient(170deg, #fefcf7 0%, #faf6ed 40%, #f7f2e5 100%); }
-.s1 h1 {
+.s1 .s1-left h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.6rem, 6.5vw, 5.5rem);
-  font-weight: 800; font-style: italic;
-  line-height: 1.1; color: #1a1f2e; max-width: 950px;
-}
-.s1 .sub {
-  margin-top: 1.5rem;
-  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
-  color: #6b6b6b; letter-spacing: 0.02em;
-  font-weight: 400;
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+  font-weight: 900; font-style: italic;
+  line-height: 1.06; color: #fefdfa;
+  letter-spacing: -0.01em;
 }
 
-/* ══════════ SLIDE 2 — HOOK ══════════ */
-.s2 { background: #fff; }
-.s2 .stat-row { display: flex; gap: 3rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; justify-content: center; }
-.s2 .stat-big {
+.s1 .s1-left .byline {
+  margin-top: 2.5rem;
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: #8a857c;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.s1 .s1-right {
+  background: linear-gradient(160deg, #f7f2e5 0%, #efe6d2 40%, #e8dcc4 100%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 3rem 3rem 3rem 4rem;
+  position: relative;
+}
+
+.s1 .s1-right .big-num {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(5rem, 11vw, 9rem); font-weight: 800; font-style: italic;
-  color: #c8963e; line-height: 1;
+  font-size: clamp(10rem, 18vw, 16rem);
+  font-weight: 900; font-style: italic;
+  color: rgba(28,26,23,0.04);
+  position: absolute; top: -1rem; right: 2rem;
+  line-height: 1;
 }
-.s2 .stat-label {
-  font-size: clamp(1.3rem, 2.8vw, 2rem); font-weight: 700;
-  color: #1a1f2e; line-height: 1.3; text-align: left;
-}
-.s2 .hook-detail {
-  margin-top: 1rem;
-  font-size: clamp(0.85rem, 1.3vw, 1rem);
-  color: #6b6b6b; max-width: 560px;
-}
-.s2 .icon-strip {
-  display: flex; gap: 1rem; margin-top: 2rem; align-items: center;
-}
-.s2 .icon-strip .is-item {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.6rem 1.2rem;
-  background: #faf7f0; border-radius: 100px;
-  font-size: 0.8rem; font-weight: 600; color: #4a4a4a;
-}
-.s2 .icon-strip .is-arrow { color: #c8963e; font-size: 1.2rem; }
 
-/* ══════════ SLIDE 3 — CHART ══════════ */
-.s3 { background: #fefcf7; }
-.s3 .chart-wrapper {
-  width: min(88vw, 880px);
-  background: #fff; border: 1px solid #e8e4da; border-radius: 20px;
-  overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.05);
-}
-.s3 .chart-wrapper img { display: block; width: 100%; height: auto; }
-.s3 .chart-caption {
-  margin-top: 1.2rem;
-  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
-  color: #6b6b6b;
-}
-.s3 .chart-caption strong { color: #c8963e; }
-
-/* ══════════ SLIDE 4 — INSIGHT ══════════ */
-.s4 { background: #faf7f0; }
-.s4 .insight-lead {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1rem, 1.4vw, 1.15rem);
-  font-weight: 600; color: #c8963e;
-  letter-spacing: 0.06em; margin-bottom: 1.5rem;
-}
-.s4 .insight-main {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4.5vw, 3.5rem);
-  font-weight: 800; font-style: italic;
-  line-height: 1.25; color: #1a1f2e;
-  max-width: 850px;
-}
-.s4 .insight-cards {
-  display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
-}
-.s4 .insight-cards .ic {
-  flex: 1; min-width: 160px; max-width: 220px;
-  padding: 1.5rem 1.2rem;
-  background: #fff; border-radius: 14px;
-  border: 1px solid #e8e4da;
-  font-size: 0.9rem; color: #4a4a4a; line-height: 1.5;
-}
-.s4 .insight-cards .ic .ic-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
-.s4 .insight-cards .ic strong { display: block; margin-bottom: 0.3rem; color: #1a1f2e; }
-
-/* ══════════ SLIDE 5 — HOW IT WORKS ══════════ */
-.s5 { background: #fff; }
-.s5 .flow {
-  display: flex; align-items: center; gap: 1.5rem;
-  flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem;
-}
-.s5 .flow .fn {
-  display: flex; flex-direction: column; align-items: center;
+.s1 .s1-right .accent-block {
+  background: var(--gold);
+  color: #fff;
   padding: 1.8rem 2rem;
-  background: #fefcf7; border: 1px solid #e8e4da;
-  border-radius: 18px; min-width: 140px;
+  border-radius: 4px;
+  max-width: 380px;
 }
-.s5 .flow .fn .fn-icon { font-size: 2.5rem; margin-bottom: 0.6rem; }
-.s5 .flow .fn .fn-title { font-weight: 700; font-size: 1rem; color: #1a1f2e; margin-bottom: 0.2rem; }
-.s5 .flow .fn .fn-desc { font-size: 0.75rem; color: #888; }
-.s5 .flow .fn.human  { border-color: rgba(200,150,62,0.3); background: rgba(200,150,62,0.03); }
-.s5 .flow .fn.ai     { border-color: rgba(61,139,128,0.3); background: rgba(61,139,128,0.03); }
-.s5 .flow .fn.result { border-color: rgba(232,129,91,0.3); background: rgba(232,129,91,0.03); }
-.s5 .flow .fn-arrow {
-  font-size: 2rem; color: #c8963e; font-weight: 300;
+
+.s1 .s1-right .accent-block .ab-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  opacity: 0.8; margin-bottom: 0.6rem;
 }
-.s5 .proof-text {
+
+.s1 .s1-right .accent-block .ab-text {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
   font-weight: 700; font-style: italic;
-  color: #1a1f2e; max-width: 750px;
   line-height: 1.35;
 }
 
-/* ══════════ SLIDE 6 — VIDEO SLIDE ══════════ */
-.s6 { background: #faf7f0; }
-.s6 .video-spot {
-  width: min(80vw, 800px);
-  aspect-ratio: 16/9;
-  background: linear-gradient(135deg, #f0ebe0 0%, #e8e0d3 100%);
-  border: 2px dashed #d4cbb8; border-radius: 20px;
+/* ═══════════ SLIDE 2: SPREAD — IMAGE + SIDEBAR ═══════════ */
+.s2 {
+  grid-template-columns: 3fr 2fr;
+  background: var(--warm-white);
+}
+
+.s2 .s2-image {
+  background: linear-gradient(150deg, #e8dcc4 0%, #ddd0b5 40%, #d4c6a8 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Replace this bg with your actual screenshot later */
+.s2 .s2-image .mockup-box {
+  width: 70%; aspect-ratio: 4/3;
+  background: #fefdfa; border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 0.8rem;
+  gap: 0.5rem;
+}
+
+.s2 .s2-image .mockup-box .mb-icon { font-size: 2.5rem; }
+.s2 .s2-image .mockup-box .mb-label { font-size: 0.7rem; color: var(--ink-muted); font-weight: 500; letter-spacing: 0.08em; }
+
+.s2 .s2-image .img-caption {
+  position: absolute; bottom: 2rem; left: 2rem;
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #8a8070; font-weight: 600;
+}
+
+.s2 .s2-text {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2rem 3rem 2rem 2.5rem;
+}
+
+.s2 .s2-text .section-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; font-weight: 900; font-style: italic; color: var(--gold-pale); line-height: 1; margin-bottom: -1rem; margin-left: -0.2rem;
+}
+
+.s2 .s2-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem); font-weight: 800; font-style: italic;
+  line-height: 1.2; color: var(--ink); margin-bottom: 1.2rem;
+}
+
+.s2 .s2-text .body-text {
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem); color: var(--ink-light); line-height: 1.8;
+}
+
+.s2 .s2-text .pull-quote {
+  margin-top: 1.8rem; padding-left: 1rem; border-left: 3px solid var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700; font-style: italic;
+  color: var(--gold); line-height: 1.4;
+}
+
+/* ═══════════ SLIDE 3: CHART — FULL-WIDTH EDITORIAL ═══════════ */
+.s3 { grid-template-rows: auto 1fr auto; background: var(--cream); padding: 2.5rem 4vw 2rem; }
+
+.s3 .s3-header {
+  display: flex; align-items: center; gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.s6 .video-spot .vs-icon {
-  font-size: 3rem; opacity: 0.5;
-}
-.s6 .video-spot .vs-label {
-  font-size: 0.9rem; font-weight: 600; color: #8a8070;
-}
-.s6 .video-spot .vs-hint {
-  font-size: 0.7rem; color: #b0a898; letter-spacing: 0.04em;
-}
-.s6 .video-idea {
-  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
-  color: #6b6b6b; max-width: 600px; line-height: 1.6;
-}
-.s6 .video-idea strong { color: #e8815b; }
 
-/* ══════════ SLIDE 7 — QR ══════════ */
-.s7 { background: #fefcf7; }
-.s7 img {
-  width: clamp(170px, 25vw, 250px); height: clamp(170px, 25vw, 250px);
-  border-radius: 18px;
-  background: #fff; padding: 14px;
-  border: 1px solid #e8e4da;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-}
-.s7 .qr-label {
-  margin-top: 1.2rem;
-  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
-  color: #6b6b6b;
-}
-
-/* ══════════ SLIDE 8 — LIVE DEMO ══════════ */
-.s8 { background: #fff; }
-.s8 .demo-title {
+.s3 .s3-header .section-num {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 800; font-style: italic;
-  color: #1a1f2e; line-height: 1.18;
+  font-size: 3rem; font-weight: 900; font-style: italic; color: var(--teal-pale);
+  line-height: 1;
 }
-.s8 .demo-link {
-  display: flex; align-items: center; gap: 1.2rem;
-  margin-top: 2.5rem;
-  padding: 1.6rem 2.8rem;
-  background: linear-gradient(135deg, #c8963e 0%, #daa952 100%);
-  border-radius: 18px;
-  text-decoration: none; cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  box-shadow: 0 8px 40px rgba(200,150,62,0.25);
-  position: relative; z-index: 20;
-}
-.s8 .demo-link:hover { transform: translateY(-3px); box-shadow: 0 12px 50px rgba(200,150,62,0.35); }
-.s8 .demo-link .dl-icon { font-size: 2rem; color: #fff; }
-.s8 .demo-link .dl-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
-.s8 .demo-link .dl-url { font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 800; color: #fff; }
-.s8 .demo-link .dl-arrow { font-size: 1.6rem; color: #fff; transition: transform 0.3s; }
-.s8 .demo-link:hover .dl-arrow { transform: translateX(6px); }
-.s8 .demo-hint { margin-top: 1.5rem; font-size: 0.8rem; color: #999; }
 
-/* ══════════ SLIDE 9 — THANK YOU ══════════ */
-.s9 { background: linear-gradient(170deg, #fefcf7 0%, #faf6ed 40%, #f7f2e5 100%); }
-.s9 .thanks {
+.s3 .s3-header .section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--teal);
+}
+
+.s3 .s3-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; font-style: italic; color: var(--ink);
+}
+
+.s3 .chart-area {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+}
+
+.s3 .chart-area .chart-card {
+  width: 90%; max-width: 960px;
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.s3 .chart-area .chart-card img { display: block; width: 100%; height: auto; }
+
+.s3 .chart-footnote {
+  margin-top: 1rem;
+  display: flex; gap: 2rem; flex-wrap: wrap;
+  font-size: 0.7rem; color: var(--ink-muted);
+}
+
+.s3 .chart-footnote .fn-stat { font-weight: 700; color: var(--ink); }
+.s3 .chart-footnote .fn-stat span { color: var(--gold); font-size: 0.85rem; }
+
+/* ═══════════ SLIDE 4: INSIGHT — ASYMMETRIC MAGAZINE ═══════════ */
+.s4 {
+  grid-template-columns: 2fr 3fr;
+  background: var(--warm-white);
+}
+
+.s4 .s4-side {
+  background: var(--teal);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem 2rem;
+  color: #fff;
+  position: relative; overflow: hidden;
+}
+
+.s4 .s4-side .big-letter {
+  position: absolute; top: -2rem; left: -1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 18rem; font-weight: 900; font-style: italic;
+  color: rgba(255,255,255,0.05); line-height: 1;
+}
+
+.s4 .s4-side .label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  opacity: 0.7; margin-bottom: 1rem;
+  position: relative; z-index: 1;
+}
+
+.s4 .s4-side .big-word {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 6vw, 5rem); font-weight: 900; font-style: italic;
+  line-height: 1; position: relative; z-index: 1;
+}
+
+.s4 .s4-main {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem 3rem 2.5rem 3rem;
+}
+
+.s4 .s4-main .statement {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+  font-weight: 800; font-style: italic;
+  line-height: 1.3; color: var(--ink);
+  margin-bottom: 2rem;
+}
+
+.s4 .s4-main .statement .strike {
+  text-decoration: line-through; text-decoration-color: var(--coral);
+  text-decoration-thickness: 3px;
+}
+
+.s4 .s4-main .trio {
+  display: flex; gap: 0.8rem;
+}
+
+.s4 .s4-main .trio .trio-item {
+  flex: 1; padding: 1rem;
+  border-top: 3px solid var(--border);
+  font-size: 0.72rem; color: var(--ink-light); line-height: 1.6;
+}
+
+.s4 .s4-main .trio .trio-item:nth-child(1) { border-top-color: var(--gold); }
+.s4 .s4-main .trio .trio-item:nth-child(2) { border-top-color: var(--teal); }
+.s4 .s4-main .trio .trio-item:nth-child(3) { border-top-color: var(--coral); }
+
+.s4 .s4-main .trio .trio-item .ti-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 900; font-style: italic;
+  display: block; margin-bottom: 0.3rem;
+}
+
+/* ═══════════ SLIDE 5: PROCESS — HORIZONTAL STRIP ═══════════ */
+.s5 {
+  grid-template-rows: auto 1fr auto;
+  background: var(--cream);
+  padding: 2.5rem 4vw 2rem;
+}
+
+.s5 .s5-top {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 2rem;
+}
+
+.s5 .s5-top .section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--coral);
+}
+
+.s5 .s5-top h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem); font-weight: 800; font-style: italic; color: var(--ink);
+}
+
+.s5 .s5-strip {
+  display: flex; gap: 0; align-items: stretch;
+  flex: 1;
+}
+
+.s5 .s5-strip .step {
+  flex: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.s5 .s5-strip .step .step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem; font-weight: 900; font-style: italic;
+  color: rgba(28,26,23,0.04); line-height: 1; margin-bottom: -0.5rem;
+}
+
+.s5 .s5-strip .step .step-icon { font-size: 1.8rem; margin: 0.5rem 0; }
+
+.s5 .s5-strip .step .step-title {
+  font-weight: 700; font-size: 0.9rem; color: var(--ink); margin-bottom: 0.3rem;
+}
+
+.s5 .s5-strip .step .step-desc {
+  font-size: 0.68rem; color: var(--ink-muted); line-height: 1.6;
+}
+
+.s5 .s5-strip .step:nth-child(odd) { background: #fff; }
+.s5 .s5-strip .step:nth-child(even) { background: var(--warm-white); }
+
+.s5 .s5-strip .step-arrow {
+  width: 0; display: flex; align-items: center;
+  font-size: 1.2rem; color: var(--gold); font-weight: 300;
+  background: none;
+}
+
+.s5 .s5-bottom {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.s5 .s5-bottom .closing-line {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 1.8vw, 1.4rem);
+  font-weight: 700; font-style: italic; color: var(--ink);
+}
+
+/* ═══════════ SLIDE 6: VIDEO — EDITORIAL SPREAD ═══════════ */
+.s6 {
+  grid-template-columns: 3fr 2fr;
+  background: var(--warm-white);
+}
+
+.s6 .s6-video-area {
+  background: #1c1a17;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.8rem;
+  position: relative;
+}
+
+.s6 .s6-video-area .play-btn {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: #fff; font-size: 1.6rem;
+  transition: background 0.3s;
+}
+
+.s6 .s6-video-area .play-btn:hover { background: rgba(255,255,255,0.2); }
+
+.s6 .s6-video-area .video-label {
+  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); font-weight: 600;
+}
+
+.s6 .s6-video-area .duration-badge {
+  position: absolute; bottom: 1.5rem; right: 1.5rem;
+  padding: 0.3rem 0.7rem;
+  background: rgba(255,255,255,0.1); border-radius: 4px;
+  font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.6);
+}
+
+.s6 .s6-notes {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem;
+  gap: 1.2rem;
+}
+
+.s6 .s6-notes .notes-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--coral);
+}
+
+.s6 .s6-notes h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2vw, 1.6rem); font-weight: 800; font-style: italic;
+  color: var(--ink); line-height: 1.2;
+}
+
+.s6 .s6-notes .notes-list {
+  list-style: none; display: flex; flex-direction: column; gap: 0.7rem;
+}
+
+.s6 .s6-notes .notes-list li {
+  font-size: 0.72rem; color: var(--ink-light); line-height: 1.6;
+  padding-left: 1rem; border-left: 2px solid var(--border);
+}
+
+.s6 .s6-notes .notes-list li::before {
+  content: attr(data-num);
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem; font-weight: 900; font-style: italic;
+  color: var(--gold); margin-bottom: 0.15rem;
+}
+
+/* ═══════════ SLIDE 7: QR — MINIMAL EDITORIAL ═══════════ */
+.s7 {
+  grid-template-columns: 1fr 1fr;
+  background: var(--warm-white);
+}
+
+.s7 .s7-visual {
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.s7 .s7-visual img {
+  width: clamp(170px, 28vw, 260px); height: clamp(170px, 28vw, 260px);
+  border-radius: 6px;
+  background: #fff; padding: 16px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+}
+
+.s7 .s7-info {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem 3rem;
+  gap: 1.2rem;
+}
+
+.s7 .s7-info .section-label {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold);
+}
+
+.s7 .s7-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 2.5vw, 2rem); font-weight: 800; font-style: italic;
+  line-height: 1.2; color: var(--ink);
+}
+
+.s7 .s7-info .url-display {
+  font-size: 0.75rem; color: var(--ink-muted); letter-spacing: 0.04em;
+  font-family: 'DM Sans', monospace;
+}
+
+/* ═══════════ SLIDE 8: CTA — DRAMATIC SINGLE-COLUMN ═══════════ */
+.s8 {
+  grid-template-columns: 1fr;
+  background: var(--ink);
+  align-items: center; justify-content: center;
+  padding: 4rem 6vw;
+}
+
+.s8 .cta-block {
+  text-align: center;
+  max-width: 800px;
+}
+
+.s8 .cta-block .cta-eyebrow {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem;
+}
+
+.s8 .cta-block h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+  font-weight: 900; font-style: italic;
+  line-height: 1.08; color: #fefdfa;
+  margin-bottom: 2.5rem;
+}
+
+.s8 .cta-block .question-line {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  font-weight: 700; font-style: italic;
+  color: #a09890; line-height: 1.5;
+}
+
+/* ═══════════ SLIDE 9: THANK YOU + LINK ═══════════ */
+.s9 {
+  grid-template-columns: 1fr;
+  background: linear-gradient(160deg, #f7f2e5 0%, #efe6d2 50%, #e8dcc4 100%);
+  align-items: center; justify-content: center;
+  padding: 3rem 6vw;
+}
+
+.s9 .closing {
+  text-align: center;
+  max-width: 700px;
+}
+
+.s9 .closing .thanks {
   font-family: 'Playfair Display', serif;
   font-size: clamp(3.5rem, 8vw, 7rem);
-  font-weight: 800; font-style: italic; color: #c8963e;
-}
-.s9 .thanks-sub {
-  margin-top: 1rem;
-  font-size: clamp(0.9rem, 1.3vw, 1.05rem);
-  color: #6b6b6b;
+  font-weight: 900; font-style: italic; color: var(--gold);
+  line-height: 1;
 }
 
-/* ══════════ NAV ══════════ */
-#nav { position: fixed; bottom: 1.8rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.55rem; z-index: 100; }
-#nav .dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  background: #d4cfc4; cursor: pointer;
+.s9 .closing .motto {
+  margin-top: 1.5rem;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 1.8vw, 1.3rem);
+  font-weight: 700; font-style: italic; color: var(--ink);
+  line-height: 1.5;
+}
+
+.s9 .closing .demo-link-mini {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  margin-top: 2.5rem;
+  padding: 1rem 2rem;
+  border: 1.5px solid var(--gold);
+  border-radius: 100px;
+  text-decoration: none; cursor: pointer;
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--gold);
+  transition: background 0.3s, color 0.3s;
+  position: relative; z-index: 20;
+}
+
+.s9 .closing .demo-link-mini:hover {
+  background: var(--gold); color: #fff;
+}
+
+/* ═══════════ NAVIGATION ═══════════ */
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--border-sub); z-index: 100;
+}
+#nav-bar .fill {
+  height: 100%; background: var(--gold);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-counter {
+  position: fixed; top: 1.5rem; right: 2rem; z-index: 100;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em;
+  color: var(--ink-muted);
+}
+
+#dot-nav {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 1.5rem; z-index: 100;
+}
+#dot-nav .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #d4cfc4; cursor: pointer; border: none; outline: none;
   transition: background 0.3s, transform 0.3s;
-  border: none; outline: none;
 }
-#nav .dot.active { background: #c8963e; transform: scale(1.35); }
-#nav .dot:hover { background: #b0a898; }
-.slide-counter { position: fixed; top: 1.8rem; right: 2rem; z-index: 100; font-size: 0.75rem; color: #bbb6aa; letter-spacing: 0.12em; font-weight: 600; }
-.arrow-hint { position: fixed; bottom: 4.5rem; left: 50%; transform: translateX(-50%); font-size: 0.68rem; color: #c8c0b0; letter-spacing: 0.08em; z-index: 99; transition: opacity 0.5s; }
+#dot-nav .dot.active { background: var(--gold); transform: scale(1.8); }
 
-@media (max-width: 600px) {
-  .slide { padding: 3vw 5vw; }
-  .s2 .stat-row { gap: 1rem; }
+/* ═══════════ RESPONSIVE ═══════════ */
+@media (max-width: 768px) {
+  .s1 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  .s2 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  .s4 { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .s6 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  .s7 { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+  .s5 .s5-strip { flex-wrap: wrap; }
+  .s5 .s5-strip .step { flex: 1 1 40%; }
+  .s5 .s5-strip .step-arrow { display: none; }
 }
-
-/* ══════════ EMBED VIDEO PLACEHOLDER STYLE ══════════ */
 </style>
 </head>
 <body>
 
 <div id="slides">
 
-  <!-- ═══ 1. TITLE ═══ -->
+  <!-- ═══════════ 1. COVER — MAGAZINE FRONT PAGE ═══════════ -->
   <div class="slide s1 active" data-index="0">
-    <div class="tag">New Economic Trends</div>
-    <h1>AI Doesn't <span class="gold">Replace</span> Us —<br>It <span class="gold">Redefines</span> Who We Can Become</h1>
-    <p class="sub">A humanities student's journey into AI modeling · 3-Minute Speech</p>
+    <div class="s1-left">
+      <div class="issue-tag">Vol. 01 &nbsp;·&nbsp; New Economic Trends</div>
+      <h1>AI Doesn't<br><span style="text-decoration:line-through;text-decoration-color:#e8815b;text-decoration-thickness:3px;">Replace</span> Us —<br>It <span style="color:#c8963e;">Redefines</span><br>Who We Become</h1>
+      <div class="byline">3-minute speech &nbsp;·&nbsp; English Reading Course</div>
+    </div>
+    <div class="s1-right">
+      <div class="big-num">01</div>
+      <div class="accent-block">
+        <div class="ab-label">The Core Argument</div>
+        <div class="ab-text">Every tech revolution in history created more jobs than it destroyed. AI will do the same — but only if we learn to ask the right questions.</div>
+      </div>
+    </div>
   </div>
 
-  <!-- ═══ 2. HOOK ═══ -->
+  <!-- ═══════════ 2. HOOK — IMAGE SPREAD ═══════════ -->
   <div class="slide s2" data-index="1">
-    <div class="tag">The Story</div>
-    <div class="stat-row">
-      <div class="stat-big">6</div>
-      <div class="stat-label">months ago<br>a humanities student<br>started building<br><span class="gold">AI models.</span></div>
+    <div class="s2-image">
+      <div class="mockup-box">
+        <div class="mb-icon">🌐</div>
+        <div class="mb-label">English Grammar Galaxy</div>
+      </div>
+      <div class="img-caption">▲ Screenshot — the tool I built with AI</div>
     </div>
-    <p class="hook-detail">No coding background. A literature student.<br>Just curiosity — and an AI assistant.</p>
-    <div class="icon-strip">
-      <div class="is-item">📚 Literature</div>
-      <div class="is-arrow">→</div>
-      <div class="is-item">🤖 AI Modeling</div>
-      <div class="is-arrow">→</div>
-      <div class="is-item">🎯 Grammar Tool</div>
+    <div class="s2-text">
+      <div class="section-num">02</div>
+      <h2>A humanities student walks into an AI lab.</h2>
+      <p class="body-text">
+        Six months ago, I was reading literature and analyzing texts. Today, I've built an interactive English grammar tool — powered by AI-assisted modeling. No CS degree. No coding bootcamp. Just a question: <em>what if?</em>
+      </p>
+      <div class="pull-quote">
+        "My world was words. Now it's words + AI. That journey changed everything."
+      </div>
     </div>
   </div>
 
-  <!-- ═══ 3. CHART ═══ -->
+  <!-- ═══════════ 3. CHART — DATA SPREAD ═══════════ -->
   <div class="slide s3" data-index="2">
-    <div class="tag">The Pattern</div>
-    <div class="chart-wrapper">
-      <img src="job-revolution-chart.png" alt="Every tech revolution creates more jobs">
+    <div class="s3-header">
+      <div class="section-num">03</div>
+      <div>
+        <div class="section-label">The Evidence</div>
+        <h3>Every Tech Revolution Creates More Jobs Than It Destroys</h3>
+      </div>
     </div>
-    <p class="chart-caption">
-      Printing Press: <strong>10×</strong> more jobs &nbsp;·&nbsp;
-      Spreadsheets: <strong>8.8×</strong> more jobs &nbsp;·&nbsp;
-      AI (WEF projection): net job creation
-    </p>
+    <div class="chart-area">
+      <div class="chart-card">
+        <img src="job-revolution-chart.png" alt="Job Revolution Chart">
+      </div>
+    </div>
+    <div class="chart-footnote">
+      <div><span class="fn-stat"><span>10×</span> Printing Press</span> &nbsp;·&nbsp; 30K scribes → 300K+ publishing roles</div>
+      <div><span class="fn-stat"><span>8.8×</span> Spreadsheets</span> &nbsp;·&nbsp; 0.4M bookkeepers → 3.5M analyst roles</div>
+      <div><span class="fn-stat"><span>↑</span> AI (WEF 2025)</span> &nbsp;·&nbsp; 85M displaced → 97M new roles projected</div>
+    </div>
   </div>
 
-  <!-- ═══ 4. INSIGHT ═══ -->
+  <!-- ═══════════ 4. INSIGHT — ASYMMETRIC ═══════════ -->
   <div class="slide s4" data-index="3">
-    <div class="tag">The Insight</div>
-    <p class="insight-lead">THE SCARCEST RESOURCE IN AN AI ECONOMY</p>
-    <p class="insight-main">Isn't the ability to <span class="coral">write code.</span><br>It's the ability to <span class="gold">ask the right questions.</span></p>
-    <div class="insight-cards">
-      <div class="ic">
-        <div class="ic-icon">❓</div>
-        <strong>Ask</strong>
-        Frame the problem. What should we build — and why?
-      </div>
-      <div class="ic">
-        <div class="ic-icon">🎯</div>
-        <strong>Judge</strong>
-        Decide what's good. The AI generates — you curate.
-      </div>
-      <div class="ic">
-        <div class="ic-icon">🔗</div>
-        <strong>Connect</strong>
-        Bridge domains. Humanities meets technology.
+    <div class="s4-side">
+      <div class="big-letter">A</div>
+      <div class="label">The Insight</div>
+      <div class="big-word">Ask.</div>
+    </div>
+    <div class="s4-main">
+      <p class="statement">
+        The most scarce resource<br>in an AI economy<br><span class="strike">isn't coding.</span>
+      </p>
+      <div class="trio">
+        <div class="trio-item">
+          <span class="ti-num gold">01</span>
+          <strong>Ask the right question.</strong> AI can answer anything — but you have to know what's worth asking.
+        </div>
+        <div class="trio-item">
+          <span class="ti-num teal">02</span>
+          <strong>Judge what's good.</strong> The AI generates. You curate. Taste and judgment are human superpowers.
+        </div>
+        <div class="trio-item">
+          <span class="ti-num coral">03</span>
+          <strong>Connect across fields.</strong> Literature + AI. Law + AI. The edges are where new value lives.
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══ 5. HOW IT WORKS ═══ -->
+  <!-- ═══════════ 5. PROCESS — HORIZONTAL FLOW ═══════════ -->
   <div class="slide s5" data-index="4">
-    <div class="tag">How I Built It</div>
-    <div class="flow">
-      <div class="fn human">
-        <div class="fn-icon">✍️</div>
-        <div class="fn-title">I Describe</div>
-        <div class="fn-desc">Natural language<br>design intent</div>
-      </div>
-      <div class="fn-arrow">→</div>
-      <div class="fn ai">
-        <div class="fn-icon">🤖</div>
-        <div class="fn-title">AI Builds</div>
-        <div class="fn-desc">Generates code<br>modeling & layout</div>
-      </div>
-      <div class="fn-arrow">→</div>
-      <div class="fn human">
-        <div class="fn-icon">👁️</div>
-        <div class="fn-title">I Refine</div>
-        <div class="fn-desc">Judge output<br>iterate & improve</div>
-      </div>
-      <div class="fn-arrow">→</div>
-      <div class="fn result">
-        <div class="fn-icon">✨</div>
-        <div class="fn-title">Ship</div>
-        <div class="fn-desc">Live product<br>no code written</div>
+    <div class="s5-top">
+      <div>
+        <div class="section-label">The Build</div>
+        <h3>How a literature student ships software</h3>
       </div>
     </div>
-    <p class="proof-text" style="margin-top:2rem;">A literature student built software —<br>because <span class="gold">engineering itself got redefined.</span></p>
+    <div class="s5-strip">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-icon">✍️</div>
+        <div class="step-title">Describe</div>
+        <div class="step-desc">I tell the AI what I want — in plain English. "Build a grammar learning page. Make it look like a solar system."</div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-icon">🤖</div>
+        <div class="step-title">Generate</div>
+        <div class="step-desc">The AI produces code, layout, animations. Hundreds of lines in seconds. I don't write a single one.</div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-icon">👁️</div>
+        <div class="step-title">Refine</div>
+        <div class="step-desc">I review every output. "Change the color to Morandi blue. Make the planets orbit slower." I direct.</div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-icon">✨</div>
+        <div class="step-title">Ship</div>
+        <div class="step-desc">A live, interactive grammar tool. Built by a humanities student. Zero lines of code written by hand.</div>
+      </div>
+    </div>
+    <div class="s5-bottom">
+      <p class="closing-line">"I didn't become an engineer. <span class="gold">Engineering itself got redefined.</span>"</p>
+    </div>
   </div>
 
-  <!-- ═══ 6. VIDEO SLIDE ═══ -->
+  <!-- ═══════════ 6. VIDEO — DARK EDITORIAL ═══════════ -->
   <div class="slide s6" data-index="5">
-    <div class="tag">Watch It in Action</div>
-    <div class="video-spot">
-      <div class="vs-icon">🎬</div>
-      <div class="vs-label">Insert Demo Video Here</div>
-      <div class="vs-hint">15–20 seconds · screen recording of the grammar tool</div>
+    <div class="s6-video-area">
+      <div class="play-btn">▶</div>
+      <div class="video-label">Insert demo video</div>
+      <div class="duration-badge">00:15</div>
     </div>
-    <p class="video-idea">
-      <strong>💡 建议视频内容：</strong>录制一段 15 秒屏录——打开语法星系页面，
-      展示星球旋转、点击一个星球跳转到语法卡片、再返回。
-      放在这一页，演讲说到 <em>"I built an interactive grammar tool"</em> 时点击播放。<br>
-      <strong>格式：</strong>MP4 嵌入或拖入 PPT / Keynote 覆盖这个占位区域。
-    </p>
+    <div class="s6-notes">
+      <div class="notes-label">Video Cue</div>
+      <h4>Show the grammar tool in action.</h4>
+      <ul class="notes-list">
+        <li data-num="01">Record a <strong>15-second</strong> screen capture of the English Grammar Galaxy page.</li>
+        <li data-num="02">Capture: rotating planets → click a planet → grammar card expands → smooth scroll.</li>
+        <li data-num="03">Drop the MP4 into this slide. Play it when you say <em>"I built an interactive grammar tool."</em></li>
+        <li data-num="04">No video yet? Use the live demo on Slide 9 instead.</li>
+      </ul>
+    </div>
   </div>
 
-  <!-- ═══ 7. QR ═══ -->
+  <!-- ═══════════ 7. QR — SPLIT LAYOUT ═══════════ -->
   <div class="slide s7" data-index="6">
-    <div class="tag">Take It With You</div>
-    <img src="qr-code.png" alt="QR Code" width="250" height="250" loading="lazy">
-    <p class="qr-label">Scan to open English Grammar Galaxy</p>
+    <div class="s7-visual">
+      <img src="qr-code.png" alt="QR Code" width="260" height="260" loading="lazy">
+    </div>
+    <div class="s7-info">
+      <div class="section-label">Take It Home</div>
+      <h3>Scan the code.<br>See what I built.</h3>
+      <p class="url-display">unbeatablely.github.io/english-grammar-galaxy</p>
+    </div>
   </div>
 
-  <!-- ═══ 8. LIVE DEMO ═══ -->
+  <!-- ═══════════ 8. CTA — DRAMATIC DARK ═══════════ -->
   <div class="slide s8" data-index="7">
-    <div class="tag">Live Demo</div>
-    <p class="demo-title">See what a humanities student<br>built <span class="gold">with AI.</span></p>
-    <a class="demo-link" href="https://unbeatablely.github.io/english-grammar-galaxy/" target="_blank" rel="noopener"
-       onclick="event.stopPropagation();">
-      <span class="dl-icon">🌐</span>
-      <span>
-        <div class="dl-label">Open Live Demo</div>
-        <div class="dl-url">English Grammar Galaxy</div>
-      </span>
-      <span class="dl-arrow">↗</span>
-    </a>
-    <p class="demo-hint">Click to open in browser</p>
+    <div class="cta-block">
+      <div class="cta-eyebrow">The Real Question</div>
+      <h2>What do <span style="color:#c8963e;">you</span> want to <span style="color:#e8815b;">redefine?</span></h2>
+      <p class="question-line">
+        Not "Will AI replace me?"<br>
+        That frames you as passive.<br>
+        Ask what <em style="color:#c8963e;">you</em> will build.
+      </p>
+    </div>
   </div>
 
-  <!-- ═══ 9. THANK YOU ═══ -->
+  <!-- ═══════════ 9. THANK YOU + LINK ═══════════ -->
   <div class="slide s9" data-index="8">
-    <div class="tag">That's a wrap</div>
-    <div class="thanks">Thank you.</div>
-    <p class="thanks-sub">Don't ask if AI will replace you.<br>Ask what <strong class="gold">you</strong> will redefine.</p>
+    <div class="closing">
+      <div class="thanks">Thank you.</div>
+      <p class="motto">If a humanities student can build this —<br>imagine what you can build in your field.</p>
+      <a class="demo-link-mini" href="https://unbeatablely.github.io/english-grammar-galaxy/" target="_blank" rel="noopener"
+         onclick="event.stopPropagation();">
+        Open Live Demo ↗
+      </a>
+    </div>
   </div>
 
 </div>
 
 <!-- ═══════════ NAV ═══════════ -->
-<div id="nav"></div>
-<div class="slide-counter" id="counter">1 / 9</div>
-<div class="arrow-hint" id="arrow-hint">← &nbsp; click &nbsp;or &nbsp;arrow keys &nbsp;→</div>
+<div id="nav-bar"><div class="fill" id="nav-fill"></div></div>
+<div class="slide-counter" id="counter">01 / 09</div>
+<div id="dot-nav"></div>
 
 <script>
 (function() {
@@ -438,16 +799,20 @@ html, body {
   const total = slides.length;
   let current = 0;
 
-  const nav = document.getElementById('nav');
+  // Dot nav
+  const dotNav = document.getElementById('dot-nav');
   const dots = [];
   for (let i = 0; i < total; i++) {
     const d = document.createElement('button');
     d.className = 'dot' + (i === 0 ? ' active' : '');
     d.setAttribute('aria-label', 'Slide ' + (i + 1));
     d.addEventListener('click', () => go(i));
-    nav.appendChild(d);
+    dotNav.appendChild(d);
     dots.push(d);
   }
+
+  // Progress bar
+  const navFill = document.getElementById('nav-fill');
 
   function go(idx) {
     if (idx < 0 || idx >= total || idx === current) return;
@@ -456,28 +821,36 @@ html, body {
     current = idx;
     slides[current].classList.add('active');
     dots[current].classList.add('active');
-    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
-    if (current > 0) document.getElementById('arrow-hint').style.opacity = '0';
+    document.getElementById('counter').textContent =
+      String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    navFill.style.width = ((current + 1) / total * 100) + '%';
   }
 
   function next() { go(current + 1); }
   function prev() { go(current - 1); }
 
+  // Init progress bar
+  navFill.style.width = (1 / total * 100) + '%';
+
+  // Keyboard
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); next(); }
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prev(); }
   });
 
+  // Click to advance (avoid links)
   document.getElementById('slides').addEventListener('click', e => {
-    if (e.target.closest('#nav') || e.target.closest('button') || e.target.closest('a')) return;
+    if (e.target.closest('a') || e.target.closest('button')) return;
     if (e.clientX > window.innerWidth / 2) next(); else prev();
   });
 
-  let touchStartX = 0;
-  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  // Touch swipe
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
   document.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) { dx > 0 ? prev() : next(); }
+    if (Math.abs(e.changedTouches[0].clientX - tx) > 50) {
+      e.changedTouches[0].clientX > tx ? prev() : next();
+    }
   });
 })();
 </script>
