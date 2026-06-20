@@ -137,27 +137,22 @@ html, body {
 }
 
 .s2 .s2-image {
-  background: linear-gradient(150deg, #e8dcc4 0%, #ddd0b5 40%, #d4c6a8 100%);
+  background: #2a2722;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
 
-/* Replace this bg with your actual screenshot later */
-.s2 .s2-image .mockup-box {
-  width: 70%; aspect-ratio: 4/3;
-  background: #fefdfa; border-radius: 12px;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 0.5rem;
+.s2 .s2-image .screenshot {
+  width: 85%; height: 75%;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
-
-.s2 .s2-image .mockup-box .mb-icon { font-size: 2.5rem; }
-.s2 .s2-image .mockup-box .mb-label { font-size: 0.7rem; color: var(--ink-muted); font-weight: 500; letter-spacing: 0.08em; }
 
 .s2 .s2-image .img-caption {
   position: absolute; bottom: 2rem; left: 2rem;
-  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: #8a8070; font-weight: 600;
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); font-weight: 600;
 }
 
 .s2 .s2-text {
@@ -619,11 +614,15 @@ html, body {
   <!-- ═══════════ 2. HOOK — IMAGE SPREAD ═══════════ -->
   <div class="slide s2" data-index="1">
     <div class="s2-image">
-      <div class="mockup-box">
-        <div class="mb-icon">🌐</div>
-        <div class="mb-label">English Grammar Galaxy</div>
+      <!-- 🔁 REPLACE: 截一张语法星系页面的图，命名为 screenshot.png，放到同目录下替换 src -->
+      <img class="screenshot" src="screenshot.png" alt="English Grammar Galaxy — screenshot of the live tool" loading="lazy"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="mockup-fallback" style="display:none;flex-direction:column;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.3);">
+        <span style="font-size:3rem;">🌐</span>
+        <span style="font-size:0.7rem;letter-spacing:0.15em;">screenshot.png</span>
+        <span style="font-size:0.55rem;opacity:0.5;">Drop your screenshot here</span>
       </div>
-      <div class="img-caption">▲ Screenshot — the tool I built with AI</div>
+      <div class="img-caption">▲ The tool I built with AI · live at unbeatablely.github.io</div>
     </div>
     <div class="s2-text">
       <div class="section-num">02</div>
